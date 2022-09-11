@@ -8,6 +8,7 @@ We are developing the standard project Mini Amazon.
 - Tingnan Hu
 - Haojin Li
 - Julie Ou
+- Gaurav Parikh
 - Zirui Yin
 
 

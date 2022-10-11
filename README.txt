@@ -6,9 +6,12 @@ We are developing the standard project Mini Amazon.
 
 ## Team Member
 - Tingnan Hu
-- Haojin Li
+- Haojin Li (Product Guru)
 - Julie Ou
 - Gaurav Parikh
 - Zirui Yin
 
+## Work summary
+
+- Haojin Li: Created ER diagram and database schemas
 

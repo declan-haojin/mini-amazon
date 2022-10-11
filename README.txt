@@ -5,7 +5,7 @@ We are developing the standard project Mini Amazon.
 ## Team Name: Mini Taobao
 
 ## Team Member
-- Tingnan Hu
+- Tingnan Hu (Social Guru)
 - Haojin Li (Product Guru)
 - Julie Ou (Cart/order Guru)
 - Gaurav Parikh
@@ -14,4 +14,5 @@ We are developing the standard project Mini Amazon.
 ## Work summary
 
 - Haojin Li: Created ER diagram and database schemas
+- Tingnan Hu: Created ER diagram, worked on database schemas, assumptions, and constraints
 - Julie Ou: Created user flow descriptions and diagram

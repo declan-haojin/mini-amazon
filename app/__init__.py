@@ -1,7 +1,9 @@
+from flask_bootstrap import Bootstrap5
 from flask import Flask
 from flask_login import LoginManager
 from .config import Config
 from .db import DB
+
 
 
 login = LoginManager()
@@ -20,5 +22,7 @@ def create_app():
 
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
+
+    bootstrap = Bootstrap5(app)
 
     return app

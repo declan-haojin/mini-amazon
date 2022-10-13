@@ -6,6 +6,7 @@ num_users = 100
 num_products = 2000
 num_purchases = 2500
 num_reviews = 10
+num_sellers = 100
 
 Faker.seed(0)
 fake = Faker()
@@ -29,7 +30,8 @@ def gen_users(num_users):
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            writer.writerow([uid, email, password, firstname, lastname])
+            balance = f'{str(fake.random_int(max=500000))}'
+            writer.writerow([uid, email, password, firstname, lastname, balance])
         print(f'{num_users} generated')
     return
 
@@ -66,7 +68,11 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
-def gen_reviews(num_reviews):
+def gen_orders(num_orders):
+    # TO-DO
+    return
+
+def _gen_reviews(num_reviews):
     with open('Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
@@ -78,7 +84,66 @@ def gen_reviews(num_reviews):
         print(f'{num_reviews} generated')
     return
 
+def gen_seller_reviews(num_seller_reviews):
+    _gen_reviews(num_seller_reviews)
+    return
+
+def gen_product_reviews(num_product_reviews):
+    _gen_reviews(num_product_reviews)
+    return
+
+def gen_sellers(num_sellers):
+    with open('Sellers.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Sellers...', end=' ', flush=True)
+        for sid in range(num_sellers):
+            if sid % 10 == 0:
+                print(f'{sid}', end=' ', flush=True)
+            profile = fake.profile()
+            email = profile['mail']
+            plain_password = f'pass{sid}'
+            password = generate_password_hash(plain_password)
+            name_components = profile['name'].split(' ')
+            firstname = name_components[0]
+            lastname = name_components[-1]
+            balance = f'{str(fake.random_int(max=500000))}'
+            writer.writerow([sid, email, password, firstname, lastname, balance])
+        print(f'{num_sellers} generated')
+    return
+
+def gen_cart(num_carts):
+    #TO-DO
+    return
+
+def gen_inventories(num_inventories):
+    #TO-DO
+    return
+
+# Generate data for relationship table
+
+def gen_users_purchases(num_pairs):
+    #TO-DO
+    return
+
+def gen_purchases_orders(num_pairs):
+    #TO-DO
+    return
+
+def gen_orders_products(num_pairs):
+    #TO-DO
+    return
+
+def gen_orders_sellers(num_pairs):
+    #TO-DO
+    return
+
+def gen_users_orders(num_pairs):
+    #TO-DO
+    return
+
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
-gen_reviews(num_reviews)
+gen_seller_reviews(num_reviews)
+gen_product_reviews(num_reviews)
+gen_sellers(num_sellers)

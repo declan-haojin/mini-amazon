@@ -115,8 +115,19 @@ def gen_cart(num_carts):
     #TO-DO
     return
 
-def gen_inventories(num_inventories):
-    #TO-DO
+def gen_inventories(num_sellers):
+    with open('Inventories.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Inventories...', end=' ', flush=True)
+        for sid in range (num_sellers):
+            if sid % 10 == 0:
+                print(f'{sid}', end=' ', flush=True)
+            n_items = fake.random_int(min=0, max=20) #Any seller can have at most 20 types of items in his/her inventory.
+            for n in range (0,n_items-1):
+                pid = fake.unique.random_int(min=0, max=num_products-1) #.unique to ensure no repeated products for each seller.
+                qty = f'{str(fake.random_int(max=40))}' #At most 40 quantity of any item.
+                writer.writerow([sid, pid, qty])
+        print(f'{num_sellers} generated')
     return
 
 # Generate data for relationship table

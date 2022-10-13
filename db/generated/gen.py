@@ -5,6 +5,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
+num_reviews = 10
 
 Faker.seed(0)
 fake = Faker()
@@ -65,7 +66,19 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
+def gen_reviews(num_reviews):
+    with open('Reviews.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Reviews...', end=' ', flush=True)
+        for review_id in range(num_reviews):
+            if review_id % 10 == 0:
+                print(f'{review_id}', end=' ', flush=True)
+            content = fake.sentence(nb_words=4)[:-1]
+            writer.writerow([review_id, content])
+        print(f'{num_reviews} generated')
+    return
 
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
+gen_reviews(num_reviews)

@@ -16,4 +16,4 @@ We are developing the standard project Mini Amazon.
 - Haojin Li: Created ER diagram and database schemas
 - Zirui Yin: Created user flows and page-by-page design of the website. Offered suggestions for E/R diagram.
 - Tingnan Hu: Created ER diagram, worked on database schemas, assumptions, and constraints
-- Julie Ou: Created user flow descriptions and diagram
+- Julie Ou: Created page-by-page content description and logic flows. Added pictures of Amazon's equivalent pages.

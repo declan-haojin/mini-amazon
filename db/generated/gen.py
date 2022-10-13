@@ -68,9 +68,9 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
-def gen_orders(num_orders): 
+def gen_orders(num_orders):
     # TO-DO
-    return 
+    return
 
 def _gen_reviews(num_reviews):
     with open('Reviews.csv', 'w') as f:
@@ -84,16 +84,16 @@ def _gen_reviews(num_reviews):
         print(f'{num_reviews} generated')
     return
 
-def gen_seller_reviews(num_seller_reviews): 
+def gen_seller_reviews(num_seller_reviews):
     _gen_reviews(num_seller_reviews)
-    return 
+    return
 
-def gen_product_reviews(num_product_reviews): 
+def gen_product_reviews(num_product_reviews):
     _gen_reviews(num_product_reviews)
-    return 
+    return
 
-def gen_sellers(num_sellers): 
-        with open('Sellers.csv', 'w') as f:
+def gen_sellers(num_sellers):
+    with open('Sellers.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Sellers...', end=' ', flush=True)
         for sid in range(num_sellers):
@@ -101,45 +101,45 @@ def gen_sellers(num_sellers):
                 print(f'{sid}', end=' ', flush=True)
             profile = fake.profile()
             email = profile['mail']
-            plain_password = f'pass{uid}'
+            plain_password = f'pass{sid}'
             password = generate_password_hash(plain_password)
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
             balance = f'{str(fake.random_int(max=500000))}'
-            writer.writerow([uid, email, password, firstname, lastname, balance])
+            writer.writerow([sid, email, password, firstname, lastname, balance])
         print(f'{num_sellers} generated')
-    return 
+    return
 
-def gen_cart(num_carts): 
+def gen_cart(num_carts):
     #TO-DO
-    return 
+    return
 
-def gen_inventories(num_inventories): 
+def gen_inventories(num_inventories):
     #TO-DO
-    return 
+    return
 
-# Generate data for relationship table 
+# Generate data for relationship table
 
-def gen_users_purchases(num_pairs): 
+def gen_users_purchases(num_pairs):
     #TO-DO
-    return 
+    return
 
-def gen_purchases_orders(num_pairs): 
+def gen_purchases_orders(num_pairs):
     #TO-DO
-    return 
+    return
 
-def gen_orders_products(num_pairs): 
+def gen_orders_products(num_pairs):
     #TO-DO
-    return 
+    return
 
-def gen_orders_sellers(num_pairs): 
+def gen_orders_sellers(num_pairs):
     #TO-DO
-    return 
+    return
 
-def gen_users_orders(num_pairs): 
+def gen_users_orders(num_pairs):
     #TO-DO
-    return 
+    return
 
 gen_users(num_users)
 available_pids = gen_products(num_products)

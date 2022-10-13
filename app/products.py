@@ -1,6 +1,5 @@
 from flask import render_template
-import datetime
-
+from flask import request
 from .models.product import Product
 
 from flask import Blueprint
@@ -8,14 +7,9 @@ bp = Blueprint('products', __name__)
 
 
 
-
-@bp.route('/product/hw4', methods=['GET', 'POST'])
+@bp.route('/product/hw4', methods=['GET'])
 def find_k_most_expensive():
-    # get all available products for sale:
-    products = Product.get_all(True)
-    # find the products current user has bought:
-    
-    # render the page by adding information to the index.html file
-    return render_template('index.html',
-                           avail_products=products,
-                           purchase_history=purchases)
+    return render_template('hw4_product.html')
+    products = Product.get_k_most_expensive(2)
+    return render_template('hw4_product.html')
+

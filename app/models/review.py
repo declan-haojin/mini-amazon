@@ -39,10 +39,11 @@ ORDER BY review_time DESC
         return [Review(*row) for row in rows]
 
     @staticmethod
-    def get_k_most_recent(k):
+    def get_k_most_recent(k, uid):
         rows = app.db.execute('''
-            SELECT content
+            SELECT uid, review_content
             FROM Review
+            WHERE uid = :uid
             ORDER BY time_created DESC
             LIMIT :k
             ''',

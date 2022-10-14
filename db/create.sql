@@ -45,6 +45,8 @@
 --     review_content VARCHAR,
 --     rating INT NOT NULL,
 --     review_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+--     seller_id INT NOT NULL REFERENCES Sellers(seller_id),
+--     product_id INT UNIQUE NOT NULL REFERENCES Products(product_id)
 -- );
 
 -- CREATE TABLE SellerReviews (

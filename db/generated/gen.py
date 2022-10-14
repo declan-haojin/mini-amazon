@@ -4,7 +4,7 @@ from faker import Faker
 from collections import OrderedDict
 
 num_users = 100
-num_products = 2000
+num_products = 100
 num_reviews = 50
 num_sellers = 100
 num_orders = 100

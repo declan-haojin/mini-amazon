@@ -8,8 +8,11 @@ bp = Blueprint('products', __name__)
 
 
 @bp.route('/product/hw4', methods=['GET'])
-def find_k_most_expensive():
-    return render_template('hw4_product.html')
-    products = Product.get_k_most_expensive(2)
-    return render_template('hw4_product.html')
+def search():
+    k = request.args.get('k')
+    if k is None:
+        products = []
+    else:
+        products = Product.get_k_most_expensive(k)
+    return render_template('hw4_product.html', products = products)
 

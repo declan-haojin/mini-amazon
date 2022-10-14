@@ -8,7 +8,6 @@
 
         <table class="table table-striped table-hover table-bordered text-center">
             <tr>
-                <th>User ID</th>
                 <th>Review 1</th>
                 <th>Review 2</th>
                 <th>Review 3</th>
@@ -17,11 +16,7 @@
             </tr>
             {% for review in reviews %}
                 <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.price }}</td>
+                    <td>{{review.review_content}}</td>
                 </tr>
             {% endfor %}
         </table>

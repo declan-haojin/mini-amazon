@@ -85,25 +85,29 @@ def gen_orders(num_orders):
         print(f'{num_orders} generated')
     return
 
-def _gen_reviews(num_reviews):
+def gen_reviews(num_reviews):
     with open('Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
         for review_id in range(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
+                print(f'{uid}', end=' ', flush=True)
+                print(f'{sid}', end=' ', flush=True)
+            rating = fake.random_digit()
+            review_time = fake.date_time()
             content = fake.sentence(nb_words=4)[:-1]
-            writer.writerow([review_id, content])
+            writer.writerow([review_id, review_time, uid, sid, pid, content, rating])
         print(f'{num_reviews} generated')
     return
 
-def gen_seller_reviews(num_seller_reviews):
-    _gen_reviews(num_seller_reviews)
-    return
+# def gen_seller_reviews(num_seller_reviews):
+#     _gen_reviews(num_seller_reviews)
+#     return
 
-def gen_product_reviews(num_product_reviews):
-    _gen_reviews(num_product_reviews)
-    return
+# def gen_product_reviews(num_product_reviews):
+#     _gen_reviews(num_product_reviews)
+#     return
 
 def gen_sellers(num_sellers):
     with open('Sellers.csv', 'w') as f:

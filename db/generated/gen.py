@@ -69,7 +69,20 @@ def gen_purchases(num_purchases, available_pids):
     return
 
 def gen_orders(num_orders):
-    # TO-DO
+    with open('Reviews.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Orders...', end=' ', flush=True)
+        for oid in range(num_orders):
+            if oid % 100 == 0:
+                print(f'{oid}', end=' ', flush=True)
+            uid = fake.random_int(min=0, max=num_users-1)
+            purchase_id = fake.unique.random_int(min=0, max=num_purchases-1)
+            n_items = fake.random_int(min=0, max=20)
+            amount = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            status = fake.random_elements(elements=OrderedDict([("Confirmed", 0.3),("Processing", 0.2),("Out for Delivery", 0.2),("Delivered": 0.3),]), unique=False)
+            pid = fake.random_element(elements=available_pids)
+            writer,writerow([uid,purchase_id,n_items,amount,status,pid])
+        print(f'{num_orders} generated')
     return
 
 def _gen_reviews(num_reviews):
@@ -111,34 +124,92 @@ def gen_sellers(num_sellers):
         print(f'{num_sellers} generated')
     return
 
-def gen_cart(num_carts):
-    #TO-DO
+def gen_cart(num_users):
+    with open('Cart.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Cart...', end=' ', flush=True)
+        for uid in range(num_users):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
+            n_items = fake.random_int(min=0, max=20) #Any buyer can have at most 20 types of items in his/her cart.
+            for n in range (0,n_items-1):
+                fake.random_element(elements=available_pids, unique=True)
+                qty = f'{str(fake.random_int(max=40))}'
+                price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+                writer.writerow([uid, pid, qty, price])
+        print(f'{num_users} generated')
     return
 
-def gen_inventories(num_inventories):
-    #TO-DO
+def gen_inventories(num_sellers):
+    with open('Inventories.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Inventories...', end=' ', flush=True)
+        for sid in range (num_sellers):
+            if sid % 10 == 0:
+                print(f'{sid}', end=' ', flush=True)
+            n_items = fake.random_int(min=0, max=20) #Any seller can have at most 20 types of items in his/her inventory.
+            for n in range (0,n_items-1):
+                fake.random_element(elements=available_pids, unique=True) #.unique to ensure no repeated products for each seller.
+                qty = f'{str(fake.random_int(max=40))}' #At most 40 quantity of any item.
+                writer.writerow([sid, pid, qty])
+        print(f'{num_sellers} generated')
     return
 
 # Generate data for relationship table
 
 def gen_users_purchases(num_pairs):
-    #TO-DO
+    with open('users_purchases.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Users_purchases_pair...', end=' ', flush=True)
+        for n in range (num_pairs):
+            uid = fake.unique.random_int(min=0, max=num_users-1)
+            purchase_id = fake.unique.random_int(min=0, max=num_purchases-1)
+            writer.writerow([uid,purchase_id])
+        print(f'{num_pairs} generated')
     return
 
 def gen_purchases_orders(num_pairs):
-    #TO-DO
+    with open('purchases_orders.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Purchases_orders_pair...', end=' ', flush=True)
+        for n in range (num_pairs):
+            purchase_id = fake.unique.random_int(min=0, max=num_purchases-1)
+            order_id = fake.unique.random_int(min=0, max=num_orders-1)
+            writer.writerow([purchase_id,order_id])
+        print(f'{num_pairs} generated')
     return
 
 def gen_orders_products(num_pairs):
-    #TO-DO
+    with open('orders_products.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Orders_products_pair...', end=' ', flush=True)
+        for n in range (num_pairs):
+            order_id = fake.unique.random_int(min=0, max=num_orders-1)
+            pid = fake.random_element(elements=available_pids)
+            writer.writerow([order_id,pid])
+        print(f'{num_pairs} generated')
     return
 
 def gen_orders_sellers(num_pairs):
-    #TO-DO
+    with open('orders_sellers.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Orders_sellers_pair...', end=' ', flush=True)
+        for n in range (num_pairs):
+            order_id = fake.unique.random_int(min=0, max=num_orders-1)
+            sid = fake.random_element(elements=num_sellers-1)
+            writer.writerow([order_id,sid])
+        print(f'{num_pairs} generated')
     return
 
 def gen_users_orders(num_pairs):
-    #TO-DO
+    with open('users_orders.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Users_orders_pair...', end=' ', flush=True)
+        for n in range (num_pairs):
+            uid = fake.random_int(min=0, max=num_users-1)
+            order_id = fake.unique.random_int(min=0, max=num_orders-1)
+            writer.writerow([uid,order_id])
+        print(f'{num_pairs} generated')
     return
 
 gen_users(num_users)

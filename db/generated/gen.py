@@ -229,7 +229,7 @@ def gen_users_orders(num_pairs):
 
 # gen_users(num_users)
 available_pids = gen_products(num_products)
-assert num_orders <= len(available_pids)
+# assert num_orders <= len(available_pids)
 gen_purchases(num_orders, available_pids)
 gen_sellers(num_sellers)
 gen_products(num_products)

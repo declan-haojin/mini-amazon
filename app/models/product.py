@@ -2,26 +2,26 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, id, name, price, available):
-        self.id = id
+    def __init__(self, product_id, name, price, available):
+        self.id = product_id
         self.name = name
         self.price = price
         self.available = available
 
     @staticmethod
-    def get(id):
+    def get(product_id):
         rows = app.db.execute('''
-            SELECT id, name, price, available
+            SELECT product_id, name, price, available
             FROM Products
             WHERE id = :id
             ''',
-            id=id)
+            id=product_id)
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-            SELECT id, name, price, available
+            SELECT product_id, name, price, available
             FROM Products
             WHERE available = :available
             ''',
@@ -31,7 +31,7 @@ class Product:
     @staticmethod
     def get_k_most_expensive(k):
         rows = app.db.execute('''
-            SELECT id, name, price, available
+            SELECT product_id, name, price, available
             FROM Products
             ORDER BY price DESC
             LIMIT :k

@@ -27,6 +27,9 @@ def create_app():
     from .products import bp as product_bp
     app.register_blueprint(product_bp)
 
+    from .carts import bp as cart_bp
+    app.register_blueprint(cart_bp)
+
     # bootstrap = Bootstrap5(app)
     bootstrap = Bootstrap(app)
 

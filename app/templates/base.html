@@ -7,57 +7,37 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
-  <style>
-    body {
-        font-family: "Lato", sans-serif;
-    }
-
-    .main-head {
-        height: 150px;
-        background: #FFF;
-    }
-
-    .sidenav {
-        height: 100%;
-        background-color: #000;
-        overflow-x: hidden;
-        padding-top: 20px;
-    }
-
-    .main {
-        padding: 0px 10px;
-    }
-
-    .login-main-text {
-        margin-top: 20%;
-        padding: 60px;
-        color: #fff;
-    }
-
-    .login-main-text h2 {
-        font-weight: 300;
-    }
-
-    .btn-black {
-        background-color: #000 !important;
-        color: #fff;
-    }
-  </style>
 </head>
 
-<body>
-  <div class="sidenav">
-    {% block msg %}
-      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+<header class="p-3 text-bg-dark">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a class="navbar-brand" href="\"><b>Mini Taobao</b></a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="\" class="nav-link px-2 text-white">Home</a></li>
+        <li><a href="\" class="nav-link px-2 text-white">Products</a></li>
+        <li><a href="\" class="nav-link px-2 text-white">Sellers</a></li>
+      </ul>
+
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+      </form>
+
+      <div class="text-end">
         {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+        <button type="button" class="btn btn-outline-light me-2">My Account</button>
+        <button type="button" class="btn btn-warning">Logout</button>
         {% else %}
-          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+        <button type="button" class="btn btn-outline-light me-2">Login</button>
+        <button type="button" class="btn btn-warning">Sign up</button>
         {% endif %}
       </div>
-    {% endblock %}
+    </div>
   </div>
+</header>
+
+<body>
   <div class="main">
     {% block content %}{% endblock %}
   </div>

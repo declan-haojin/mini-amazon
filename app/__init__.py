@@ -30,6 +30,12 @@ def create_app():
     from .carts import bp as cart_bp
     app.register_blueprint(cart_bp)
 
+    from .sellers import bp as seller_bp
+    app.register_blueprint(seller_bp)
+
+    from .review import bp as review_bp
+    app.register_blueprint(review_bp)
+
     # bootstrap = Bootstrap5(app)
     bootstrap = Bootstrap(app)
 

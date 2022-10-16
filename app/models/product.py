@@ -3,7 +3,7 @@ from flask import current_app as app
 
 class Product:
     def __init__(self, product_id, name, price, available):
-        self.id = product_id
+        self.product_id = product_id
         self.name = name
         self.price = price
         self.available = available

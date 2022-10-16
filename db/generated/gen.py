@@ -26,7 +26,7 @@ def gen_users(num_users):
             if uid % 10 == 0:
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
-            email = profile['mail']
+            email = fake.unique.email()
             address = profile['address']
             plain_password = f'pass{uid}'
             password = generate_password_hash(plain_password)
@@ -238,19 +238,19 @@ def gen_users_orders(num_orders):
         print(f'{num_orders} generated')
     return
 
-# gen_users(num_users)
-# available_pids = gen_products(num_products)
+gen_users(num_users)
+available_pids = gen_products(num_products)
 # assert num_orders <= len(available_pids)
-# gen_purchases(num_orders, available_pids)
-# gen_sellers(num_sellers)
-# gen_products(num_products)
-# gen_orders(num_orders)
-# gen_reviews(num_reviews)
-# gen_cart(num_users)
-# gen_inventories(num_sellers)
-# gen_users_purchases(num_orders)
-# gen_purchases_orders(num_history)
-# gen_orders_products(num_orders)
-# gen_orders_sellers(num_orders)
-# gen_users_orders(num_orders)
+gen_purchases(num_orders, available_pids)
+gen_sellers(num_sellers)
+gen_products(num_products)
+gen_orders(num_orders)
+gen_reviews(num_reviews)
+gen_cart(num_users)
+gen_inventories(num_sellers)
+gen_users_purchases(num_orders)
+gen_purchases_orders(num_history)
+gen_orders_products(num_orders)
+gen_orders_sellers(num_orders)
+gen_users_orders(num_orders)
 

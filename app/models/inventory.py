@@ -1,33 +1,19 @@
 from flask import current_app as app
 
-
 class Inventory:
-    """
-    This is just a TEMPLATE for Inventory, you should change this by adding or 
-        replacing new columns, etc. for your design.
-    """
-    def __init__(self, uid, pid, count):
-        self.id = id
-        self.uid = uid
-        self.pid = pid
-        self.count = count
+    def __init__(self, sid, pid, qty):
+        self.seller_id = sid
+        self.product_id = pid
+        self.inventory_quantity = qty
 
     @staticmethod
-    def get_by_pid(id):
+    def get_by_sid(sid):
         rows = app.db.execute('''
-SELECT uid, pid, count
-FROM Inventory
-WHERE pid = :pid
-''',
-                              id=id)
-        return Inventory(*(rows[0])) if rows else None
-
-    @staticmethod
-    def get_by_uid(id):
-        rows = app.db.execute('''
-SELECT uid, pid, count
-FROM Inventory
-WHERE uid = :uid
-''',
-                              id=id)
-        return Inventory(*(rows[0])) if rows else None
+        SELECT Products.product_id, Products.name, Inventories.inventory_quantity
+        FROM Inventories, Products
+        WHERE Inventories.seller_id = :sid
+        AND Inventories.product_id = Products.product_id
+        ''',
+        sid=sid)
+        # print(rows)
+        return rows

@@ -35,27 +35,23 @@ ORDER BY time_added_to_cart DESC
                               since=since)
         return [Cart(*row) for row in rows]
         
-#     @staticmethod
-#     def get_all_by_uid(uid):
-#         rows = app.db.execute('''
-# SELECT name, price
-# FROM Product, 
-# WHERE product_id in    
-#     (SELECT product_id
-#     FROM Cart
-#     WHERE uid = :uid)
-# ''',
-#                               uid=uid)
-#         return [Cart(*row) for row in rows]
-
-
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT uid, product_id, cart_quantity, unit_price
-FROM Cart
-WHERE uid = :uid
+SELECT c.uid, p.name, c.cart_quantity, c.unit_price
+FROM Products p, Cart c
+WHERE c.uid = :uid AND p.product_id = c.product_id
 ''',
                               uid=uid)
         return [Cart(*row) for row in rows]
-#TODO: find product name from product_id
+
+
+#     @staticmethod
+#     def get_all_by_uid(uid):
+#         rows = app.db.execute('''
+# SELECT uid, product_id, cart_quantity, unit_price
+# FROM Cart
+# WHERE uid = :uid
+# ''',
+#                               uid=uid)
+#         return [Cart(*row) for row in rows]

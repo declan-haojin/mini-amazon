@@ -19,7 +19,7 @@ class Review:
     def get(id):
         rows = app.db.execute('''
 SELECT id, uid, pid, review_time, review_content, sid, rating 
-FROM Review
+FROM Reviews
 WHERE id = :id
 ''',
                               id=id)
@@ -29,7 +29,7 @@ WHERE id = :id
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
 SELECT id, uid, pid, sid, rating, review_time, review_content
-FROM Review
+FROM Reviews
 WHERE uid = :uid
 AND review_time >= :since
 ORDER BY review_time DESC
@@ -42,9 +42,9 @@ ORDER BY review_time DESC
     def get_k_most_recent(k, uid):
         rows = app.db.execute('''
             SELECT uid, review_content
-            FROM Review
+            FROM Reviews
             WHERE uid = :uid
-            ORDER BY time_created DESC
+            ORDER BY review_time DESC
             LIMIT :k
             ''',
             k=k)

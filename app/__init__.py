@@ -33,7 +33,7 @@ def create_app():
     from .sellers import bp as seller_bp
     app.register_blueprint(seller_bp)
 
-    from .review import bp as review_bp
+    from .reviews import bp as review_bp
     app.register_blueprint(review_bp)
 
     # bootstrap = Bootstrap5(app)

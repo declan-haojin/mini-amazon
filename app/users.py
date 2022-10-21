@@ -74,7 +74,7 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
-@bp.route('/users/hw4', methods=['GET'])
+@bp.route('/user/hw4', methods=['GET'])
 def getpurchases_hw4():
     uid = request.args.get('uid')
     if uid is None:

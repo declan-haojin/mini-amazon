@@ -7,7 +7,7 @@ num_users = 100
 num_products = 100
 num_reviews = 50
 num_sellers = 100
-num_orders = 100
+num_orders =200
 num_history = num_users
 
 Faker.seed(0)
@@ -152,6 +152,8 @@ def gen_sellers(num_sellers):
     return
 
 def gen_cart(num_users):
+    key = set()
+    pid = -1
     with open('../data/Cart.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Cart...', end=' ', flush=True)
@@ -163,12 +165,18 @@ def gen_cart(num_users):
                 fake.random_elements(elements=available_pids, unique=True)
                 qty = f'{str(fake.random_int(max=40))}'
                 price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-                pid = fake.random_int(min=0, max=num_products-1)
+                pid_ori = fake.random_int(min=0, max=num_products-1)
+                while (uid, pid_ori) in key:
+                        pid_ori = fake.random_int(min=0, max=num_products-1)
+                key.add((uid, pid_ori))
+                pid = pid_ori
                 writer.writerow([uid, pid, qty, price])
         print(f'{num_users} generated')
     return
 
 def gen_inventories(num_sellers):
+    key = set()
+    pid = -1
     with open('../data/Inventories.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Inventories...', end=' ', flush=True)
@@ -179,8 +187,11 @@ def gen_inventories(num_sellers):
             for n in range (0,n_items-1):
                 fake.random_elements(elements=available_pids, unique=True) #.unique to ensure no repeated products for each seller.
                 qty = f'{str(fake.random_int(max=40))}' #At most 40 quantity of any item.
-                pid = fake.unique.random_int(min=0, max=n_items-1)
-                fake.unique.clear()
+                pid_ori = fake.random_int(min=0, max=n_items-1)
+                while (sid,pid_ori) in key: 
+                    pid_ori = fake.random_int(min=0, max=n_items-1)
+                key.add((sid, pid_ori))
+                pid = pid_ori
                 writer.writerow([sid, pid, qty])
         print(f'{num_sellers} generated')
     return
@@ -238,19 +249,18 @@ def gen_users_orders(num_orders):
         print(f'{num_orders} generated')
     return
 
-# gen_users(num_users)
-# available_pids = gen_products(num_products)
-# # assert num_orders <= len(available_pids)
-# gen_purchases(num_orders, available_pids)
-# gen_sellers(num_sellers)
-# gen_products(num_products)
-# gen_orders(num_orders)
-# gen_reviews(num_reviews)
-# gen_cart(num_users)
-# gen_inventories(num_sellers)
-# gen_users_purchases(num_orders)
-# gen_purchases_orders(num_history)
-# gen_orders_products(num_orders)
-# gen_orders_sellers(num_orders)
-# gen_users_orders(num_orders)
+gen_users(num_users)
+available_pids = gen_products(num_products)
+gen_purchases(num_orders, available_pids)
+gen_sellers(num_sellers)
+gen_products(num_products)
+gen_orders(num_orders)
+gen_reviews(num_reviews)
+gen_cart(num_users)
+gen_inventories(num_sellers)
+gen_users_purchases(num_orders)
+gen_purchases_orders(num_history)
+gen_orders_products(num_orders)
+gen_orders_sellers(num_orders)
+gen_users_orders(num_orders)
 

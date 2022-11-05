@@ -21,3 +21,12 @@ def search_hw4():
         products = Product.get_k_most_expensive(k)
     return render_template('hw4_product.html', products = products)
 
+
+@bp.route('/product', methods = ['GET'])
+def index():
+    product_id = request.args.get('id')
+    if product_id is None:
+        product = None
+    else:
+        product = Product.get(product_id)
+    return render_template('products/index.html', product = product)

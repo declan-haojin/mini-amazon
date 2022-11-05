@@ -15,7 +15,6 @@
                 <th>Review Time</th>
                 <th>Review Seller ID</th>
                 <th>Review Product ID</th>
-                <th>Review Type</th>
             </tr>
             {% for review in reviews %}
                 <tr>
@@ -26,7 +25,6 @@
                     <td>{{ review.review_time }}</td>
                     <td>{{ review.sid }}</td>
                     <td>{{ review.pid }}</td>
-                    <td>{{ review_type }}</td>
                 </tr>
             {% endfor %}
         </table>

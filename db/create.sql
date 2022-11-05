@@ -14,7 +14,7 @@ CREATE TABLE Purchases(
     number_of_orders INT NOT NULL,
     total_amount DECIMAL(12,2) NOT NULL,
     status VARCHAR NOT NULL,
-    time_created timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 );
 
 CREATE TABLE Products(

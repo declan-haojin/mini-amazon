@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.purchase import Purchase
 
 
 from flask import Blueprint
@@ -72,3 +73,12 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+@bp.route('/user/hw4', methods=['GET'])
+def getpurchases_hw4():
+    uid = request.args.get('uid')
+    if uid is None:
+        purchases = []
+    else:
+        purchases = Purchase.get_by_uid(uid)
+    return render_template('hw4_user.html',purchases = purchases)

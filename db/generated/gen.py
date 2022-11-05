@@ -57,7 +57,7 @@ def gen_products(num_products):
                 ("Books", 0.2),
                 ("Clothing", 0.2)
                 ]), unique=False
-            )
+            )[0]
             image_url = fake.image_url()
             description = fake.sentence(nb_words=4)[:-1]
             if available == 'true':

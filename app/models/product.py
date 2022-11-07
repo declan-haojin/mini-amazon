@@ -2,16 +2,23 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, product_id, name, price, available):
+    def __init__(self, product_id, category, image, name, description, price, available):
         self.product_id = product_id
+        self.category = category
+        self.image = image
         self.name = name
+        self.description = description
         self.price = price
         self.available = available
+
+
+    def __repr__(self):
+        pass
 
     @staticmethod
     def get(product_id):
         rows = app.db.execute('''
-            SELECT product_id, name, price, available
+            SELECT product_id, category, image, name, description, price, available
             FROM Products
             WHERE product_id = :id
             ''',

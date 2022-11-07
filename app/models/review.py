@@ -3,7 +3,7 @@ from flask import current_app as app
 
 class Review:
     """
-    This is just a TEMPLATE for Review, you should change this by adding or 
+    This is just a TEMPLATE for Review, you should change this by adding or
         replacing new columns, etc. for your design.
     """
     def __init__(self, uid, id, review_content,rating, review_time, sid, pid, review_type):
@@ -19,7 +19,7 @@ class Review:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, review_time, review_content, sid, rating 
+SELECT id, uid, pid, review_time, review_content, sid, rating
 FROM Reviews
 WHERE id = :id
 ''',

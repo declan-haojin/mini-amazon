@@ -136,7 +136,7 @@ def gen_orders(num_orders):
             key.add((uid, sid, pid_ori))
             uid_sid_pid.append((uid, sid, pid_ori))
             pid = pid_ori
-            writer.writerow([uid, purchase_id, order_id, n_items, amount, status, sid, pid])
+            writer.writerow([uid, purchase_id, order_id, n_items, amount, status, pid])
         print(f'{num_orders} generated')
     return
 
@@ -232,16 +232,16 @@ def gen_inventories(num_sellers):
 
 # Generate data for relationship table
 
-def gen_users_purchases(num_pairs):
-    with open('../data/users_purchases.csv', 'w') as f:
-        writer = get_csv_writer(f)
-        print('Users_purchases_pair...', end=' ', flush=True)
-        for n in range (num_pairs):
-            uid = fake.random_int(min=0, max=num_users-1)
-            purchase_id = fake.unique.random_int(min=0, max=num_orders-1)
-            writer.writerow([uid, purchase_id])
-        print(f'{num_pairs} generated')
-    return
+# def gen_users_purchases(num_pairs):
+#     with open('../data/users_purchases.csv', 'w') as f:
+#         writer = get_csv_writer(f)
+#         print('Users_purchases_pair...', end=' ', flush=True)
+#         for n in range (num_pairs):
+#             uid = fake.random_int(min=0, max=num_users-1)
+#             purchase_id = fake.unique.random_int(min=0, max=num_orders-1)
+#             writer.writerow([uid, purchase_id])
+#         print(f'{num_pairs} generated')
+#     return
 
 def gen_purchases_orders(num_orders):
     with open('../data/purchases_orders.csv', 'w') as f:
@@ -293,7 +293,7 @@ gen_products(num_products)
 gen_reviews(num_reviews)
 gen_cart(num_users)
 gen_inventories(num_sellers)
-gen_users_purchases(num_orders)
+# gen_users_purchases(num_orders)
 gen_purchases_orders(num_history)
 gen_orders_products(num_orders)
 gen_orders_sellers(num_orders)

@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask import session
 
 from .models.user import User
 from .models.purchase import Purchase
@@ -30,6 +31,8 @@ def login():
         if user is None:
             flash('Invalid email or password')
             return redirect(url_for('users.login'))
+        session['user'] = user.id
+        print(user.id)
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':

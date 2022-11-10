@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h1>User Information Page</h1>
+
+  <table>
+    <!-- Table Header Row -->
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>User ID</th>
+        <th>User ID</th>
+      </tr>
+    </thead>
+
+    <!-- Table Element (Row) -->
+    <tbody>
+      <td>{{ session['user'] }}</td>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

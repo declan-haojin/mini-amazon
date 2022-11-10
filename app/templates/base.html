@@ -24,11 +24,20 @@
       </a>
       <div class="text-end">
         {% if current_user.is_authenticated %}
-        <button type="button" class="btn btn-outline-light me-2">My Account</button>
-        <button type="button" class="btn btn-warning">Logout</button>
+        <a href="/user/profile">
+          <button type="button" class="btn btn-outline-light me-2">My Account</button>
+        </a>
+        <a href="/logout">
+          <button type="button" class="btn btn-warning">Logout</button>
+        </a>
+        
         {% else %}
-        <button type="button" class="btn btn-outline-light me-2">Login</button>
-        <button type="button" class="btn btn-warning">Sign up</button>
+        <a href="/login">
+          <button type="button" class="btn btn-outline-light me-2">Login</button>
+        </a>
+        <a href="/register">
+          <button type="button" class="btn btn-warning">Sign up</button>
+        </a>
         {% endif %}
       </div>
     </div>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+
+    <div class="container text-center">
+        <h1>Seller Review Submission</h1>
+
+        <form class="row justify-content-center" methods="GET" action="/review/seller">
+            
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter uid">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="uid">
+            <div>
+
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter review">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="review_content">
+            </div>
+
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter rating">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="rating">
+            </div>
+
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter time">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="review_time">
+            </div>
+
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter seller_id">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="seller_id">
+            </div>
+
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter product_id">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="product_id">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

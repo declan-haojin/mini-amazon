@@ -2,31 +2,91 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, product_id, name, price, available):
+    def __init__(self, product_id, category, image, name, description, price, available):
         self.product_id = product_id
+        self.category = category
+        self.image = image
         self.name = name
+        self.description = description
         self.price = price
         self.available = available
+
+
+    def __repr__(self):
+        pass
 
     @staticmethod
     def get(product_id):
         rows = app.db.execute('''
-            SELECT product_id, name, price, available
+            SELECT product_id, category, image, name, description, price, available
             FROM Products
-            WHERE id = :id
+            WHERE product_id = :id
             ''',
             id=product_id)
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(available=True):
+    def get_all():
         rows = app.db.execute('''
-            SELECT product_id, name, price, available
+            SELECT *
             FROM Products
-            WHERE available = :available
-            ''',
-            available=available)
+            ORDER BY price ASC
+        ''')
         return [Product(*row) for row in rows]
+
+    @staticmethod
+    def search_by_conditions(keywords, category, sort):
+        if category == "All":
+            if keywords == "":
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    ORDER BY price ASC
+                ''')
+            else:
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE (name iLIKE :keywords OR description iLIKE :keywords)
+                    ORDER BY price ASC
+                    ''',
+                    keywords = '%' + keywords + '%',
+                )
+        else:
+            if keywords == "":
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE category = :category
+                    ORDER BY price ASC
+                ''',
+                category = category)
+            else:
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE (name iLIKE :keywords OR description iLIKE :keywords)
+                    AND category = :category
+                    ORDER BY price ASC
+                    ''',
+                    keywords = '%' + keywords + '%',
+                    category = category
+                )
+        if sort == 'DESC':
+            return reversed([Product(*row) for row in rows])
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_all_categories():
+        rows = app.db.execute('''
+            SELECT DISTINCT(category)
+            FROM Products
+        ''')
+        return rows
+
+
+
+
 
     @staticmethod
     def get_k_most_expensive(k):

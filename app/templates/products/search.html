@@ -1,7 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br>
+<center><h1>Browse and search products</h1></center>
 
-<h1>Hello World</h1>
+<form class="row justify-content-center" method="GET" action="/product/search">
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="Category:">
+        <select class="custom-select" name="category">
+            <option value="All">All</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Books">Books</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Beauty Products">Beauty Products</option>
+            <option value="Video Games">Video Games</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="Sort by Price:">
+        <select class="custom-select" name="sort">
+            <option value="ASC">Low to High</option>
+            <option value="DESC">High to Low</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="Keywords:">
+        <input type="text" name="keywords">
+    </div>
+    <div class="col-auto">
+        <br>
+        <button type="submit" class="btn btn-primary mb-3">Search</button>
+    </div>
+</form>
+
+<br>
+
+<div class="d-flex justify-content-center">
+    <div class="container text-center">
+
+
+        <table class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+            </tr>
+            {% for product in products %}
+                <tr>
+                    <td><a href="/product/{{product.product_id}}">{{ product.name }}</a></td>
+                    <td><a href="/product/search?category={{ product.category }}&sort=ASC&keywords=">{{ product.category }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td><img src={{ product.image }}></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
+    </div>
+</div>
 
 {% endblock %}

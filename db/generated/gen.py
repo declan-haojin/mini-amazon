@@ -2,10 +2,11 @@ from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
 from collections import OrderedDict
+import image
 
 num_users = 100
 num_products = 100
-num_reviews = 50
+num_reviews = 100
 num_sellers = 100
 num_orders =200
 num_history = num_users
@@ -13,6 +14,9 @@ num_history = num_users
 Faker.seed(0)
 fake = Faker()
 
+uid_sid = set()
+uid_pid = set()
+uid_purchase_id = {}
 
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
@@ -44,6 +48,10 @@ def gen_products(num_products):
     with open('../data/Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
+
+        # Generate num_products images before everything and store them in images array
+        images = image.get_random_image_urls(num_products)
+
         for pid in range(num_products):
             if pid % 100 == 0:
                 print(f'{pid}', end=' ', flush=True)
@@ -58,7 +66,8 @@ def gen_products(num_products):
                 ("Clothing", 0.2)
                 ]), unique=False
             )[0]
-            image_url = fake.image_url()
+            image_url = images[pid]
+
             description = fake.sentence(nb_words=4)[:-1]
             if available == 'true':
                 available_pids.append(pid)
@@ -75,7 +84,7 @@ def gen_purchases(num_purchases, available_pids):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_element(elements=available_pids)
+            # pid = fake.random_element(elements=available_pids)
             num_order = fake.random_int(min=0, max=num_orders-1)
             total_amount = fake.random_int(min=0, max=50000)
             status = fake.random_elements(elements=OrderedDict([
@@ -83,9 +92,9 @@ def gen_purchases(num_purchases, available_pids):
                 ("Processing", 0.2),
                 ("Out for Delivery", 0.2),
                 ("Delivered", 0.3),
-                ]), unique=False)
+                ]), unique=False)[0]
             time_purchased = fake.date_time()
-            writer.writerow([uid, pid, num_order, total_amount, status, time_purchased])
+            writer.writerow([uid, id, num_order, total_amount, status, time_purchased])
         print(f'{num_purchases} generated')
     return
 
@@ -106,24 +115,34 @@ def gen_orders(num_orders):
                 ("Out for Delivery", 0.2),
                 ("Delivered", 0.3),
                 ]), unique=False
-            )
+            )[0]
             pid = fake.random_element(elements=available_pids)
             writer.writerow([uid, purchase_id, order_id, n_items, amount, status, pid])
         print(f'{num_orders} generated')
     return
 
 def gen_reviews(num_reviews):
+    key1 = set()
+    key2 = set()
     with open('../data/Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
         for review_id in range(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
-            sid = fake.random_int(min=0, max=num_sellers-1)
+            uid_ori = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_int(min=0, max=num_products-1)
+            while (pid,uid_ori) in key1:
+                uid_ori = fake.random_int(min=0, max=num_users-1)
+            key1.add((pid, uid_ori))
+            uid = uid_ori
+            sid_ori = fake.random_int(min=0, max=num_sellers-1)
+            while (sid_ori,uid) in key2:
+                sid_ori = fake.random_int(min=0, max=num_sellers-1)
+            key2.add((sid_ori, uid))
+            sid = sid_ori
             rating = fake.random_digit()
-            review_type = fake.random_element(elements=('seller', 'product')) 
+            review_type = fake.random_element(elements=('seller', 'product'))
             review_time = fake.date_time()
             content = fake.sentence(nb_words=4)[:-1]
             writer.writerow([uid, review_id, content, rating, review_time, sid, pid, review_type])
@@ -188,7 +207,7 @@ def gen_inventories(num_sellers):
                 fake.random_elements(elements=available_pids, unique=True) #.unique to ensure no repeated products for each seller.
                 qty = f'{str(fake.random_int(max=40))}' #At most 40 quantity of any item.
                 pid_ori = fake.random_int(min=0, max=n_items-1)
-                while (sid,pid_ori) in key: 
+                while (sid,pid_ori) in key:
                     pid_ori = fake.random_int(min=0, max=n_items-1)
                 key.add((sid, pid_ori))
                 pid = pid_ori

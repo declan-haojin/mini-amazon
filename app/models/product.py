@@ -28,11 +28,9 @@ class Product:
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-            SELECT product_id, name, price, available
+            SELECT *
             FROM Products
-            WHERE available = :available
-            ''',
-            available=available)
+        ''')
         return [Product(*row) for row in rows]
 
     @staticmethod

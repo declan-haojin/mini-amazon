@@ -8,7 +8,12 @@ bp = Blueprint('products', __name__)
 
 @bp.route('/product/search', methods=['GET'])
 def search():
-    products = []
+    # If there's no search input, display all the products
+    if request.args == {}:
+        products = Product.get_all()
+    else:
+        products = []
+
     return render_template('products/search.html', products = products)
 
 

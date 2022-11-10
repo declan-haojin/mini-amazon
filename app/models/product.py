@@ -30,22 +30,25 @@ class Product:
         rows = app.db.execute('''
             SELECT *
             FROM Products
+            ORDER BY price ASC
         ''')
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def search_by_conditions(keywords, category):
+    def search_by_conditions(keywords, category, sort):
         if category == "All":
             if keywords == "":
                 rows = app.db.execute('''
                     SELECT *
                     FROM Products
+                    ORDER BY price ASC
                 ''')
             else:
                 rows = app.db.execute('''
                     SELECT *
                     FROM Products
                     WHERE (name iLIKE :keywords OR description iLIKE :keywords)
+                    ORDER BY price ASC
                     ''',
                     keywords = '%' + keywords + '%',
                 )
@@ -55,6 +58,7 @@ class Product:
                     SELECT *
                     FROM Products
                     WHERE category = :category
+                    ORDER BY price ASC
                 ''',
                 category = category)
             else:
@@ -63,11 +67,13 @@ class Product:
                     FROM Products
                     WHERE (name iLIKE :keywords OR description iLIKE :keywords)
                     AND category = :category
+                    ORDER BY price ASC
                     ''',
                     keywords = '%' + keywords + '%',
                     category = category
                 )
-
+        if sort == 'DESC':
+            return reversed([Product(*row) for row in rows])
         return [Product(*row) for row in rows]
 
     @staticmethod

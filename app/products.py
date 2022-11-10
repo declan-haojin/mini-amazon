@@ -14,7 +14,8 @@ def search():
     else:
         keywords = request.args.get('keywords')
         category = request.args.get('category')
-        products = Product.search_by_conditions(keywords=keywords, category=category)
+        sort = request.args.get('sort')
+        products = Product.search_by_conditions(keywords=keywords, category=category, sort=sort)
 
     return render_template('products/search.html', products = products)
 

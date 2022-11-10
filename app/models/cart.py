@@ -48,12 +48,13 @@ WHERE c.uid = :uid AND p.product_id = c.product_id
         return [Cart(*row) for row in rows]
 
 
-#     @staticmethod
-#     def get_all_by_uid(uid):
-#         rows = app.db.execute('''
-# SELECT uid, product_id, cart_quantity, unit_price
-# FROM Cart
-# WHERE uid = :uid
-# ''',
-#                               uid=uid)
-#         return [Cart(*row) for row in rows]
+    @staticmethod
+    def get_all(uid, quantity):
+        rows = app.db.execute('''
+SELECT c.uid, p.name, cart_quantity, unit_price, (unit_price * cart_quantity) AS total_price
+FROM Products p, Cart c
+WHERE uid = :uid AND p.product_id = c.product_id
+''',
+                              uid=uid,
+                              cart_quantity=quantity)
+        return [Cart(*row) for row in rows]

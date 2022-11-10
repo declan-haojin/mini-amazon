@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+
+    <div class="container text-center">
+        <h1>All Items in Cart</h1>
+
+        <form class="row justify-content-center" method="GET" action="/cart/detail">
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter the user id">
+            </div>
+            <div class="col-auto">
+                <input type="text" name="uid">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Search</button>
+            </div>
+        </form>
+
+        <table id="myTable" class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>User ID</th>
+                <th>Product Name</th>
+                <th>Item Quantity</th>
+                <th>Item Unit Price</th>
+                <th>Item Total Price</th>
+            </tr>
+            {% for cart in carts %}
+                <tr>
+                    <td>{{ cart.uid }}</td>
+                    <td>{{ cart.product_id }}</td>
+                    <td>
+                        <form action="/cart/update_quantity">
+                            <label for="quantity"> {{ cart.cart_quantity }} </label>
+                            <input type="number" name="quantity" min="1" max="50">
+                            <input type="submit" value="Update">
+                        </form>
+                    </td>
+                    <td>{{ cart.unit_price }}</td>
+                    <td>{{ cart.total_price }}</td>
+                    <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <form>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Submit Cart as Order</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function deleteRow(r) {
+      var i = r.parentNode.parentNode.rowIndex;
+      document.getElementById("myTable").deleteRow(i);
+    }
+</script>
+
+{% endblock %}

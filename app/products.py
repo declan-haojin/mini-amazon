@@ -29,5 +29,5 @@ def index():
         product = None
     else:
         product = Product.get(product_id)
-        print(product)
+        # print(product)
     return render_template('products/index.html', product = product)

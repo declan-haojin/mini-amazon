@@ -13,6 +13,9 @@ num_history = num_users
 Faker.seed(0)
 fake = Faker()
 
+uid_sid = set()
+uid_pid = set()
+uid_purchase_id = {}
 
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
@@ -109,14 +112,15 @@ def gen_orders(num_orders):
                 ("Out for Delivery", 0.2),
                 ("Delivered", 0.3),
                 ]), unique=False
-            )
+            )[0]
             pid = fake.random_element(elements=available_pids)
             writer.writerow([uid, purchase_id, order_id, n_items, amount, status, pid])
         print(f'{num_orders} generated')
     return
 
 def gen_reviews(num_reviews):
-    key = set()
+    key1 = set()
+    key2 = set()
     with open('../data/Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
@@ -124,12 +128,16 @@ def gen_reviews(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
             uid_ori = fake.random_int(min=0, max=num_users-1)
-            while (review_id,uid_ori) in key: 
-                uid_ori = fake.random_int(min=0, max=num_users-1)
-            key.add((review_id, uid_ori))
-            uid = uid_ori
-            sid = fake.random_int(min=0, max=num_sellers-1)
             pid = fake.random_int(min=0, max=num_products-1)
+            while (pid,uid_ori) in key1: 
+                uid_ori = fake.random_int(min=0, max=num_users-1)
+            key1.add((pid, uid_ori))
+            uid = uid_ori
+            sid_ori = fake.random_int(min=0, max=num_sellers-1)
+            while (sid_ori,uid) in key2: 
+                sid_ori = fake.random_int(min=0, max=num_sellers-1)
+            key2.add((sid_ori, uid))
+            sid = sid_ori
             rating = fake.random_digit()
             review_type = fake.random_element(elements=('seller', 'product')) 
             review_time = fake.date_time()

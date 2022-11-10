@@ -21,7 +21,7 @@ def sellers_add():
     pid = request.args.get('pid')
     qty = request.args.get('qty')
     if request.args == {}:
-        arg = []
+        args = []
     else:
-        arg = Inventory.add_item_to_inventory(sid, pid, qty)
-    return render_template('seller_add.html', arg = arg)
+        args = Inventory.add_item_to_inventory(sid, pid, qty)
+    return render_template('seller_add.html', args = args)

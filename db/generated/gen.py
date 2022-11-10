@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 num_users = 100
 num_products = 100
-num_reviews = 50
+num_reviews = 100
 num_sellers = 100
 num_orders =200
 num_history = num_users
@@ -59,6 +59,9 @@ def gen_products(num_products):
                 ]), unique=False
             )[0]
             image_url = fake.image_url()
+            if "any" in image_url: 
+                word_ls = image_url.split('/')[:-1]
+                image_url = '/'.join(word_ls)
             description = fake.sentence(nb_words=4)[:-1]
             if available == 'true':
                 available_pids.append(pid)
@@ -75,7 +78,7 @@ def gen_purchases(num_purchases, available_pids):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_element(elements=available_pids)
+            # pid = fake.random_element(elements=available_pids)
             num_order = fake.random_int(min=0, max=num_orders-1)
             total_amount = fake.random_int(min=0, max=50000)
             status = fake.random_elements(elements=OrderedDict([
@@ -83,9 +86,9 @@ def gen_purchases(num_purchases, available_pids):
                 ("Processing", 0.2),
                 ("Out for Delivery", 0.2),
                 ("Delivered", 0.3),
-                ]), unique=False)
+                ]), unique=False)[0]
             time_purchased = fake.date_time()
-            writer.writerow([uid, pid, num_order, total_amount, status, time_purchased])
+            writer.writerow([uid, id, num_order, total_amount, status, time_purchased])
         print(f'{num_purchases} generated')
     return
 
@@ -113,13 +116,18 @@ def gen_orders(num_orders):
     return
 
 def gen_reviews(num_reviews):
+    key = set()
     with open('../data/Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
         for review_id in range(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
+            uid_ori = fake.random_int(min=0, max=num_users-1)
+            while (review_id,uid_ori) in key: 
+                uid_ori = fake.random_int(min=0, max=num_users-1)
+            key.add((review_id, uid_ori))
+            uid = uid_ori
             sid = fake.random_int(min=0, max=num_sellers-1)
             pid = fake.random_int(min=0, max=num_products-1)
             rating = fake.random_digit()

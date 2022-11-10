@@ -13,4 +13,3 @@ def search():
     else:
         carts = Cart.get_all_by_uid(uid)
     return render_template('hw4_cart.html', carts = carts)
-

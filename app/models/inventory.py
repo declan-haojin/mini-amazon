@@ -34,6 +34,12 @@ class Inventory:
 
     @staticmethod
     def add_item_to_inventory(sid, pid, qty):
+        if not (sid.isdigit()):
+            return "Invalid seller id, please enter an integer."
+        if not (pid.isdigit()):
+            return "Invalid product id, please enter an integer."
+        if not (qty.isdigit()):
+            return "Invalid quantity, please enter an integer."
         row = app.db.execute('''
         SELECT Inventories.seller_id, Inventories.product_id, Inventories.inventory_quantity
         FROM Inventories
@@ -53,7 +59,8 @@ class Inventory:
             pid = pid,
             qty = qty
             )
-            return ["Added new item", sid, pid, qty]
+            retstr = "Seller " + str(sid) + ": You have successfully added " + str(qty) + " units of item " + str(pid) + " to your inventory."
+            return retstr
         else:
             qty = int(qty)
             qty += row[0][2]
@@ -66,4 +73,5 @@ class Inventory:
             pid = pid,
             qty = qty
             )
-            return ["Modified count", sid, pid, qty]
+            retstr = "Seller " + str(sid) + ": You have successfully modified the count of item " + str(pid) + " to " + str(qty) + "."
+            return retstr

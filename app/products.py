@@ -27,9 +27,8 @@ def search_hw4():
     return render_template('hw4_product.html', products = products)
 
 
-@bp.route('/product', methods = ['GET'])
-def index():
-    product_id = request.args.get('id')
+@bp.route('/product/<product_id>', methods = ['GET'])
+def index(product_id):
     if product_id is None:
         product = None
     else:

@@ -32,7 +32,7 @@ SELECT pg_catalog.setval('public.reviews_review_id_seq',
 
 \COPY Inventories FROM 'Inventories.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY UsersPurchases FROM 'users_purchases.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY UsersPurchases FROM 'users_purchases.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY PurchasesOrders FROM 'purchases_orders.csv' WITH DELIMITER ',' NULL '' CSV
 

@@ -1,6 +1,7 @@
 from flask import render_template
 from flask import request
 from .models.product import Product
+from .models.review import Review
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)
@@ -24,10 +25,12 @@ def search():
 def index(product_id):
     if product_id is None:
         product = None
+        reviews = None
     else:
         product = Product.get(product_id)
+        reviews = Review.get_all_by_pid(product_id)
         # print(product)
-    return render_template('products/index.html', product = product)
+    return render_template('products/index.html', product = product, reviews = reviews)
 
 
 @bp.route('/product/hw4', methods=['GET'])

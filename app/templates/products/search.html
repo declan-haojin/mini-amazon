@@ -27,7 +27,7 @@
             </tr>
             {% for product in products %}
                 <tr>
-                    <td><a href="{{ url_for('') }}">{{ product.name }}</a></td>
+                    <td><a href="/product/{{product.product_id}}">{{ product.name }}</a></td>
                     <td>{{ product.description }}</td>
                     <td>{{ product.price }}</td>
                     <td><img src={{ product.image }}></td>

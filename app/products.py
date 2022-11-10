@@ -12,7 +12,8 @@ def search():
     if request.args == {}:
         products = Product.get_all()
     else:
-        products = []
+        keywords = request.args.get('keywords')
+        products = Product.get_by_keywords(keywords)
 
     return render_template('products/search.html', products = products)
 

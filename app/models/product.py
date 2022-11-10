@@ -34,6 +34,21 @@ class Product:
         return [Product(*row) for row in rows]
 
     @staticmethod
+    def get_by_keywords(keywords):
+        rows = app.db.execute('''
+            SELECT *
+            FROM Products
+            WHERE name LIKE :keywords
+            OR description LIKE :keywords
+            ''',
+        keywords = '%' + keywords + '%')
+        return [Product(*row) for row in rows]
+
+
+
+
+
+    @staticmethod
     def get_k_most_expensive(k):
         rows = app.db.execute('''
             SELECT product_id, name, price, available

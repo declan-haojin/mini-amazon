@@ -3,17 +3,20 @@
 {% block content %}
 <br>
 <center><h1>Browse and search products</h1></center>
-<form class="row justify-content-center" method="GET" action="/product/hw4">
+
+<form class="row justify-content-center" method="GET" action="/product/search">
     <div class="col-auto">
-        <input type="text" readonly class="form-control-plaintext" value="Enter the value of k">
+        <input type="text" readonly class="form-control-plaintext" value="Search by keywords">
     </div>
     <div class="col-auto">
-        <input type="text" name="k">
+        <input type="text" name="keywords">
     </div>
     <div class="col-auto">
       <button type="submit" class="btn btn-primary mb-3">Search</button>
     </div>
 </form>
+
+
 <div class="d-flex justify-content-center">
     <div class="container text-center">
 

@@ -2,6 +2,10 @@ from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
 from collections import OrderedDict
+import random
+import numpy as np
+
+from IPython import embed
 
 num_users = 100
 num_products = 100
@@ -13,9 +17,15 @@ num_history = num_users
 Faker.seed(0)
 fake = Faker()
 
-uid_sid = set()
-uid_pid = set()
-uid_purchase_id = {}
+oid2uid = {}
+uid_sid_pid = []
+
+# generate unique uid-purchase_id mapping
+uid_ls = np.arange(0, num_users).tolist()
+purchase_ls = np.arange(0, num_users).tolist()
+random.shuffle(purchase_ls)
+purchase_id2uid = dict(zip(purchase_ls, uid_ls))
+
 
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
@@ -80,9 +90,10 @@ def gen_purchases(num_purchases, available_pids):
         for id in range(num_purchases):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
+            # embed()
+            uid = purchase_id2uid[id]
             # pid = fake.random_element(elements=available_pids)
-            num_order = fake.random_int(min=0, max=num_orders-1)
+            num_order = len(uid_sid_pid[uid])
             total_amount = fake.random_int(min=0, max=50000)
             status = fake.random_elements(elements=OrderedDict([
                 ("Confirmed", 0.3),
@@ -95,15 +106,21 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
+
 def gen_orders(num_orders):
+    key = set()
     with open('../data/Orders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
         for order_id in range(num_orders):
             if order_id % 100 == 0:
                 print(f'{order_id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
-            purchase_id = fake.random_int(min=0, max=num_orders-1)
+            sid = fake.random_int(min=0, max=num_sellers-1)
+            purchase_id = fake.random_int(min=0, max=num_users-1)
+            while purchase_id not in purchase_id2uid.keys(): 
+                purchase_id = fake.random_int(min=0, max=num_users-1)
+            uid = purchase_id2uid[purchase_id]
+            oid2uid[order_id] = uid
             n_items = fake.random_int(min=0, max=20)
             amount = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
             status = fake.random_elements(elements=OrderedDict([
@@ -113,31 +130,32 @@ def gen_orders(num_orders):
                 ("Delivered", 0.3),
                 ]), unique=False
             )[0]
-            pid = fake.random_element(elements=available_pids)
-            writer.writerow([uid, purchase_id, order_id, n_items, amount, status, pid])
+            pid_ori = fake.random_element(elements=available_pids)
+            while (uid, sid, pid_ori) in key:
+                pid_ori = fake.random_int(min=0, max=num_products-1)
+            key.add((uid, sid, pid_ori))
+            uid_sid_pid.append((uid, sid, pid_ori))
+            pid = pid_ori
+            writer.writerow([uid, purchase_id, order_id, n_items, amount, status, sid, pid])
         print(f'{num_orders} generated')
     return
 
 def gen_reviews(num_reviews):
-    key1 = set()
-    key2 = set()
+    
     with open('../data/Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
+        uid_ls = [tup[0] for tup in uid_sid_pid]
         for review_id in range(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
-            uid_ori = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_int(min=0, max=num_products-1)
-            while (pid,uid_ori) in key1: 
-                uid_ori = fake.random_int(min=0, max=num_users-1)
-            key1.add((pid, uid_ori))
-            uid = uid_ori
-            sid_ori = fake.random_int(min=0, max=num_sellers-1)
-            while (sid_ori,uid) in key2: 
-                sid_ori = fake.random_int(min=0, max=num_sellers-1)
-            key2.add((sid_ori, uid))
-            sid = sid_ori
+            uid = fake.random_int(min=0, max=num_users-1)
+            while uid not in uid_ls: 
+                uid = fake.random_int(min=0, max=num_users-1)
+            idx = uid_ls.index(uid)
+            sid = uid_sid_pid[idx][1]
+            pid = uid_sid_pid[idx][2]
+            uid_ls.pop(idx)
             rating = fake.random_digit()
             review_type = fake.random_element(elements=('seller', 'product')) 
             review_time = fake.date_time()
@@ -267,10 +285,11 @@ def gen_users_orders(num_orders):
 
 gen_users(num_users)
 available_pids = gen_products(num_products)
-gen_purchases(num_orders, available_pids)
+gen_orders(num_orders)
+gen_purchases(num_users, available_pids)
 gen_sellers(num_sellers)
 gen_products(num_products)
-gen_orders(num_orders)
+# embed()
 gen_reviews(num_reviews)
 gen_cart(num_users)
 gen_inventories(num_sellers)

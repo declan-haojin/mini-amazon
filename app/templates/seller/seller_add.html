@@ -6,9 +6,11 @@
     <div class="container text-center">
         <h1>Seller add product to inventory</h1>
 
-        <tr>
-            Status: <td>{{ arg }}</td>
-        </tr>
+        <table class="table table-striped table-hover table-bordered text-center">
+            <td>
+                Update: {{args}}
+            </td>
+        </table>
 
         <form class="row justify-content-center" method="GET" action="/seller/add">
             <div class="row">

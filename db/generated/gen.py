@@ -57,6 +57,10 @@ def gen_products(num_products):
     with open('../data/Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
+
+        # Generate num_products images before everything and store them in images array
+        images = image.get_random_image_urls(num_products)
+
         for pid in range(num_products):
             if pid % 100 == 0:
                 print(f'{pid}', end=' ', flush=True)
@@ -71,10 +75,8 @@ def gen_products(num_products):
                 ("Clothing", 0.2)
                 ]), unique=False
             )[0]
-            image_url = fake.image_url()
-            if "any" in image_url: 
-                word_ls = image_url.split('/')[:-1]
-                image_url = '/'.join(word_ls)
+            image_url = images[pid]
+
             description = fake.sentence(nb_words=4)[:-1]
             if available == 'true':
                 available_pids.append(pid)
@@ -157,7 +159,7 @@ def gen_reviews(num_reviews):
             pid = uid_sid_pid[idx][2]
             uid_ls.pop(idx)
             rating = fake.random_digit()
-            review_type = fake.random_element(elements=('seller', 'product')) 
+            review_type = fake.random_element(elements=('seller', 'product'))
             review_time = fake.date_time()
             content = fake.sentence(nb_words=4)[:-1]
             writer.writerow([uid, review_id, content, rating, review_time, sid, pid, review_type])
@@ -222,7 +224,7 @@ def gen_inventories(num_sellers):
                 fake.random_elements(elements=available_pids, unique=True) #.unique to ensure no repeated products for each seller.
                 qty = f'{str(fake.random_int(max=40))}' #At most 40 quantity of any item.
                 pid_ori = fake.random_int(min=0, max=n_items-1)
-                while (sid,pid_ori) in key: 
+                while (sid,pid_ori) in key:
                     pid_ori = fake.random_int(min=0, max=n_items-1)
                 key.add((sid, pid_ori))
                 pid = pid_ori

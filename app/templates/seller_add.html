@@ -6,6 +6,10 @@
     <div class="container text-center">
         <h1>Seller add product to inventory</h1>
 
+        <tr>
+            Status: <td>{{ arg }}</td>
+        </tr>
+
         <form class="row justify-content-center" method="GET" action="/seller/add">
             <div class="row">
                 <div class="col-auto">
@@ -33,7 +37,7 @@
                 <div class="col-auto">
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-primary mb-3">Search</button>
+                <button type="submit" class="btn btn-primary mb-3">Execute</button>
                 </div>
             </div>
         </form>

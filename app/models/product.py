@@ -44,6 +44,14 @@ class Product:
         keywords = '%' + keywords + '%')
         return [Product(*row) for row in rows]
 
+    @staticmethod
+    def get_all_categories():
+        rows = app.db.execute('''
+            SELECT DISTINCT(category)
+            FROM Products
+        ''')
+        return rows
+
 
 
 

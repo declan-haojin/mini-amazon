@@ -6,7 +6,7 @@ from flask import Blueprint
 bp = Blueprint('products', __name__)
 
 
-@bp.route('/product/search', methods=['GET'])
+@bp.route('/product/search', methods=['GET', 'POST'])
 def search():
     # If there's no search input, display all the products
     if request.args == {}:

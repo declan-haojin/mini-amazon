@@ -6,6 +6,16 @@
 
 <form class="row justify-content-center" method="GET" action="/product/search">
     <div class="col-auto">
+        <select class="custom-select" name="category">
+            <option value="all">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="books">Books</option>
+            <option value="clothing">Clothing</option>
+            <option value="beautyproducts">Beauty Products</option>
+            <option value="videogames">Video Games</option>
+        </select>
+    </div>
+    <div class="col-auto">
         <input type="text" readonly class="form-control-plaintext" value="Search by keywords">
     </div>
     <div class="col-auto">
@@ -15,6 +25,7 @@
       <button type="submit" class="btn btn-primary mb-3">Search</button>
     </div>
 </form>
+
 
 
 <div class="d-flex justify-content-center">

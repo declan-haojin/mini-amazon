@@ -38,8 +38,8 @@ class Product:
         rows = app.db.execute('''
             SELECT *
             FROM Products
-            WHERE name LIKE :keywords
-            OR description LIKE :keywords
+            WHERE name iLIKE :keywords
+            OR description iLIKE :keywords
             ''',
         keywords = '%' + keywords + '%')
         return [Product(*row) for row in rows]

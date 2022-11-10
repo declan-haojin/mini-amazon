@@ -26,7 +26,7 @@ class Product:
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(available=True):
+    def get_all():
         rows = app.db.execute('''
             SELECT *
             FROM Products
@@ -34,14 +34,40 @@ class Product:
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_by_keywords(keywords):
-        rows = app.db.execute('''
-            SELECT *
-            FROM Products
-            WHERE name iLIKE :keywords
-            OR description iLIKE :keywords
-            ''',
-        keywords = '%' + keywords + '%')
+    def search_by_conditions(keywords, category):
+        if category == "All":
+            if keywords == "":
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                ''')
+            else:
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE (name iLIKE :keywords OR description iLIKE :keywords)
+                    ''',
+                    keywords = '%' + keywords + '%',
+                )
+        else:
+            if keywords == "":
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE category = :category
+                ''',
+                category = category)
+            else:
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Products
+                    WHERE (name iLIKE :keywords OR description iLIKE :keywords)
+                    AND category = :category
+                    ''',
+                    keywords = '%' + keywords + '%',
+                    category = category
+                )
+
         return [Product(*row) for row in rows]
 
     @staticmethod

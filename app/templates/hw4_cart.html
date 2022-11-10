@@ -6,23 +6,6 @@
     <div class="container text-center">
         <h1>HW4 Get All Items in Cart</h1>
 
-        <table class="table table-striped table-hover table-bordered text-center">
-            <tr>
-                <th>User ID</th>
-                <th>Product Name</th>
-                <th>Cart Quantity</th>
-                <th>Cart Unit Price</th>
-            </tr>
-            {% for cart in carts %}
-                <tr>
-                    <td>{{ cart.uid }}</td>
-                    <td>{{ cart.product_id }}</td>
-                    <td>{{ cart.cart_quantity }}</td>
-                    <td>{{ cart.unit_price }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-
         <form class="row justify-content-center" method="GET" action="/cart/hw4">
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter the user id">
@@ -34,6 +17,41 @@
               <button type="submit" class="btn btn-primary mb-3">Search</button>
             </div>
         </form>
+
+        <table class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>User ID</th>
+                <th>Product Name</th>
+                <th>Cart Line Quantity</th>
+                <th>Cart Line Unit Price</th>
+                <th>Cart Line Total Price</th>
+            </tr>
+            {% for cart in carts %}
+                <tr>
+                    <td>{{ cart.uid }}</td>
+                    <td>{{ cart.product_id }}</td>
+                    <td>
+                        <div contentEditable="true">{{ cart.cart_quantity }}</div>
+                    </td>
+                    <td>{{ cart.unit_price }}</td>
+                    <td>{{ cart.total_price }}</td>
+                    <td>
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                        <form method="GET" action="/cart/hw4">
+                            <button type="submit" style="font-size:12px"><i class="fa fa-trash-o"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <form>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Submit Cart as Order</button>
+            </div>
+        </form>
+
     </div>
 </div>
 

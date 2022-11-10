@@ -6,11 +6,13 @@ class Cart:
     This is just a TEMPLATE for Cart, you should change this by adding or 
         replacing new columns, etc. for your design.
     """
-    def __init__(self, uid, product_id, cart_quantity, unit_price):
+    def __init__(self, uid, product_id, cart_quantity, unit_price, total_price):
         self.uid = uid
         self.product_id = product_id
         self.cart_quantity = cart_quantity
         self.unit_price = unit_price
+        self.total_price = total_price
+
 
     @staticmethod
     def get(id):
@@ -38,7 +40,7 @@ ORDER BY time_added_to_cart DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT c.uid, p.name, c.cart_quantity, c.unit_price
+SELECT c.uid, p.name, cart_quantity, unit_price, (unit_price * cart_quantity) AS total_price
 FROM Products p, Cart c
 WHERE c.uid = :uid AND p.product_id = c.product_id
 ''',

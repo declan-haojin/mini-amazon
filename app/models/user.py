@@ -6,27 +6,35 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname):
-        self.id = id
-        self.email = email
+    def __init__(self, uid, firstname, lastname, address, email, password, balance):
+        self.uid = uid
         self.firstname = firstname
         self.lastname = lastname
+        self.address = address
+        self.email = email
+        self.password = password
+        self.balance = balance
 
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, uid, email, firstname, lastname
-FROM Users
-WHERE email = :email
-""",
-                              email=email)
+            SELECT *
+            FROM Users
+            WHERE email = :email
+            """,
+            email=email)
+
         if not rows:  # email not found
             return None
-        elif not check_password_hash(rows[0][0], password):
+        elif not check_password_hash(rows[0][5], password):
             # incorrect password
+            print("*******incorrect password")
+            print(rows[0][5])
+            print(password)
+
             return None
         else:
-            return User(*(rows[0][1:]))
+            return User(*(rows[0]))
 
     @staticmethod
     def email_exists(email):

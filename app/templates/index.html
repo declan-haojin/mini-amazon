@@ -1,46 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<br><br>
-
-<center><h1>HW4</h1></center>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Guru</th>
-      <th scope="col">Link</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td>User</td>
-        <td><a href="/user/hw4">/user/hw4</td>
-        <td>Given a user id, find all purchases of that user</td>
-      </tr>
-      <tr>
-        <td>Product</td>
-        <td><a href="/product/hw4">/product/hw4</td>
-        <td>Given an integer k, find top k most expensive products</td>
-      </tr>
-      <tr>
-        <td>Cart</td>
-        <td><a href="/cart/hw4">/cart/hw4</td>
-        <td>Given a user id, find the items in the cart for that user</td>
-      </tr>
-      <tr>
-        <td>Seller</td>
-        <td><a href="/seller/hw4">/seller/hw4</td>
-        <td>Given id of a merchant/seller, find the products that are in their
-          inventory</td>
-      </tr>
-      <tr>
-        <td>Social</td>
-        <td><a href="/review/hw4">/review/hw4</td>
-        <td>Given a user id, find the 5 most recent feedback they posted</td>
-      </tr>
-  </tbody>
-</table>
+<!-- Background image -->
+<div
+  class="bg-image d-flex justify-content-center align-items-center"
+  style="
+    background-image: url('https://cdn.jsdelivr.net/gh/declan-haojin/blog-image//duke/20221110023305.png');
+    height: 110vh;
+  "
+>
+  <a href="/product/search">
+  <h1 class="text-black">Welcome to <b>Mini Taobao</b></h1>
+  </a>
+</div>
+<!-- Background image -->
 
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Product Detail Page</h1>
+
+
+<li>Product Name: {{ product.name }} </li>
+<li>Category: {{ product.category }} </li>
+<li>Description: {{ product.description }} </li>
+<li>Price: {{ product.price }}</li>
+<li>Availability: {{ product.price }}</li>
+<li><img src = {{product.image}}></li>
+
+
+
+{% endblock %}

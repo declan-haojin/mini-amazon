@@ -62,3 +62,13 @@ class Inventory:
             )
             retstr = "Seller " + str(sid) + ": You have successfully modified the count of item " + str(pid) + " to " + str(qty) + "."
             return retstr
+
+    @staticmethod
+    def get_by_pid(pid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Inventories
+        WHERE Inventories.product_id = :pid
+        ''',
+        pid=pid)
+        return [Product(*row) for row in rows]

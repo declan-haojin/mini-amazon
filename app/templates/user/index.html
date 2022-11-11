@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-header">
+    <b>{{ user.firstname + " " + user.lastname }}</b>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">User ID: {{ user.id }}</li>
+    <li class="list-group-item">Address: {{ user.address }}</li>
+    <li class="list-group-item">Email: {{ user.email }}</li>
+    <li class="list-group-item">User balance: {{ user.balance }}</li>
+  </ul>
+</div>
+<br >
+<table class="table table-striped table-hover table-bordered text-center">
+  <tr>
+      <th>User ID</th>
+      <th>Purchase ID</th>
+      <th>Total Purchase Amount</th>
+      <th>Time of Purchase</th>
+  </tr>
+  {% for purchase in purchases %}
+      <tr>
+          <td>{{ purchase.uid }}</td>
+          <td>{{ purchase.purchase_id }}</td>
+          <td>{{ purchase.total_amount }}</td>
+          <td>{{ purchase.time_purchased}}</td>
+      </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

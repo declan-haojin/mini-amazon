@@ -2,18 +2,18 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, uid,  num_order, total_amount, time_purchased):
+    def __init__(self, uid, purchase_id, number_of_orders, total_amount, status, time_purchased):
         self.uid = uid
-        # self.pid = pid
-        self.num_order=num_order
-        self.total_amount=total_amount
-        # self.status=status
+        self.purchase_id = purchase_id
+        self.number_of_orders = number_of_orders
+        self.total_amount= total_amount
+        self.status = status
         self.time_purchased = time_purchased
 
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
-        SELECT uid, pid, num_order, total_amount, status, time_purchased
+        SELECT *
         FROM Purchases
         WHERE uid = :uid
         ''', uid=uid)
@@ -22,7 +22,7 @@ class Purchase:
     @staticmethod
     def get_by_uid(uid):
         rows = app.db.execute("""
-        SELECT uid,num_order, total_amount,time_purchased
+        SELECT *
         FROM Purchases
         WHERE Purchases.uid = :uid
         ORDER BY time_purchased DESC

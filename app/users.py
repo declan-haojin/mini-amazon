@@ -28,12 +28,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_auth(form.email.data, form.password.data)
-        print(user)
+        # print(user)
         if user is None:
             flash('Invalid email or password')
             return redirect(url_for('users.login'))
-        session['user'] = user.id
-        print(user.id)
+        session['user'] = user.uid
+        print(user.uid)
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':

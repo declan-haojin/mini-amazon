@@ -39,10 +39,10 @@ class User(UserMixin):
     @staticmethod
     def email_exists(email):
         rows = app.db.execute("""
-SELECT email
-FROM Users
-WHERE email = :email
-""",
+        SELECT email
+        FROM Users
+        WHERE email = :email
+        """,
                               email=email)
         return len(rows) > 0
 
@@ -69,9 +69,9 @@ WHERE email = :email
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-        SELECT uid, email, firstname, lastname
+        SELECT *
         FROM Users
         WHERE uid = :id
         """,
-                              id=id)
+        id=id)
         return User(*(rows[0])) if rows else None

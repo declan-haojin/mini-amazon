@@ -19,12 +19,24 @@ https://duke.app.box.com/s/mwvfguu7x5dt2bw7wjg97mb4w921gz5b
 
 ## Work summary
 
-- Haojin Li: Created ER diagram and database schemas.
-- Zirui Yin: Created user flows and page-by-page design of the website. Offered suggestions for E/R diagram. Helped generate random data.
-- Tingnan Hu: Worked on creating and populating the sample database. Implemented seller & product review submission functionalities and review display functionality. Created ER diagram, worked on database schemas, assumptions, and constraints.
-- Julie Ou: Created page-by-page content description and logic flows. Added pictures of Amazon's equivalent pages.
-- Gaurav Parikh: Created ER Diagram and created tables for database schema. Added typechecks and sample data for each data table. 
-
+- Haojin Li:
+    Allow user to search product by category
+    Allow user to see product review 
+    Allow user to see image of product
+- Zirui Yin:
+    Allow sellers to check their inventories and change the quantity of any of their products.
+    Allow sellers to add new products to their inventories.
+- Tingnan Hu:
+    Allow users to submit images in the reviews.
+    Allow users to vote for ratings/reviews as helpful. The reviews/ratings will be sorted and shown in the order of “helpfulness”, i.e., the number of votes they got
+- Julie Ou:
+    Allow user to edit cart item quantity and submit review
+    Allow user to remove item from cart
+    Allow user to go to cart and checkout (submit entire cart as order)
+- Gaurav Parikh:
+    Record the session for each user so the user can see their account information when logged in.
+    User page with user information consolidated view and balance information.
+    
 ## Sample database
 
 A sample database can be created and populated by db/generated/gen.py file and db/generated/./setup.sh. 

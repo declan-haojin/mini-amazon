@@ -43,9 +43,9 @@ def search_hw4():
 
 @bp.route('/review/product', methods=['GET'])
 def insert_product_review():
-    uid = request.args.get('uid')
+    uid = session["user"]
+    rating = request.args.get('rating')
     if not uid: 
-        uid = "-1"
         review_content = "-1"
         rating = "-1"
         review_time = "-1" 
@@ -54,7 +54,6 @@ def insert_product_review():
         
     else: 
         review_content = request.args.get('review_content')
-        rating = request.args.get('rating')
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
@@ -64,9 +63,9 @@ def insert_product_review():
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
-    uid = request.args.get('uid')
-    if not uid: 
-        uid = "0"
+    uid = session["user"]
+    rating = request.args.get('rating')
+    if not rating: 
         review_content = "-1"
         rating = "-1"
         review_time = "2022-11-09"
@@ -74,7 +73,6 @@ def insert_seller_review():
         product_id = "0"
     else: 
         content = request.args.get('review_content')
-        rating = request.args.get('rating')
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')

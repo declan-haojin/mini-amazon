@@ -7,48 +7,56 @@
         <h1>Product Review Submission</h1>
 
         <form class="row justify-content-center" methods="GET" action="/review/product">
-            
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter uid">
-            </div>
-            <div class="col-auto">
-                <input type="text" name="uid">
-            <div>
+
+            <p style="line-height:10cm;"></p>
 
             <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter review">
+                <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
             </div>
-            <div class="col-auto">
-                <input type="text" name="review_content">
-            </div>
-
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter rating">
-            </div>
+            <p style="line-height:5cm;"></p>
             <div class="col-auto">
                 <input type="text" name="rating">
             </div>
 
+            <p style="line-height:10cm;"></p>
+
             <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter time">
+                <input type="text" readonly class="form-control-plaintext" value="Enter time:">
             </div>
+            <p style="line-height:5cm;"></p>
             <div class="col-auto">
                 <input type="text" name="review_time">
             </div>
 
+            <p style="line-height:10cm;"></p>
+
             <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter seller_id">
+                <input type="text" readonly class="form-control-plaintext" value="Enter seller_id:">
             </div>
+            <p style="line-height:5cm;"></p>
             <div class="col-auto">
                 <input type="text" name="seller_id">
             </div>
 
+            <p style="line-height:5cm;"></p>
+
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter product_id">
             </div>
+            <p style="line-height:10cm;"></p>
             <div class="col-auto">
                 <input type="text" name="product_id">
             </div>
+
+            <p style="line-height:10cm;"></p>
+
+            <div class="form-group">
+                <label for="review_content">Enter Review: </label>
+                <textarea class="form-control" id="review_content" rows="3"></textarea>
+            </div>
+
+            <p style="line-height:3.5cm;"></p>
+
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Submit</button>
             </div>

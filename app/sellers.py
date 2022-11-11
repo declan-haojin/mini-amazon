@@ -13,6 +13,8 @@ def sellers_search():
         products = []
     else:
         products = Inventory.get_by_sid(sid)
+    if products is None:
+        products = []
     return render_template('seller/seller_search.html', products = products)
 
 @bp.route('/seller/add', methods=['GET'])

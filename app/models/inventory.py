@@ -8,6 +8,8 @@ class Inventory:
 
     @staticmethod
     def get_by_sid(sid):
+        if not (sid.isdigit()):
+            return
         rows = app.db.execute('''
         SELECT Products.product_id, Products.name, Inventories.inventory_quantity
         FROM Inventories, Products

@@ -1,17 +1,14 @@
 from flask import render_template
 from flask import request
 from .models.review import Review
+from flask import session
 
 from flask import Blueprint
 bp = Blueprint('reviews', __name__)
 
 @bp.route('/review/search', methods=['GET'])
 def search():
-    uid = request.args.get('uid')
-    if uid is None:
-        reviews = []
-    else:
-        reviews = Review.get_all_by_uid(uid)
+    reviews = Review.get_all_by_uid(session["user"])
     return render_template('reviews/search.html', reviews=reviews)
 
 @bp.route('/review/search_product', methods=['GET'])

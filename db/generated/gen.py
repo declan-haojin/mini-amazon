@@ -4,7 +4,7 @@ from faker import Faker
 from collections import OrderedDict
 import random
 import numpy as np
-
+import image
 from IPython import embed
 
 num_users = 100
@@ -47,7 +47,7 @@ def gen_users(num_users):
             firstname = name_components[0]
             lastname = name_components[-1]
             balance = f'{str(fake.random_int(max=500000))}'
-            writer.writerow([uid, firstname, lastname, address, email, password, balance, plain_password])
+            writer.writerow([uid, firstname, lastname, address, email, password, balance])
         print(f'{num_users} generated')
     return
 
@@ -119,7 +119,7 @@ def gen_orders(num_orders):
                 print(f'{order_id}', end=' ', flush=True)
             sid = fake.random_int(min=0, max=num_sellers-1)
             purchase_id = fake.random_int(min=0, max=num_users-1)
-            while purchase_id not in purchase_id2uid.keys(): 
+            while purchase_id not in purchase_id2uid.keys():
                 purchase_id = fake.random_int(min=0, max=num_users-1)
             uid = purchase_id2uid[purchase_id]
             oid2uid[order_id] = uid
@@ -143,7 +143,7 @@ def gen_orders(num_orders):
     return
 
 def gen_reviews(num_reviews):
-    
+
     with open('../data/Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
@@ -152,7 +152,7 @@ def gen_reviews(num_reviews):
             if review_id % 10 == 0:
                 print(f'{review_id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            while uid not in uid_ls: 
+            while uid not in uid_ls:
                 uid = fake.random_int(min=0, max=num_users-1)
             idx = uid_ls.index(uid)
             sid = uid_sid_pid[idx][1]

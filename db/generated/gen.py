@@ -7,11 +7,11 @@ import numpy as np
 import image
 from IPython import embed
 
-num_users = 100
-num_products = 100
-num_reviews = 100
-num_sellers = 100
-num_orders =200
+num_users = 1000
+num_products = 1000
+num_reviews = 1000
+num_sellers = 1000
+num_orders = 2000
 num_history = num_users
 
 Faker.seed(0)

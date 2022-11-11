@@ -8,6 +8,7 @@ from .. import login
 class User(UserMixin):
     def __init__(self, uid, firstname, lastname, address, email, password, balance):
         self.uid = uid
+        self.id = uid
         self.firstname = firstname
         self.lastname = lastname
         self.address = address

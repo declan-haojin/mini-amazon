@@ -57,6 +57,12 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
+@bp.route('/user/profile', methods=['GET'])
+def index():
+    user = User.get(session['user'])
+    purchases = Purchase.get_by_uid(user.id)
+    return render_template('user/index.html', user=user, purchases=purchases)
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():

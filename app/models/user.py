@@ -14,7 +14,7 @@ class User(UserMixin):
         self.address = address
         self.email = email
         self.password = password
-        self.balance = balance
+        self.balance = 0 if balance == None else balance
 
     @staticmethod
     def get_by_auth(email, password):
@@ -55,9 +55,9 @@ class User(UserMixin):
             VALUES(:email, :password, :firstname, :lastname)
             RETURNING uid
             """,
-                                  email=email,
-                                  password=generate_password_hash(password),
-                                  firstname=firstname, lastname=lastname)
+            email=email,
+            password=generate_password_hash(password),
+            firstname=firstname, lastname=lastname)
             id = rows[0][0]
             return User.get(id)
         except Exception as e:

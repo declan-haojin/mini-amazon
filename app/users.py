@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask import session
 
 from .models.user import User
 from .models.purchase import Purchase
@@ -27,9 +28,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_auth(form.email.data, form.password.data)
+        # print(user)
         if user is None:
             flash('Invalid email or password')
             return redirect(url_for('users.login'))
+        session['user'] = user.uid
+        print(user.uid)
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -52,6 +56,12 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
+
+@bp.route('/user/profile', methods=['GET'])
+def index():
+    user = User.get(session['user'])
+    purchases = Purchase.get_by_uid(user.id)
+    return render_template('user/index.html', user=user, purchases=purchases)
 
 
 @bp.route('/register', methods=['GET', 'POST'])

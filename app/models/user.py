@@ -6,35 +6,44 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname):
-        self.id = id
-        self.email = email
+    def __init__(self, uid, firstname, lastname, address, email, password, balance):
+        self.uid = uid
+        self.id = uid
         self.firstname = firstname
         self.lastname = lastname
+        self.address = address
+        self.email = email
+        self.password = password
+        self.balance = 0 if balance == None else balance
 
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, uid, email, firstname, lastname
-FROM Users
-WHERE email = :email
-""",
-                              email=email)
+            SELECT *
+            FROM Users
+            WHERE email = :email
+            """,
+            email=email)
+
         if not rows:  # email not found
             return None
-        elif not check_password_hash(rows[0][0], password):
+        elif not check_password_hash(rows[0][5], password):
             # incorrect password
+            print("*******incorrect password")
+            print(rows[0][5])
+            print(password)
+
             return None
         else:
-            return User(*(rows[0][1:]))
+            return User(*(rows[0]))
 
     @staticmethod
     def email_exists(email):
         rows = app.db.execute("""
-SELECT email
-FROM Users
-WHERE email = :email
-""",
+        SELECT email
+        FROM Users
+        WHERE email = :email
+        """,
                               email=email)
         return len(rows) > 0
 
@@ -46,9 +55,9 @@ WHERE email = :email
             VALUES(:email, :password, :firstname, :lastname)
             RETURNING uid
             """,
-                                  email=email,
-                                  password=generate_password_hash(password),
-                                  firstname=firstname, lastname=lastname)
+            email=email,
+            password=generate_password_hash(password),
+            firstname=firstname, lastname=lastname)
             id = rows[0][0]
             return User.get(id)
         except Exception as e:
@@ -61,9 +70,9 @@ WHERE email = :email
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-        SELECT uid, email, firstname, lastname
+        SELECT *
         FROM Users
         WHERE uid = :id
         """,
-                              id=id)
+        id=id)
         return User(*(rows[0])) if rows else None

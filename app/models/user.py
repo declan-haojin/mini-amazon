@@ -101,7 +101,7 @@ class User(UserMixin):
         UPDATE Users 
         SET email=:email, password=:password,firstname=:firstname,lastname=:lastname, address=:address
         WHERE uid=:uid
-        """,uid=uid,email=email, password=password, firstname=firstname,lastname=lastname, address=address)
+        """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
     
         

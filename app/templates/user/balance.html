@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<center><h1>Deposit/ Withdraw Money</h1>
+
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+    {{ form.amount(size=32) }}<br/>
+    {% for error in form.amount.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  
+  <button class="button-6" role="button">{{ form.deposit(class_="btn btn-black") }}</button>
+  <button class="button-6" role="button">{{ form.withdraw(class_="btn btn-black") }}</button>
+  <button class="button-6" role="button">{{ form.complete_withdraw(class_="btn btn-black") }}</button>
+</form></center>
+
+
+{% endblock %}
+
+
+

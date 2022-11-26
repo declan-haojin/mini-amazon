@@ -59,9 +59,12 @@ class RegistrationForm(FlaskForm):
 
 @bp.route('/user/profile', methods=['GET'])
 def index():
-    user = User.get(session['user'])
-    purchases = Order.get(user.id)
-    return render_template('user/index.html', user=user, purchases=purchases)
+    if current_user.is_authenticated:
+        user = User.get(session['user'])
+        purchases = Order.get(user.id)
+        return render_template('user/index.html', user=user, purchases=purchases)
+    else:
+        return redirect(url_for('users.login'))
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -114,27 +117,47 @@ class CashForm(FlaskForm):
     deposit = SubmitField('Add Money')
     withdraw = SubmitField('Withdraw Money')
     complete_withdraw = SubmitField('Withdraw Entire Amount')
-    def validate_name(self):
-         if not super(CashForm, self).validate():
-            return False
-         user = User.get(session['user'])
-         if (self.amount>user.balance and self.withdraw):
-            raise ValidationError('Unable to withdraw amount greater than balance')
-         raise ValidationError('Unable to withdraw amount greater than balance')
     
 @bp.route('/user/balance', methods=['GET', 'POST'])
-def partial():
+def balances():
     form = CashForm()
-    if form.validate_on_submit():
-        user = User.get(session['user'])
-        if (form.deposit.data):
-            User.topup_balance(user.id,form.amount.data)
-        elif (form.withdraw.data):
-            if (form.amount.data<=user.balance):
-                User.topup_balance(user.id,-form.amount.data)
-            # else:
-                # flash("Unable to withdraw amount greater than balance")
-        elif (form.complete_withdraw.data):
-            User.withdraw_balance(user.id)
-        return redirect(url_for('users.index'))
+    if current_user.is_authenticated:
+        if form.validate_on_submit():
+            user = User.get(session['user'])
+            if (form.deposit.data):
+                User.topup_balance(user.id,form.amount.data)
+            elif (form.withdraw.data):
+                if (form.amount.data<=user.balance):
+                    User.topup_balance(user.id,-form.amount.data)
+
+            elif (form.complete_withdraw.data):
+                User.withdraw_balance(user.id)
+            return redirect(url_for('users.index'))
+    else:
+        return redirect(url_for('users.login'))
     return render_template('user/balance.html', title='My Account', form=form)
+
+class UserForm(FlaskForm):
+    firstname = StringField("First Name", validators=[DataRequired()])
+    lastname = StringField("Last Name", validators=[DataRequired()])
+    address = StringField("Address", validators=[DataRequired()])
+    email = StringField("Email", validators=[Email()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat New Password', validators=[DataRequired(),
+                                       EqualTo('password')])
+    submit = SubmitField('Update my information')
+
+
+@bp.route('/user/update', methods=['GET', 'POST'])
+def update_profile():
+    user = User.get(session['user'])
+    if current_user.is_authenticated:
+        form = UserForm()
+        if form.validate_on_submit():
+            if (User.email_exists):
+                User.update(user.id,form.firstname.data,form.lastname.data,form.address.data,form.email.data,form.password.data)
+            return redirect(url_for('users.index'))
+    else:
+        return redirect(url_for('users.login'))
+    return render_template('user/details.html', title='My Account', form=form, user=user)

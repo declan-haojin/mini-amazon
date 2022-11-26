@@ -95,3 +95,13 @@ class User(UserMixin):
         """,uid=uid,payment=payment)
         return None
    
+    @staticmethod
+    def update(uid,  firstname, lastname, address, email, password,):
+        rows = app.db.execute("""
+        UPDATE Users 
+        SET email=:email, password=:password,firstname=:firstname,lastname=:lastname, address=:address
+        WHERE uid=:uid
+        """,uid=uid,email=email, password=password, firstname=firstname,lastname=lastname, address=address)
+        return None
+    
+        

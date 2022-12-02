@@ -65,7 +65,7 @@ class Seller(UserMixin):
             rows = app.db.execute("""
             INSERT INTO Sellers(email, password, firstname, lastname)
             VALUES(:email, :password, :firstname, :lastname)
-            RETURNING sid
+            RETURNING seller_id
             """,
             email=email,
             password=generate_password_hash(password),
@@ -84,7 +84,7 @@ class Seller(UserMixin):
         rows = app.db.execute("""
         SELECT *
         FROM Sellers
-        WHERE sid = :id
+        WHERE seller_id = :id
         """,
         id=id)
         return Seller(*(rows[0])) if rows else None

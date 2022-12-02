@@ -67,7 +67,7 @@ def index():
     else:
         return redirect(url_for('users.login'))
 
-
+    
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:

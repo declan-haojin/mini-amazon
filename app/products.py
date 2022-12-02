@@ -26,11 +26,14 @@ def index(product_id):
     if product_id is None:
         product = None
         reviews = None
+        avg_rating = 0
+        num_rating = 0
     else:
         product = Product.get(product_id)
         reviews = Review.get_all_by_pid(product_id)
+        avg_rating, num_rating = Review.sum_product_review(product_id)
         # print(product)
-    return render_template('products/index.html', product = product, reviews = reviews)
+    return render_template('products/index.html', product = product, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating)
 
 
 @bp.route('/product/hw4', methods=['GET'])

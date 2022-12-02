@@ -17,6 +17,18 @@ class Seller(UserMixin):
         self.balance = 0 if balance == None else balance
 
     @staticmethod
+    def get_by_sid(sid):
+        if not (sid.isdigit()):
+            return
+        rows = app.db.execute('''
+        SELECT firstname, lastname
+        FROM Sellers
+        WHERE seller_id = :sid
+        ''',
+        sid=sid)
+        return rows
+
+    @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
             SELECT *

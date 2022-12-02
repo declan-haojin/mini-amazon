@@ -16,6 +16,9 @@ class Review:
         self.rating = rating
         self.review_type = review_type
 
+
+# get reviews
+
     @staticmethod
     def get(id):
         rows = app.db.execute('''
@@ -85,6 +88,7 @@ class Review:
             uid=uid)
         return [Review(*row) for row in rows]
 
+# add reviews 
 
     @staticmethod
     def create_product_review(uid, content, rating, time, seller_id, product_id, review_type="product"):
@@ -104,3 +108,64 @@ class Review:
             ''',
             uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
         return 
+
+# provide summary ratings 
+
+    @staticmethod
+    def sum_product_review(product_id):
+        avg_rating = app.db.execute('''
+            SELECT AVG(rating)
+            FROM Reviews
+            WHERE product_id = :product_id
+            ''',
+            product_id=product_id)
+
+        num_rating = app.db.execute('''
+            SELECT COUNT(rating)
+            FROM Reviews
+            WHERE product_id = :product_id
+            ''',
+            product_id=product_id)
+        
+        return avg_rating[0], num_rating[0]
+   
+    @staticmethod
+    def sum_seller_review(seller_id):
+        avg_rating = app.db.execute('''
+            SELECT AVG(rating)
+            FROM Reviews
+            WHERE seller_id = :seller_id
+            ''',
+            seller_id=seller_id)
+
+        num_rating = app.db.execute('''
+            SELECT COUNT(rating)
+            FROM Reviews
+            WHERE seller_id = :seller_id
+            ''',
+            seller_id=seller_id)
+        
+        return avg_rating[0], num_rating[0]
+
+# Edit/delete reviews 
+
+    @staticmethod 
+    def update_review(review_id, review_content): 
+        app.db.execute('''
+        UPDATE Reviews 
+        SET review_content = review_content
+        WHERE review_id = :review_id AND 
+        ''')
+        return 
+
+
+    @staticmethod 
+    def remove_review(review_id): 
+        if type(review_id) == int or review_id.isdigit(): 
+            app.db.execute('''
+            DELETE FROM Reviews
+            WHERE review_id = :review_id
+            ''')
+        else: 
+            print('Please enter a valid review id')
+        return

@@ -87,16 +87,22 @@ class Review:
             ''',
             uid=uid)
         return [Review(*row) for row in rows]
+ 
 
 # add reviews 
 
     @staticmethod
     def create_product_review(uid, content, rating, time, seller_id, product_id, review_type="product"):
         app.db.execute('''
-            INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type)
-            VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
+                    INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type)
+                    VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
             ''',
             uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
+            
+            # WHERE EXISTS (SELECT product_id FROM Orders WHERE Order.uid = :uid AND product_id = :product_id)
+            # IF NOT EXISTS (SELECT review_id FROM Reviews WHERE uid = :uid AND product_id = :product_id)
+            # IF EXISTS (SELECT (u.uid, o.product_id) 
+            # FROM (UsersOrders u JOIN OrdersProducts o ON u.order_id = u.order_id))
         return 
         
 

@@ -6,7 +6,7 @@
     <div class="container text-center">
         <h1>All feedback</h1>
 
-        <table class="table table-striped table-hover table-bordered text-center">
+        <table id="myTable" class="table table-striped table-hover table-bordered text-center">
             <tr>
                 <th>Review User ID</th>
                 <th>Review ID</th>
@@ -27,11 +27,27 @@
                     <td>{{ review.sid }}</td>
                     <td>{{ review.pid }}</td>
                     <td>{{ review.review_type }}</td>
+                    <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
+                    <td><input type="button" value="Update" onclick="updateRow(this)"></td>
                 </tr>
             {% endfor %}
         </table>
 
     </div>
 </div>
+
+<script>
+    function deleteRow(r) {
+      var i = r.parentNode.parentNode.rowIndex;
+      document.getElementById("myTable").deleteRow(i);
+    }
+</script>
+
+<script>
+    function updateRow(r) {
+      var i = r.parentNode.parentNode.rowIndex;
+      document.getElementById("myTable").deleteRow(i);
+    }
+</script>
 
 {% endblock %}

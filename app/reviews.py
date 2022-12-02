@@ -45,7 +45,7 @@ def search_hw4():
 def insert_product_review():
     uid = session["user"]
     rating = request.args.get('rating')
-    if not uid: 
+    if not rating: 
         review_content = "-1"
         rating = "-1"
         review_time = "-1" 

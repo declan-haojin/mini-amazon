@@ -66,6 +66,20 @@ class Inventory:
             return retstr
 
     @staticmethod
+    def get_order(sid):
+        if not (sid.isdigit()):
+            return
+        rows = app.db.execute('''
+        SELECT Orders.order_id, Orders.number_of_items, Orders.status, Orders.product_id, UsersOrders.uid
+        FROM Orders, OrdersSellers, UsersOrders
+        WHERE OrdersSellers.seller_id = :sid 
+        AND OrdersSellers.order_id = Orders.order_id
+        AND UsersOrders.order_id = Orders.order_id
+        ''',
+        sid=sid)
+        return rows
+
+    @staticmethod
     def get_by_pid(pid):
         rows = app.db.execute('''
         SELECT *

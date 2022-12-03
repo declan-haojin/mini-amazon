@@ -45,3 +45,11 @@ def sellers_add():
     else:
         args = Inventory.add_item_to_inventory(sid, pid, qty)
     return render_template('seller/seller_add.html', args = args)
+
+@bp.route('/seller/fulfill/<sid>', methods = ['GET'])
+def sellers_fulfill(sid):
+    if sid is None:
+        return
+    args = Inventory.get_order(sid)
+    
+    return render_template('seller/seller_fulfill.html', args = args)

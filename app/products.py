@@ -2,6 +2,9 @@ from flask import render_template
 from flask import request
 from .models.product import Product
 from .models.review import Review
+from .models.inventory import Inventory
+from .models.seller import Seller
+
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)
@@ -31,9 +34,20 @@ def index(product_id):
     else:
         product = Product.get(product_id)
         reviews = Review.get_all_by_pid(product_id)
+        sellerid_quantity = Inventory.get_by_pid(product_id)
+        sellers = []
+
+        for seller in sellerid_quantity:
+            seller_id = seller['seller_id']
+            quantity = seller['inventory_quantity']
+            first_lastname = Seller.get_by_sid(seller_id)
+            seller_name = first_lastname['firstname'] + " " + first_lastname['lastname']
+            sellers.append([seller_name, quantity])
+
+        print(sellers)
         avg_rating, num_rating = Review.sum_product_review(product_id)
         # print(product)
-    return render_template('products/index.html', product = product, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating)
+    return render_template('products/index.html', product = product, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating, sellers = sellers)
 
 
 @bp.route('/product/hw4', methods=['GET'])

@@ -72,7 +72,7 @@ class Inventory:
         rows = app.db.execute('''
         SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, UsersOrders.uid, Orders.order_id, Orders.status
         FROM Orders, OrdersSellers, UsersOrders, Purchases
-        WHERE OrdersSellers.seller_id = :sid 
+        WHERE OrdersSellers.seller_id = :sid
         AND OrdersSellers.order_id = Orders.order_id
         AND UsersOrders.order_id = Orders.order_id
         AND Purchases.purchase_id = Orders.purchase_id
@@ -90,3 +90,24 @@ class Inventory:
         ''',
         pid=pid)
         return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_status(order_id):
+        str = app.db.execute('''
+        SELECT status
+        FROM Orders
+        WHERE order_id = :order_id
+        ''',
+        order_id=order_id)
+        return str
+
+    @staticmethod
+    def change_order_status_spc(order_id, status):
+        app.db.execute('''
+        UPDATE Orders
+        SET status = :status
+        WHERE order_id = :order_id
+        ''',
+        status=status,
+        order_id=order_id)
+        return

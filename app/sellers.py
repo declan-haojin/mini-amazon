@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request
+from flask import request, redirect
 from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.product import Product
@@ -48,9 +48,29 @@ def sellers_add():
 
 @bp.route('/seller/fulfill/<sid>', methods = ['GET', 'POST'])
 def sellers_fulfill(sid):
-    
-    if sid is None:
-        return
-    args = Inventory.get_order(sid)
+    if request.form.get('order_id') != None:
+        oid = request.form.get('order_id')
+        status = Inventory.get_status(oid)
+        if status[0][0]!= "Processing": print("NOT VALID")
+        else: 
+            status = "Confirmed"
+            Inventory.change_order_status_spc(oid,status)
+        return redirect('/seller/fulfill/' + sid)
+    else:
+        args = Inventory.get_order(sid)
 
-    return render_template('seller/seller_fulfill.html', args = args)
+        retlist = []
+        for arg in args:
+            newarg = []
+            newarg.append(arg[0])
+            newarg.append(arg[1])
+            newarg.append(arg[2])
+            newarg.append(arg[3])
+            newarg.append(arg[4])
+            if "Delivered" in arg[5] : newarg.append("Delivered")
+            elif "Out for Delivery" in arg[5] : newarg.append("Out for Delivery")
+            elif "Confirmed" in arg[5] : newarg.append("Confirmed")
+            elif "Processing" in arg[5] : newarg.append("Processing")
+            retlist.append(newarg)
+            Inventory.change_order_status_spc(newarg[4], newarg[5])
+        return render_template('seller/seller_fulfill.html', args = retlist)

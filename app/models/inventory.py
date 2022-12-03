@@ -91,3 +91,24 @@ class Inventory:
         pid=pid)
         query_dict = [record._mapping for record in rows]
         return query_dict
+
+    @staticmethod
+    def get_status(order_id):
+        str = app.db.execute('''
+        SELECT status
+        FROM Orders
+        WHERE order_id = :order_id
+        ''',
+        order_id=order_id)
+        return str
+
+    @staticmethod
+    def change_order_status_spc(order_id, status):
+        app.db.execute('''
+        UPDATE Orders
+        SET status = :status
+        WHERE order_id = :order_id
+        ''',
+        status=status,
+        order_id=order_id)
+        return

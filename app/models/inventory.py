@@ -70,11 +70,13 @@ class Inventory:
         if not (sid.isdigit()):
             return
         rows = app.db.execute('''
-        SELECT Orders.order_id, Orders.number_of_items, Orders.status, Orders.product_id, UsersOrders.uid
-        FROM Orders, OrdersSellers, UsersOrders
+        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, UsersOrders.uid, Orders.order_id, Orders.status
+        FROM Orders, OrdersSellers, UsersOrders, Purchases
         WHERE OrdersSellers.seller_id = :sid 
         AND OrdersSellers.order_id = Orders.order_id
         AND UsersOrders.order_id = Orders.order_id
+        AND Purchases.purchase_id = Orders.purchase_id
+        ORDER BY Purchases.time_purchased DESC
         ''',
         sid=sid)
         return rows

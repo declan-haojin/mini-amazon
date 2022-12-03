@@ -82,3 +82,7 @@ def insert_seller_review():
     Review.create_seller_review(uid,review_content, rating, review_time, seller_id, product_id)
 
     return render_template('reviews/seller_review_submission.html')
+
+@bp.route('/review/update', methods=['GET'])
+def update_review_page(): 
+    

@@ -28,7 +28,7 @@
                     <td>{{ review.pid }}</td>
                     <td>{{ review.review_type }}</td>
                     <td>
-                        <a href="/review/product">
+                        <a href={{ url_for('reviews.update_review_page', review_id = review.id) }}>
                             <button type="button" action="">Update</button>
                         </a>
                     </td>

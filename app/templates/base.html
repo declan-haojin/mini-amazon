@@ -17,7 +17,6 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="\" class="nav-link px-2 text-white">Home</a></li>
         <li><a href="/product/search" class="nav-link px-2 text-white">Products</a></li>
-        <li><a href="/seller/search" class="nav-link px-2 text-white">Sellers</a></li>
         {% if current_user.is_authenticated %}
         <li><a href="/cart/detail" class="nav-link px-2 text-white">My Cart</a></li>
         {% endif %}
@@ -27,9 +26,15 @@
       </a>
       <div class="text-end">
         {% if current_user.is_authenticated %}
+        {% if session['role'] == 'buyer'%}
         <a href="/user/profile">
           <button type="button" class="btn btn-outline-light me-2">My Account</button>
         </a>
+        {% else %}
+        <a href="/seller/search">
+          <button type="button" class="btn btn-outline-light me-2">My Account</button>
+        </a>
+        {% endif %}
         <a href="/logout">
           <button type="button" class="btn btn-warning">Logout</button>
         </a>

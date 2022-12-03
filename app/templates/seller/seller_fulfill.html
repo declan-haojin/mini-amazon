@@ -24,8 +24,8 @@
                     <td>{{ arg[4] }}</td>
                     <td>{{ arg[5] }}</td>
                     <td>
-                        <form>
-                            <button type="submit" name={{ arg[3] }}>Fulfill</button>
+                        <form method = "POST">
+                            <button type="submit" name="order_id" value = {{ arg[4] }}>Fulfill</button>
                         </form>
                     </td>
                 </tr>

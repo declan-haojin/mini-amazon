@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request
+from flask import request, redirect
 from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.product import Product
@@ -46,12 +46,13 @@ def sellers_add():
         args = Inventory.add_item_to_inventory(sid, pid, qty)
     return render_template('seller/seller_add.html', args = args)
 
-@bp.route('seller/fulfill/')
-
 @bp.route('/seller/fulfill/<sid>', methods = ['GET', 'POST'])
 def sellers_fulfill(sid):
-    if sid is None:
-        return
-    args = Inventory.get_order(sid)
-
-    return render_template('seller/seller_fulfill.html', args = args)
+    if request.form.get('order_id') != None:
+        print("have order_id")
+        Inventory.change_order_status(request.form.get('order_id'))
+        return redirect('/seller/fulfill/' + sid)
+    else:
+        print("normal page rendering")
+        args = Inventory.get_order(sid)
+        return render_template('seller/seller_fulfill.html', args = args)

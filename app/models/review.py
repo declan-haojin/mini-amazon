@@ -156,10 +156,10 @@ class Review:
 # Edit/delete reviews 
 
     @staticmethod 
-    def update_review(review_id, review_content): 
+    def update_review(review_id, review_content, rating): 
         app.db.execute('''
         UPDATE Reviews 
-        SET review_content = review_content
+        SET review_content = review_content, rating = rating
         WHERE review_id = :review_id 
         ''', 
         review_id=review_id)
@@ -177,3 +177,25 @@ class Review:
         else: 
             print('Please enter a valid review id')
         return
+
+# Get seller_id or product_id 
+
+    @staticmethod 
+    def get_sid(uid, product_id): 
+        rows = app.db.execute('''
+        SELECT s.sid 
+        FROM OrdersProducts, SellersOrders s, UsersOrders u 
+        WHERE u.uid = :uid AND o.product_id = product_id
+        ''', 
+        uid=uid, product_id=product_id)
+        return [Review(*row) for row in rows]
+
+    @staticmethod 
+    def get_sid(uid, seller_id): 
+        rows = app.db.execute('''
+        SELECT o.pid 
+        FROM OrdersProducts, SellersOrders s, UsersOrders u 
+        WHERE u.uid = :uid AND s.seller_id = seller_id
+        ''', 
+        uid=uid, product_id=product_id)
+        return [Review(*row) for row in rows]

@@ -4,6 +4,7 @@ from .models.review import Review
 from flask import session
 
 from flask import Blueprint
+
 bp = Blueprint('reviews', __name__)
 
 @bp.route('/review/search', methods=['GET'])
@@ -46,31 +47,28 @@ def insert_product_review():
     uid = session["user"]
     rating = request.args.get('rating')
     if not rating: 
-        review_content = "-1"
-        rating = "-1"
-        review_time = "-1" 
-        seller_id = "-1" 
-        product_id = "-1"
-        
+        return render_template('reviews/product_review_submission.html')
     else: 
         review_content = request.args.get('review_content')
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
         Review.create_product_review(uid,review_content, rating, review_time, seller_id, product_id)
+        
 
     return render_template('reviews/product_review_submission.html')
+
+@bp.route('/review/product/submit_link/', methods=['GET'])
+def submit_link(): 
+    print("Thank you for your review!")
+    return "Click."
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
     uid = session["user"]
     rating = request.args.get('rating')
     if not rating: 
-        review_content = "-1"
-        rating = "-1"
-        review_time = "2022-11-09"
-        seller_id = "0" 
-        product_id = "0"
+        return render_template('reviews/seller_review_submission.html')
     else: 
         content = request.args.get('review_content')
         review_time = request.args.get('review_time')

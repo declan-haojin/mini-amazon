@@ -160,8 +160,9 @@ class Review:
         app.db.execute('''
         UPDATE Reviews 
         SET review_content = review_content
-        WHERE review_id = :review_id AND 
-        ''')
+        WHERE review_id = :review_id 
+        ''', 
+        review_id=review_id)
         return 
 
 
@@ -171,7 +172,8 @@ class Review:
             app.db.execute('''
             DELETE FROM Reviews
             WHERE review_id = :review_id
-            ''')
+            ''', 
+            review_id = review_id)
         else: 
             print('Please enter a valid review id')
         return

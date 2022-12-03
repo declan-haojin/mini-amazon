@@ -23,6 +23,9 @@ def search():
 
     return render_template('products/search.html', products = products)
 
+@bp.route('/product/list', methods = ['GET'])
+def list():
+    return render_template('products/list.html')
 
 @bp.route('/product/<product_id>', methods = ['GET'])
 def index(product_id):

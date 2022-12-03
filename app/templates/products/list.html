@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="container text-center">
+        <h1>Product Category</h1>
+
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action active" href="/product/search?category=All&sort=ASC&keywords=">All</a>
+            <a class="list-group-item list-group-item-action" href="/product/search?category=Electronics&sort=ASC&keywords=">Electronics</a>
+            <a class="list-group-item list-group-item-action" href="/product/search?category=Books&sort=ASC&keywords=">Books</a>
+            <a class="list-group-item list-group-item-action" href="/product/search?category=Clothing&sort=ASC&keywords=">Clothing</a>
+            <a class="list-group-item list-group-item-action" href="/product/search?category=Beauty+Products&sort=ASC&keywords=">Beauty Products</a>
+            <a class="list-group-item list-group-item-action" href="/product/search?category=VideoGames&sort=ASC&keywords=">Video Games</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

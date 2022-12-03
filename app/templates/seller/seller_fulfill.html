@@ -7,11 +7,13 @@
 
         <table class="table table-striped table-hover table-bordered text-center">
             <tr>
-                <th>Order id</th>
-                <th>Num of items</th>
-                <th>Status</th>
+                <th>Time of Order</th>
                 <th>Product id</th>
-                <th>uid</th>
+                <th>Number of items</th>
+                <th>User id</th>
+                <th>Order id</th>
+                <th>Status</th>
+                <th>Fulfillment</th>
             </tr>
             {% for arg in args %}
                 <tr>
@@ -20,6 +22,12 @@
                     <td>{{ arg[2] }}</td>
                     <td>{{ arg[3] }}</td>
                     <td>{{ arg[4] }}</td>
+                    <td>{{ arg[5] }}</td>
+                    <td>
+                        <form method="POST">
+                            <button type="submit" name={{ arg[3] }}>Search</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

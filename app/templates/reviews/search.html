@@ -27,8 +27,16 @@
                     <td>{{ review.sid }}</td>
                     <td>{{ review.pid }}</td>
                     <td>{{ review.review_type }}</td>
-                    <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
-                    <td><input type="button" value="Update" onclick="updateRow(this)"></td>
+                    <td>
+                        <a href="/review/product">
+                            <button type="button" action="">Update</button>
+                        </a>
+                    </td>
+                    <td>
+                        <form method="POST">
+                            <button type="submit" name="delete" value={{ review.id }}>Delete</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
@@ -36,18 +44,5 @@
     </div>
 </div>
 
-<script>
-    function deleteRow(r) {
-      var i = r.parentNode.parentNode.rowIndex;
-      document.getElementById("myTable").deleteRow(i);
-    }
-</script>
-
-<script>
-    function updateRow(r) {
-      var i = r.parentNode.parentNode.rowIndex;
-      document.getElementById("myTable").deleteRow(i);
-    }
-</script>
 
 {% endblock %}

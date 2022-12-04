@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Product Detail Page
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and session['role'] == 'seller' and is_creator%}
 <a href={{ url_for('products.edit', product_id=product.product_id) }}><button type="button" class="btn btn-primary btn-lg">Edit</button></a>
 {% endif %}
 </h1>

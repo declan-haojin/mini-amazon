@@ -28,31 +28,18 @@
                 <input type="text" name="review_time">
             </div>
 
+            <div class="col-auto">
+                <input type="hidden" name="seller_id", value={{request.args.get('seller_id')}}>
+            </div>
+
             <p style="line-height:10cm;"></p>
 
             <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter seller_id:">
+                <input type="text" readonly class="form-control-plaintext" value="Enter review:">
             </div>
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
-                <input type="text" name="seller_id">
-            </div>
-
-            <p style="line-height:5cm;"></p>
-
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter product_id">
-            </div>
-            <p style="line-height:10cm;"></p>
-            <div class="col-auto">
-                <input type="text" name="product_id">
-            </div>
-
-            <p style="line-height:10cm;"></p>
-
-            <div class="form-group">
-                <label for="review_content">Enter Review: </label>
-                <textarea class="form-control" id="review_content" rows="3"></textarea>
+                <input type="text" name="review_content">
             </div>
 
             <p style="line-height:3.5cm;"></p>

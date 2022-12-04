@@ -63,9 +63,6 @@ def insert_product_review():
             Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
             return redirect('/review/search')
 
-
-    return render_template('reviews/product_review_submission.html')
-
 @bp.route('/review/product/submit_link/', methods=['GET'])
 def submit_link():
     print("Thank you for your review!")
@@ -81,11 +78,10 @@ def insert_seller_review():
         content = request.args.get('review_content')
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
-        product_id = request.args.get('product_id')
+        product_id = Review.get_product_id(uid, seller_id)
         review_content = request.args.get('review_content')
-
-    Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
-    return redirect('/review/search')
+        Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
+        return redirect('/review/search')
 
 @bp.route('/review/update', methods=['GET', 'POST'])
 def update_review_page(): 

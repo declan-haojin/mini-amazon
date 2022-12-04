@@ -131,11 +131,17 @@ class Review:
             WHERE product_id = :product_id
             ''',
             product_id=product_id)
+
+        if num_rating == [(0,)]:
+            return 0, 0
         
-        return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
+        else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
    
     @staticmethod
     def sum_seller_review(seller_id):
+        if not seller_id:
+            return 0, 0
+
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
@@ -149,8 +155,13 @@ class Review:
             WHERE seller_id = :seller_id
             ''',
             seller_id=seller_id)
+
+        # print(num_rating)
+
+        if num_rating == [(0,)]:
+            return 0, 0
         
-        return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
+        else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
 
 # Edit/delete reviews 
 

@@ -6,15 +6,11 @@
     <div class="container text-center">
         <h1>Update your review</h1>
 
-        <form class="row justify-content-center" methods="GET" action="/review/seller">
+        <form class="row justify-content-center" method="POST" action="/review/search">
 
-            <p style="line-height:10cm;"></p>
-
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
-            </div>
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
                 <input type="text" name="rating">
             </div>
 
@@ -31,29 +27,13 @@
             <p style="line-height:10cm;"></p>
 
             <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter seller_id:">
+                <input type="text" readonly class="form-control-plaintext" value="Enter review:">
             </div>
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
-                <input type="text" name="seller_id">
+                <input type="text" name="review_content">
             </div>
 
-            <p style="line-height:5cm;"></p>
-
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter product_id">
-            </div>
-            <p style="line-height:10cm;"></p>
-            <div class="col-auto">
-                <input type="text" name="product_id">
-            </div>
-
-            <p style="line-height:10cm;"></p>
-
-            <div class="form-group">
-                <label for="review_content">Enter Review: </label>
-                <textarea class="form-control" id="review_content" rows="3"></textarea>
-            </div>
 
             <p style="line-height:3.5cm;"></p>
 

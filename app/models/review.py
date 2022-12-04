@@ -16,7 +16,6 @@ class Review:
         self.rating = rating
         self.review_type = review_type
 
-
 # get reviews
 
     @staticmethod
@@ -133,7 +132,7 @@ class Review:
             ''',
             product_id=product_id)
         
-        return avg_rating[0], num_rating[0]
+        return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
    
     @staticmethod
     def sum_seller_review(seller_id):
@@ -151,18 +150,19 @@ class Review:
             ''',
             seller_id=seller_id)
         
-        return avg_rating[0], num_rating[0]
+        return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
 
 # Edit/delete reviews 
 
     @staticmethod 
-    def update_review(review_id, review_content, rating): 
-        app.db.execute('''
+    def update_review(review_id, review_content, review_time, rating): 
+        rows = app.db.execute('''
         UPDATE Reviews 
-        SET review_content = review_content, rating = rating
+        SET review_content = :review_content, rating = :rating, review_time = :review_time
         WHERE review_id = :review_id 
         ''', 
-        review_id=review_id)
+        review_id=review_id, review_content=review_content, review_time=review_time, rating=rating)
+        print(rows)
         return 
 
 
@@ -174,28 +174,28 @@ class Review:
             WHERE review_id = :review_id
             ''', 
             review_id = review_id)
-        else: 
-            print('Please enter a valid review id')
         return
 
 # Get seller_id or product_id 
 
     @staticmethod 
-    def get_sid(uid, product_id): 
-        rows = app.db.execute('''
-        SELECT s.sid 
-        FROM OrdersProducts, SellersOrders s, UsersOrders u 
-        WHERE u.uid = :uid AND o.product_id = product_id
+    def get_seller_id(uid, product_id): 
+        row = app.db.execute('''
+        SELECT seller_id 
+        FROM UsersOrders, OrdersSellers, OrdersProducts
+        Where uid = :uid AND product_id = :product_id
         ''', 
         uid=uid, product_id=product_id)
-        return [Review(*row) for row in rows]
+        # print(list(row[0])[0])
+        return list(row[0])[0]
 
     @staticmethod 
-    def get_sid(uid, seller_id): 
-        rows = app.db.execute('''
-        SELECT o.pid 
-        FROM OrdersProducts, SellersOrders s, UsersOrders u 
-        WHERE u.uid = :uid AND s.seller_id = seller_id
+    def get_product_id(uid, seller_id): 
+        row = app.db.execute('''
+        SELECT product_id 
+        FROM UsersOrders, OrdersSellers, OrdersProducts
+        Where uid = :uid AND seller_id = :seller_id
         ''', 
-        uid=uid, product_id=product_id)
-        return [Review(*row) for row in rows]
+        uid=uid, seller_id=seller_id)
+        return list(row[0])[0]
+

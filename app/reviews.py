@@ -55,9 +55,13 @@ def insert_product_review():
     else:
         review_content = request.args.get('review_content')
         review_time = request.args.get('review_time')
-        seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
-        Review.create_product_review(uid,review_content, rating, review_time, seller_id, product_id)
+        seller_id = Review.get_seller_id(uid, product_id)
+        if seller_id == None: 
+            return redirect('/review/search')
+        else: 
+            Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            return redirect('/review/search')
 
 
     return render_template('reviews/product_review_submission.html')
@@ -78,11 +82,22 @@ def insert_seller_review():
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
+        review_content = request.args.get('review_content')
 
-    Review.create_seller_review(uid,review_content, rating, review_time, seller_id, product_id)
+    Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
+    return redirect('/review/search')
 
-    return render_template('reviews/seller_review_submission.html')
-
-@bp.route('/review/update', methods=['GET'])
+@bp.route('/review/update', methods=['GET', 'POST'])
 def update_review_page(): 
-    
+    if request.method == "GET":
+        return render_template('reviews/update.html')
+    else: 
+        rating = request.args.get('rating')
+        review_content = request.args.get('review_content')
+        review_time = request.args.get('review_time')
+        review_id = request.args.get('review_id')
+        print(review_content)
+        Review.update_review(review_id, review_content, review_time, rating)
+
+        return redirect('/review/search')
+        

@@ -92,6 +92,7 @@ class Inventory:
         query_dict = [record._mapping for record in rows]
         return query_dict
 
+
     @staticmethod
     def get_status(order_id):
         str = app.db.execute('''

@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Product Detail Page</h1>
+<h1>Product Detail Page
+{% if current_user.is_authenticated %}
+<a href={{ url_for('products.edit', product_id=product.product_id) }}><button type="button" class="btn btn-primary btn-lg">Edit</button></a>
+{% endif %}
+</h1>
 
 
 <li>Product Name: {{ product.name }} </li>
 <li>Category: {{ product.category }} </li>
 <li>Description: {{ product.description }} </li>
 <li>Price: {{ product.price }}</li>
-<li>Availability: {{ product.price }}</li>
+<li>Availability: {{ "Available" if product.available else "Not available" }}</li>
 <li><img src = {{product.image}}></li>
 
 <hr></hr>

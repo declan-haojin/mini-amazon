@@ -4,17 +4,13 @@
 <div class="d-flex justify-content-center">
 
     <div class="container text-center">
-        <h1>Product Review Submission</h1>
+        <h1>Update your review</h1>
 
-        <form class="row justify-content-center" methods="GET" action="/review/product">
+        <form class="row justify-content-center" method="POST" action="/review/search">
 
-            <p style="line-height:10cm;"></p>
-
-            <div class="col-auto">
-                <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
-            </div>
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
                 <input type="text" name="rating">
             </div>
 
@@ -30,15 +26,6 @@
 
             <p style="line-height:10cm;"></p>
 
-
-            <p style="line-height:5cm;"></p>
-            <p style="line-height:10cm;"></p>
-            <div class="col-auto">
-                <input type="hidden" name="product_id" value={{request.args.get('product_id')}}>
-            </div>
-
-            <p style="line-height:10cm;"></p>
-
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter review:">
             </div>
@@ -46,6 +33,7 @@
             <div class="col-auto">
                 <input type="text" name="review_content">
             </div>
+
 
             <p style="line-height:3.5cm;"></p>
 

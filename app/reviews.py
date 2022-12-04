@@ -1,15 +1,19 @@
 from flask import render_template
-from flask import request
+from flask import request, redirect
 from .models.review import Review
 from flask import session
 
 from flask import Blueprint
 bp = Blueprint('reviews', __name__)
 
-@bp.route('/review/search', methods=['GET'])
+@bp.route('/review/search', methods=['GET', 'POST'])
 def search():
-    reviews = Review.get_all_by_uid(session["user"])
-    return render_template('reviews/search.html', reviews=reviews)
+    if request.form.get('delete'):
+        Review.remove_review(request.form.get('delete'))
+        return redirect('/review/search')
+    else:
+        reviews = Review.get_all_by_uid(session["user"])
+        return render_template('reviews/search.html', reviews=reviews)
 
 @bp.route('/review/search_product', methods=['GET'])
 def search_product_review():
@@ -45,38 +49,54 @@ def search_hw4():
 def insert_product_review():
     uid = session["user"]
     rating = request.args.get('rating')
-    if not rating: 
-        review_content = "-1"
-        rating = "-1"
-        review_time = "-1" 
-        seller_id = "-1" 
-        product_id = "-1"
-        
-    else: 
+    if not rating:
+        return render_template('reviews/product_review_submission.html')
+    else:
         review_content = request.args.get('review_content')
         review_time = request.args.get('review_time')
-        seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
-        Review.create_product_review(uid,review_content, rating, review_time, seller_id, product_id)
+        seller_id = Review.get_seller_id(uid, product_id)
+        if seller_id == None: 
+            return redirect('/review/search')
+        else: 
+            Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            return redirect('/review/search')
+
 
     return render_template('reviews/product_review_submission.html')
+
+@bp.route('/review/product/submit_link/', methods=['GET'])
+def submit_link():
+    print("Thank you for your review!")
+    return "Click."
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
     uid = session["user"]
     rating = request.args.get('rating')
-    if not rating: 
-        review_content = "-1"
-        rating = "-1"
-        review_time = "2022-11-09"
-        seller_id = "0" 
-        product_id = "0"
-    else: 
+    if not rating:
+        return render_template('reviews/seller_review_submission.html')
+    else:
         content = request.args.get('review_content')
         review_time = request.args.get('review_time')
         seller_id = request.args.get('seller_id')
         product_id = request.args.get('product_id')
+        review_content = request.args.get('review_content')
 
-    Review.create_seller_review(uid,review_content, rating, review_time, seller_id, product_id)
+    Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
+    return redirect('/review/search')
 
-    return render_template('reviews/seller_review_submission.html')
+@bp.route('/review/update', methods=['GET', 'POST'])
+def update_review_page(): 
+    if request.method == "GET":
+        return render_template('reviews/update.html')
+    else: 
+        rating = request.args.get('rating')
+        review_content = request.args.get('review_content')
+        review_time = request.args.get('review_time')
+        review_id = request.args.get('review_id')
+        print(review_content)
+        Review.update_review(review_id, review_content, review_time, rating)
+
+        return redirect('/review/search')
+        

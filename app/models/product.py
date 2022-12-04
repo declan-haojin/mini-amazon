@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, product_id, category, image, name, description, price, available):
+    def __init__(self, product_id, category, image, name, description, price, available, created_by):
         self.product_id = product_id
         self.category = category
         self.image = image
@@ -10,6 +10,7 @@ class Product:
         self.description = description
         self.price = price
         self.available = available
+        self.created_by = created_by
 
 
     def __repr__(self):
@@ -18,7 +19,7 @@ class Product:
     @staticmethod
     def get(product_id):
         rows = app.db.execute('''
-            SELECT product_id, category, image, name, description, price, available
+            SELECT *
             FROM Products
             WHERE product_id = :id
             ''',

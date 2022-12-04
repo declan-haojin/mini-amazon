@@ -93,6 +93,17 @@ class Inventory:
         return query_dict
 
     @staticmethod
+    def get_seller_id_by_pid(pid):
+        rows = app.db.execute('''
+        SELECT seller_id
+        FROM Inventories
+        WHERE Inventories.product_id = :pid
+        ''',
+        pid=pid)
+        query_dict = [record._mapping for record in rows]
+        return query_dict
+
+    @staticmethod
     def get_status(order_id):
         str = app.db.execute('''
         SELECT status

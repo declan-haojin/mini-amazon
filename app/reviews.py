@@ -4,7 +4,6 @@ from .models.review import Review
 from flask import session
 
 from flask import Blueprint
-
 bp = Blueprint('reviews', __name__)
 
 @bp.route('/review/search', methods=['GET', 'POST'])

@@ -84,7 +84,27 @@ class Product:
         ''')
         return rows
 
-
+    @staticmethod
+    def update(product_id, category, image, name, description, price, available):
+        rows = app.db.execute("""
+            UPDATE Products
+            SET category=:category,
+            image=:image,
+            name=:name,
+            description=:description,
+            price=:price,
+            available=:available
+            WHERE product_id=:product_id
+            """,
+            category=category,
+            image=image,
+            name=name,
+            description=description,
+            price=price,
+            available=available,
+            product_id=product_id)
+        print(rows)
+        return None
 
 
 
@@ -98,3 +118,4 @@ class Product:
             ''',
             k=k)
         return [Product(*row) for row in rows]
+

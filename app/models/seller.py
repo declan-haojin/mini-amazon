@@ -18,15 +18,13 @@ class Seller(UserMixin):
 
     @staticmethod
     def get_by_sid(sid):
-        if not (sid.isdigit()):
-            return
         rows = app.db.execute('''
         SELECT firstname, lastname
         FROM Sellers
         WHERE seller_id = :sid
         ''',
         sid=sid)
-        return rows
+        return [record._mapping for record in rows][0]
 
     @staticmethod
     def get_by_auth(email, password):

@@ -23,6 +23,10 @@ class LoginForm(FlaskForm):
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.form.get('role') != None:
+        print(request.form.get('role'))
+        session['role'] = request.form.get('role')
+
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
     form = LoginForm()
@@ -67,7 +71,7 @@ def index():
     else:
         return redirect(url_for('users.login'))
 
-    
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -118,7 +122,7 @@ class CashForm(FlaskForm):
     deposit = SubmitField('Add Money')
     withdraw = SubmitField('Withdraw Money')
     complete_withdraw = SubmitField('Withdraw Entire Amount')
-    
+
 @bp.route('/user/balance', methods=['GET', 'POST'])
 def balances():
     form = CashForm()

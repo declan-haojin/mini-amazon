@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request
+from flask import request, redirect
 from .models.product import Product
 from .models.review import Review
 from .models.inventory import Inventory
@@ -47,10 +47,26 @@ def index(product_id):
             seller_name = first_lastname['firstname'] + " " + first_lastname['lastname']
             sellers.append([seller_name, quantity])
 
-        print(sellers)
         avg_rating, num_rating = Review.sum_product_review(product_id)
         # print(product)
     return render_template('products/index.html', product = product, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating, sellers = sellers)
+
+
+@bp.route('/product/<product_id>/edit', methods=['GET', 'POST'])
+def edit(product_id):
+    if request.method == 'GET':
+        return render_template('products/edit.html', product = Product.get(product_id))
+    else:
+        Product.update(
+            product_id=product_id,
+            category=request.form['category'],
+            image=request.form['image'],
+            name=request.form['name'],
+            description=request.form['description'],
+            price=request.form['price'],
+            available=request.form['available']
+        )
+        return redirect('/product/' + product_id)
 
 
 @bp.route('/product/hw4', methods=['GET'])

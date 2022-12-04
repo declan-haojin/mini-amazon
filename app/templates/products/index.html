@@ -8,7 +8,7 @@
 <li>Category: {{ product.category }} </li>
 <li>Description: {{ product.description }} </li>
 <li>Price: {{ product.price }}</li>
-<li>Availability: {{ product.price }}</li>
+<li>Availability: {{ "Available" if product.available else "Not available" }}</li>
 <li><img src = {{product.image}}></li>
 
 <hr></hr>

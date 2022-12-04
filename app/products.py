@@ -9,11 +9,6 @@ from .models.seller import Seller
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
-def has_access(product_id, seller_id):
-    sellerid_quantity = Inventory.get_by_pid(product_id)
-    if seller_id in sellerid_quantity
-
-
 @bp.route('/product/search', methods=['GET'])
 def search():
     # If there's no search input, display all the products

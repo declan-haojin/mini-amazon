@@ -167,13 +167,12 @@ class Review:
 
     @staticmethod 
     def update_review(review_id, review_content, review_time, rating): 
-        rows = app.db.execute('''
+        app.db.execute('''
         UPDATE Reviews 
         SET review_content = :review_content, rating = :rating, review_time = :review_time
         WHERE review_id = :review_id 
         ''', 
         review_id=review_id, review_content=review_content, review_time=review_time, rating=rating)
-        print(rows)
         return 
 
 

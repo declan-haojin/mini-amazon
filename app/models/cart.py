@@ -66,13 +66,15 @@ class Cart:
 
 
     @staticmethod
-    def remove_item(product_id):
+    def delete(uid, seller_id, product_id):
         app.db.execute(
         '''
         DELETE FROM Cart
-        WHERE product_id = :product_id
-        ''',
-        product_id = product_id)
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = product_id
+            ''',
+            uid=uid,
+            seller_id=seller_id,
+            product_id=product_id)
         return
 
     @staticmethod

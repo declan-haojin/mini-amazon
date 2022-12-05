@@ -6,10 +6,9 @@ class Inventory:
         self.product_id = pid
         self.inventory_quantity = qty
 
+
     @staticmethod
     def get_by_sid(sid):
-        if not (sid.isdigit()):
-            return
         rows = app.db.execute('''
         SELECT Products.product_id, Products.name, Inventories.inventory_quantity
         FROM Inventories, Products
@@ -23,12 +22,23 @@ class Inventory:
 
     @staticmethod
     def add_item_to_inventory(sid, pid, qty):
-        if not (sid.isdigit()):
-            return "Invalid seller id, please enter an integer."
         if not (pid.isdigit()):
             return "Invalid product id, please enter an integer."
         if not (qty.isdigit()):
             return "Invalid quantity, please enter an integer."
+        if (int(sid) > 2147483647) :
+            return "seller id out of range."
+        if (int(pid) > 2147483647) :
+            return "product id out of range."
+        i = app.db.execute('''
+        SELECT COUNT(*)
+        FROM Products
+        WHERE product_id = :pid
+        ''',
+        pid = pid
+        )
+        if (i[0][0]==0):
+            return "No such product, please create the new product."
         row = app.db.execute('''
         SELECT Inventories.seller_id, Inventories.product_id, Inventories.inventory_quantity
         FROM Inventories
@@ -51,8 +61,6 @@ class Inventory:
             retstr = "Seller " + str(sid) + ": You have successfully added " + str(qty) + " units of item " + str(pid) + " to your inventory."
             return retstr
         else:
-            qty = int(qty)
-            qty += row[0][2]
             app.db.execute('''
             UPDATE Inventories
             SET inventory_quantity = :qty
@@ -65,21 +73,22 @@ class Inventory:
             retstr = "Seller " + str(sid) + ": You have successfully modified the count of item " + str(pid) + " to " + str(qty) + "."
             return retstr
 
+
     @staticmethod
     def get_order(sid):
-        if not (sid.isdigit()):
-            return
         rows = app.db.execute('''
-        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, UsersOrders.uid, Orders.order_id, Orders.status
-        FROM Orders, OrdersSellers, UsersOrders, Purchases
+        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, UsersOrders.uid, Orders.order_id, Users.address, Orders.status
+        FROM Orders, OrdersSellers, UsersOrders, Purchases, Users
         WHERE OrdersSellers.seller_id = :sid
         AND OrdersSellers.order_id = Orders.order_id
         AND UsersOrders.order_id = Orders.order_id
         AND Purchases.purchase_id = Orders.purchase_id
+        AND UsersOrders.uid = Users.uid
         ORDER BY Purchases.time_purchased DESC
         ''',
         sid=sid)
         return rows
+
 
     @staticmethod
     def get_by_pid(pid):
@@ -102,6 +111,7 @@ class Inventory:
         ''',
         order_id=order_id)
         return str
+
 
     @staticmethod
     def change_order_status_spc(order_id, status):

@@ -25,3 +25,13 @@ class Seller(UserMixin):
         ''',
         sid=sid)
         return [record._mapping for record in rows][0]
+
+    @staticmethod
+    def get_seller_object(sid):
+        rows = app.db.execute("""
+        SELECT *
+        FROM Sellers
+        WHERE seller_id = :sid
+        """,
+        sid=sid)
+        return Seller(*(rows[0])) if rows else None

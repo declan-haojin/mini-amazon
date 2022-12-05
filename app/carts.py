@@ -1,9 +1,5 @@
 from flask import render_template
-<<<<<<< HEAD
 from flask import request, flash, redirect
-=======
-from flask import request, redirect
->>>>>>> 325b2877129409eac23a9f5c1c2ba34a6bda3a26
 from .models.cart import Cart
 from .models.product import Product
 from flask import session
@@ -23,13 +19,13 @@ def detail():
     else:
         carts = Cart.get_all(uid=session['user'], quantity=0)
         return render_template('carts/detail.html', carts = carts)
-        
+
 
 # @bp.route('/cart/quantity', methods=['GET', 'POST'])
 # def update_quantity():
 #     if request.method == "GET":
 #         return render_template('carts/quantity.html')
-#     else: 
+#     else:
 #         product_id = request.args.get('product_id')
 #         Cart.update_quantity(request.form['save'], product_id)
 #         return redirect('/cart/detail')

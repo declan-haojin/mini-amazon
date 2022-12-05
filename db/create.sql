@@ -33,7 +33,7 @@ CREATE TABLE Sellers (
     balance DECIMAL(12,2) NOT NULL,
     firstname VARCHAR NOT NULL,
     lastname VARCHAR NOT NULL,
-    address VARCHAR NOT NULL,
+    address VARCHAR,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL
 );

@@ -9,6 +9,7 @@ from flask import session
 from .models.user import User
 from .models.purchase import Purchase
 from .models.order import Order
+from .models.seller import Seller
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -82,6 +83,10 @@ def register():
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data):
+            Seller.create(form.firstname.data,
+                         form.lastname.data,
+                         form.email.data,
+                         form.password.data)
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)

@@ -3,7 +3,7 @@ from flask import current_app as app
 
 class Cart:
     """
-    This is just a TEMPLATE for Cart, you should change this by adding or 
+    This is just a TEMPLATE for Cart, you should change this by adding or
         replacing new columns, etc. for your design.
     """
     def __init__(self, uid, product_id, cart_quantity, unit_price, total_price):
@@ -36,7 +36,7 @@ ORDER BY time_added_to_cart DESC
                               uid=uid,
                               since=since)
         return [Cart(*row) for row in rows]
-        
+
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
@@ -53,7 +53,7 @@ WHERE c.uid = :uid AND p.product_id = c.product_id
         rows = app.db.execute('''
 SELECT c.uid, p.name, cart_quantity, unit_price, (unit_price * cart_quantity) AS total_price
 FROM Products p, Cart c
-WHERE uid = :uid AND p.product_id = c.product_id
+WHERE c.uid = :uid AND p.product_id = c.product_id
 ''',
                               uid=uid,
                               cart_quantity=quantity)

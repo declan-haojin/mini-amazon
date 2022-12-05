@@ -47,7 +47,7 @@ def add():
 
     # If there's no this item in the cart
     if Cart.get(user_id, seller_id, product_id) == None:
-        Cart.create(user_id, seller_id, product_id, 1, Product.get(product_id))
+        Cart.create(user_id, seller_id, product_id, 1)
     # Else we add 1 quantity to it
     else:
         Cart.update_quantity(user_id, seller_id, product_id, 1)

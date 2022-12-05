@@ -2,13 +2,24 @@ from flask import current_app as app
 
 
 class Cart:
-    def __init__(self, uid, seller_id, product_id, cart_quantity, unit_price):
+    def __init__(self, uid, seller_id, product_id, cart_quantity):
         self.uid = uid
         self.seller_id = seller_id
         self.product_id = product_id
         self.cart_quantity = cart_quantity
-        self.unit_price = unit_price
-        self.total_price = cart_quantity*unit_price
+
+    @staticmethod
+    def create(uid, seller_id, product_id, cart_quantity):
+        rows = app.db.execute("""
+            INSERT INTO Cart(uid, seller_id, product_id, cart_quantity)
+            VALUES(:uid, :seller_id, :product_id, :cart_quantity)
+            RETURNING *
+            """,
+            uid=uid,
+            seller_id=seller_id,
+            product_id=product_id,
+            cart_quantity=cart_quantity)
+        return Cart(*(rows[0]))
 
     @staticmethod
     def get(uid, seller_id, product_id):
@@ -24,18 +35,18 @@ class Cart:
         return Cart(*(rows[0])) if rows else None
 
     @staticmethod
-    def get_all(uid, quantity):
+    def get_all(uid):
         rows = app.db.execute(
-        '''
-        SELECT c.uid, p.name, p.product_id, cart_quantity, unit_price, (unit_price * cart_quantity) AS total_price
-        FROM Products p, Cart c
-        WHERE c.uid = :uid AND p.product_id = c.product_id
-        ''',
-                              uid=uid,
-                              cart_quantity=quantity)
+            '''
+                SELECT *
+                FROM Cart
+                WHERE uid = :uid
+            ''',
+            uid=uid)
         return [Cart(*row) for row in rows]
 
-#Delete item
+
+
     @staticmethod
     def remove_item(product_id):
         app.db.execute(

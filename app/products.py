@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, flash
 from flask import request, redirect, session
 from .models.product import Product
 from .models.review import Review
@@ -82,6 +82,12 @@ def create():
             created_by=session['user']
         )
         return redirect('/product/' + str(product_id))
+
+@bp.route('/product/<product_id>/delete', methods=['GET'])
+def delete(product_id):
+    Product.delete(product_id=product_id)
+    flash('The product has been deleted successfully!')
+    return redirect('/product/search')
 
 
 @bp.route('/product/hw4', methods=['GET'])

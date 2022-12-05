@@ -124,6 +124,14 @@ class Product:
         print(rows)
         return rows[0][0]
 
+    @staticmethod
+    def delete(product_id):
+        app.db.execute('''
+        DELETE FROM Products
+        WHERE product_id = :product_id
+        ''',
+        product_id = product_id)
+        return
 
     @staticmethod
     def get_k_most_expensive(k):

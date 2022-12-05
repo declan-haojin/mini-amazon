@@ -4,6 +4,9 @@ from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.product import Product
 from .models.review import Review
+from flask_login import login_user, logout_user, current_user
+
+from flask import session
 
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
@@ -26,7 +29,11 @@ def index(sid) :
 
 @bp.route('/seller/search', methods=['GET'])
 def sellers_search():
-    sid = request.args.get('sid')
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    sid = session['user']
+    print(sid)
+    print(type(sid))
     if sid is None:
         products = []
     else:
@@ -37,7 +44,9 @@ def sellers_search():
 
 @bp.route('/seller/add', methods=['GET'])
 def sellers_add():
-    sid = request.args.get('sid')
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    sid = session['user']
     pid = request.args.get('pid')
     qty = request.args.get('qty')
     if request.args == {}:
@@ -46,8 +55,11 @@ def sellers_add():
         args = Inventory.add_item_to_inventory(sid, pid, qty)
     return render_template('seller/seller_add.html', args = args)
 
-@bp.route('/seller/fulfill/<sid>', methods = ['GET', 'POST'])
-def sellers_fulfill(sid):
+@bp.route('/seller/fulfill/', methods = ['GET', 'POST'])
+def sellers_fulfill():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    sid = session['user']
     if request.form.get('order_id') != None:
         oid = request.form.get('order_id')
         status = Inventory.get_status(oid)
@@ -55,10 +67,9 @@ def sellers_fulfill(sid):
         else: 
             status = "Confirmed"
             Inventory.change_order_status_spc(oid,status)
-        return redirect('/seller/fulfill/' + sid)
+        return redirect('/seller/fulfill/')
     else:
         args = Inventory.get_order(sid)
-
         retlist = []
         for arg in args:
             newarg = []
@@ -67,10 +78,11 @@ def sellers_fulfill(sid):
             newarg.append(arg[2])
             newarg.append(arg[3])
             newarg.append(arg[4])
-            if "Delivered" in arg[5] : newarg.append("Delivered")
-            elif "Out for Delivery" in arg[5] : newarg.append("Out for Delivery")
-            elif "Confirmed" in arg[5] : newarg.append("Confirmed")
-            elif "Processing" in arg[5] : newarg.append("Processing")
+            newarg.append(arg[5])
+            if "Delivered" in arg[6] : newarg.append("Delivered")
+            elif "Out for Delivery" in arg[6] : newarg.append("Out for Delivery")
+            elif "Confirmed" in arg[6] : newarg.append("Confirmed")
+            elif "Processing" in arg[6] : newarg.append("Processing")
             retlist.append(newarg)
-            Inventory.change_order_status_spc(newarg[4], newarg[5])
+            Inventory.change_order_status_spc(newarg[4], newarg[6])
         return render_template('seller/seller_fulfill.html', args = retlist)

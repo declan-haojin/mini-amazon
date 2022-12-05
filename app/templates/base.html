@@ -18,12 +18,18 @@
         <li><a href="\" class="nav-link px-2 text-white">Home</a></li>
         <li><a href="/product/list" class="nav-link px-2 text-white">Products</a></li>
         {% if current_user.is_authenticated %}
+        {% if session['role'] != "seller" %}
         <li><a href="/cart/detail" class="nav-link px-2 text-white">My Cart</a></li>
         {% endif %}
+        {% endif %}
       </ul>
-      <a href="/product/search">
-        <button type="button" class="btn btn-outline-light me-2">Search</button>
-      </a>
+      {% if current_user.is_authenticated %}
+        {% if session['role'] != "seller" %}
+          <a href="/product/search">
+            <button type="button" class="btn btn-outline-light me-2">Search</button>
+          </a>
+        {% endif %}
+      {% endif %}
       <div class="text-end">
         {% if current_user.is_authenticated %}
         {% if session['role'] == 'buyer'%}

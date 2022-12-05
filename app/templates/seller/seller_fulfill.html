@@ -12,6 +12,7 @@
                 <th>Number of items</th>
                 <th>User id</th>
                 <th>Order id</th>
+                <th>Address</th>
                 <th>Status</th>
                 <th>Fulfillment</th>
             </tr>
@@ -23,6 +24,7 @@
                     <td>{{ arg[3] }}</td>
                     <td>{{ arg[4] }}</td>
                     <td>{{ arg[5] }}</td>
+                    <td>{{ arg[6] }}</td>
                     <td>
                         <form method = "POST">
                             <button type="submit" name="order_id" value = {{ arg[4] }}>Fulfill</button>

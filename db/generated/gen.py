@@ -7,11 +7,11 @@ import numpy as np
 import image
 from IPython import embed
 
-num_users = 1000
-num_products = 1000
-num_reviews = 1000
-num_sellers = 1000
-num_orders = 2000
+num_users = 100
+num_products = 100
+num_reviews = 100
+num_sellers = 100
+num_orders = 200
 num_history = num_users
 
 Faker.seed(0)
@@ -76,11 +76,12 @@ def gen_products(num_products):
                 ]), unique=False
             )[0]
             image_url = images[pid]
+            created_by = 0
 
             description = fake.sentence(nb_words=4)[:-1]
             if available == 'true':
                 available_pids.append(pid)
-            writer.writerow([pid, category, image_url, name, description, price, available])
+            writer.writerow([pid, category, image_url, name, description, price, available, created_by])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 

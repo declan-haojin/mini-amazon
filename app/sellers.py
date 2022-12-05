@@ -32,15 +32,14 @@ def sellers_search():
     if not current_user.is_authenticated:
         return redirect('/login')
     sid = session['user']
-    print(sid)
-    print(type(sid))
+    seller = Seller.get_seller_object(sid)
     if sid is None:
         products = []
     else:
         products = Inventory.get_by_sid(sid)
     if products is None:
         products = []
-    return render_template('seller/seller_search.html', products = products)
+    return render_template('seller/seller_search.html', products = products, seller = seller)
 
 @bp.route('/seller/add', methods=['GET'])
 def sellers_add():

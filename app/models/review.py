@@ -16,7 +16,6 @@ class Review:
         self.rating = rating
         self.review_type = review_type
 
-
 # get reviews
 
     @staticmethod
@@ -132,11 +131,17 @@ class Review:
             WHERE product_id = :product_id
             ''',
             product_id=product_id)
+
+        if num_rating == [(0,)]:
+            return 0, 0
         
-        return avg_rating[0], num_rating[0]
+        else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
    
     @staticmethod
     def sum_seller_review(seller_id):
+        if not seller_id:
+            return 0, 0
+
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
@@ -150,18 +155,24 @@ class Review:
             WHERE seller_id = :seller_id
             ''',
             seller_id=seller_id)
+
+        # print(num_rating)
+
+        if num_rating == [(0,)]:
+            return 0, 0
         
-        return avg_rating[0], num_rating[0]
+        else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
 
 # Edit/delete reviews 
 
     @staticmethod 
-    def update_review(review_id, review_content): 
+    def update_review(review_id, review_content, review_time, rating): 
         app.db.execute('''
         UPDATE Reviews 
-        SET review_content = review_content
-        WHERE review_id = :review_id AND 
-        ''')
+        SET review_content = :review_content, rating = :rating, review_time = :review_time
+        WHERE review_id = :review_id 
+        ''', 
+        review_id=review_id, review_content=review_content, review_time=review_time, rating=rating)
         return 
 
 
@@ -171,7 +182,30 @@ class Review:
             app.db.execute('''
             DELETE FROM Reviews
             WHERE review_id = :review_id
-            ''')
-        else: 
-            print('Please enter a valid review id')
+            ''', 
+            review_id = review_id)
         return
+
+# Get seller_id or product_id 
+
+    @staticmethod 
+    def get_seller_id(uid, product_id): 
+        row = app.db.execute('''
+        SELECT seller_id 
+        FROM UsersOrders, OrdersSellers, OrdersProducts
+        Where uid = :uid AND product_id = :product_id
+        ''', 
+        uid=uid, product_id=product_id)
+        # print(list(row[0])[0])
+        return list(row[0])[0]
+
+    @staticmethod 
+    def get_product_id(uid, seller_id): 
+        row = app.db.execute('''
+        SELECT product_id 
+        FROM UsersOrders, OrdersSellers, OrdersProducts
+        Where uid = :uid AND seller_id = :seller_id
+        ''', 
+        uid=uid, seller_id=seller_id)
+        return list(row[0])[0]
+

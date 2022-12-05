@@ -21,6 +21,7 @@
         {% if session['role'] != "seller" %}
         <li><a href="/cart/detail" class="nav-link px-2 text-white">My Cart</a></li>
         {% endif %}
+        
         {% endif %}
       </ul>
       {% if current_user.is_authenticated %}

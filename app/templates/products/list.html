@@ -13,6 +13,15 @@
             <a class="list-group-item list-group-item-action" href="/product/search?category=Beauty+Products&sort=ASC&keywords=">Beauty Products</a>
             <a class="list-group-item list-group-item-action" href="/product/search?category=VideoGames&sort=ASC&keywords=">Video Games</a>
         </div>
+
+        <br>
+
+        {% if current_user.is_authenticated and session['role'] == "seller" %}
+        <a href="/product/create">
+            <button type="button" class="btn btn-outline-dark">Create New Product</button>
+        </a>
+        {% endif %}
     </div>
+
 </div>
 {% endblock %}

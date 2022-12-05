@@ -65,24 +65,34 @@ class Cart:
         return [Cart(*row) for row in rows]
 
 #Delete item
-    @staticmethod 
-    def remove_item(product_id): 
+    @staticmethod
+    def remove_item(product_id):
         app.db.execute(
         '''
         DELETE FROM Cart
         WHERE product_id = :product_id
-        ''', 
+        ''',
+        product_id = product_id)
+        return
+
+    @staticmethod
+    def add_item(product_id, seller_id):
+        app.db.execute(
+        '''
+        DELETE FROM Cart
+        WHERE product_id = :product_id
+        ''',
         product_id = product_id)
         return
 
 # #Update quantity
-#     @staticmethod 
-#     def update_quantity(cart_quantity, product_id): 
+#     @staticmethod
+#     def update_quantity(cart_quantity, product_id):
 #         app.db.execute(
 #         '''
 #         UPDATE Cart
 #         SET cart_quantity = :cart_quantity
 #         WHERE product_id = :product_id
-#         ''', 
+#         ''',
 #         cart_quantity=cart_quantity, product_id=product_id)
 #         return

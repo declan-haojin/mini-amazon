@@ -28,7 +28,7 @@ SELECT pg_catalog.setval('public.reviews_review_id_seq',
                          (SELECT MAX(review_id)+1 FROM Reviews),
                          false);
 
-\COPY Cart FROM 'Cart.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY Cart FROM 'Cart.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY Inventories FROM 'Inventories.csv' WITH DELIMITER ',' NULL '' CSV
 

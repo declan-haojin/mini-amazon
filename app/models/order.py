@@ -23,6 +23,26 @@ class Order:
         ''', uid=uid)
         return [Order(*row) for row in rows]
 
+    @staticmethod
+    def create(uid, purchase_id, order_id, number_of_items, amount, product_id, status="Processing"):
+        rows = app.db.execute("""
+            INSERT INTO Orders(uid, purchase_id, order_id, number_of_items, amount, status, product_id)
+            VALUES (:uid, :purchase_id, :order_id, :number_of_items, :amount, :status, :product_id)
+            """,
+            uid=uid,
+            purchase_id=purchase_id,
+            order_id=order_id,
+            number_of_items=number_of_items,
+            amount=amount,
+            status=status,
+            product_id=product_id)
+        print(rows)
+        return rows[0][0]
+
+    @staticmethod
+    def update():
+        pass
+
     # @staticmethod
     # def get_by_uid(uid):
     #     rows = app.db.execute("""

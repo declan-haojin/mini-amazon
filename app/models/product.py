@@ -121,7 +121,7 @@ class Product:
             price=price,
             available=available,
             created_by=created_by)
-        print(rows)
+        # print(rows)
         return rows[0][0]
 
     @staticmethod

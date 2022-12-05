@@ -23,6 +23,11 @@
                     <td>{{ cart.total_price }}</td>
                     <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
                     <td>
+                        <form method="POST" action="/cart/delete">
+                            <button type="submit" name="delete" value={{ product_id }}>Delete</button>
+                        </form>
+                    </td>
+                    <td>
                         <form action="/review/seller">
                         <div>
                           <button type="submit" class="btn btn-primary mb-3">Review this Seller</button>
@@ -50,6 +55,7 @@
       document.getElementById("myTable").deleteRow(i);
     }
 </script>
+
 
 <script>
     function finalTotal(carts) {

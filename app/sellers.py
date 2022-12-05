@@ -12,7 +12,7 @@ from flask import Blueprint
 bp = Blueprint('seller', __name__)
 
 @bp.route('/seller/<sid>', methods = ['GET'])
-def index(sid) :
+def index(sid):
     if sid is None:
         products = []
         names = []
@@ -62,7 +62,7 @@ def sellers_fulfill():
         oid = request.form.get('order_id')
         status = Inventory.get_status(oid)
         if status[0][0]!= "Processing": print("NOT VALID")
-        else: 
+        else:
             status = "Confirmed"
             Inventory.change_order_status_spc(oid,status)
         return redirect('/seller/fulfill/')

@@ -47,7 +47,7 @@ def index(product_id):
             sellers.append([seller_name, quantity])
 
         avg_rating, num_rating = Review.sum_product_review(product_id)
-
+    print(session['user'], product.created_by)
     return render_template('products/index.html', product = product, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating, sellers = sellers, is_creator = (session['user'] == product.created_by))
 
 

@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request
+from flask import request, flash, redirect
 from .models.cart import Cart
 from .models.product import Product
 from flask import session
@@ -16,6 +16,14 @@ def detail():
     carts = Cart.get_all(uid=session['user'], quantity=0)
     return render_template('carts/detail.html', carts = carts)
 
+@bp.route('/cart/add', methods=['GET'])
+def add():
+    print(request.args['product_id'])
+    flash("The product is added to the cart!")
+    return redirect('/product/' + request.args['product_id'])
+
+    # carts = Cart.get_all(uid=session['user'], quantity=0)
+    # return render_template('carts/detail.html', carts = carts)
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():

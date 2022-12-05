@@ -44,7 +44,7 @@ def index(product_id):
             quantity = seller['inventory_quantity']
             first_lastname = Seller.get_by_sid(seller_id)
             seller_name = first_lastname['firstname'] + " " + first_lastname['lastname']
-            sellers.append([seller_name, quantity])
+            sellers.append([seller_name, quantity, str(seller_id)])
 
         avg_rating, num_rating = Review.sum_product_review(product_id)
     print(session['user'], product.created_by)

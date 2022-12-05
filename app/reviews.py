@@ -2,6 +2,7 @@ from flask import render_template
 from flask import request, redirect
 from .models.review import Review
 from flask import session
+from datetime import datetime
 
 from flask import Blueprint
 
@@ -88,11 +89,10 @@ def update_review_page():
     if request.method == "GET":
         return render_template('reviews/update.html')
     else: 
-        rating = request.args.get('rating')
-        review_content = request.args.get('review_content')
-        review_time = request.args.get('review_time')
         review_id = request.args.get('review_id')
-        print(review_content)
+        rating = request.form['rating']
+        review_content = request.form['review_content']
+        review_time = datetime.now()
         Review.update_review(review_id, review_content, review_time, rating)
 
         return redirect('/review/search')

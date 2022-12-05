@@ -9,12 +9,12 @@
 </h1>
 
 
-<li>Product Name: {{ product.name }} </li>
+<h2>Product Name: {{ product.name }} </h2>
 <li>Category: {{ product.category }} </li>
 <li>Description: {{ product.description }} </li>
 <li>Price: {{ product.price }}</li>
 <li>Availability: {{ "Available" if product.available else "Not available" }}</li>
-<li><img src = {{product.image}}></li>
+<li><img src = {{product.image}} height="377"></li>
 
 <hr></hr>
 <h1>Sellers</h1>
@@ -25,8 +25,9 @@
     </tr>
     {% for seller in sellers %}
         <tr>
-            <td>{{ seller[0] }}</td>
+            <td><a href="{{ '/seller/' + seller[2] }}">{{ seller[0] }}</a></td>
             <td>{{ seller[1]}}</td>
+            <td><a href={{ url_for('carts.add', product_id=product.product_id, seller_id=seller[2]) }}>Add to cart</a></td>
         </tr>
     {% endfor %}
 </table>

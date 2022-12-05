@@ -4,8 +4,20 @@
 <div class="d-flex justify-content-center">
 
     <div class="container text-center">
-        <h1>This is a page for seller {{names[1]}} {{names[0]}} (id: {{sid}})</h1>
-
+        <h1>Seller Detail Page</h1>
+        <h2>This seller has theme items in his/her inventory:</h2>
+        <div class="container text-center" >
+            <div class="col d-flex justify-content-center">
+            <div class="card" >
+            <div class="card-header">
+              <b>{{ seller.firstname + " " + seller.lastname }}</b>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Seller ID: {{ seller.id }}</li>
+              <li class="list-group-item">Address: {{ seller.address }}</li>
+              <li class="list-group-item">Email: {{ seller.email }}</li>
+            </ul>
+        </div>
         <table class="table table-striped table-hover table-bordered text-center">
             <tr>
                 <th>Product ID</th>
@@ -23,6 +35,7 @@
     </div>
 </div>
 
+<h2>Check out this seller's rating(s):</h2>
 <li>Average rating: {{ avg_rating }}</li>
 <li>Number of rating: {{ num_rating }}</li>
 

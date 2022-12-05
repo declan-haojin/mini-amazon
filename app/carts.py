@@ -14,12 +14,12 @@ def order():
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
-    if request.method == "POST":
-        Cart.delete(request.form['delete'])
-        return redirect('/cart/detail')
-    else:
-        carts = Cart.get_all(uid=current_user.id)
-        return render_template('carts/detail.html', carts = carts)
+    carts = Cart.get_all(uid=current_user.id)
+    cart_total_price = 0
+    for cart in carts:
+        cart_total_price += cart.total_price
+
+    return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price)
 
 @bp.route('/cart/remove_item', methods=['POST'])
 def remove_item():

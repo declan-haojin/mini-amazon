@@ -4,6 +4,7 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.cart import Cart
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -11,6 +12,7 @@ bp = Blueprint('index', __name__)
 
 @bp.route('/')
 def index():
+    print(Cart.get(3, 2, 3))
     # get all available products for sale:
     # products = Product.get_all(True)
     # purchases = []

@@ -3,6 +3,7 @@ from flask import request, flash, redirect
 from .models.cart import Cart
 from .models.product import Product
 from flask import session
+from flask_login import current_user
 
 from flask import Blueprint
 bp = Blueprint('carts', __name__)
@@ -17,7 +18,7 @@ def detail():
         Cart.remove_item(request.form['delete'])
         return redirect('/cart/detail')
     else:
-        carts = Cart.get_all(uid=session['user'], quantity=0)
+        carts = Cart.get_all(uid=current_user.id)
         return render_template('carts/detail.html', carts = carts)
 
 
@@ -40,7 +41,18 @@ def detail():
 
 @bp.route('/cart/add', methods=['GET'])
 def add():
-    print(request.args['product_id'])
+    user_id = current_user.id
+    seller_id = request.args['seller_id']
+    product_id = request.args['product_id']
+
+    # If there's no this item in the cart
+    current_item = Cart.get(user_id, seller_id, product_id)
+    if current_item == None:
+        Cart.create(user_id, seller_id, product_id, 1)
+    # Else we add 1 quantity to it
+    else:
+        Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + 1)
+
     flash("The product is added to the cart!")
     return redirect('/product/' + request.args['product_id'])
 

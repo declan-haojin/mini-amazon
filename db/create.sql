@@ -79,10 +79,10 @@ CREATE TABLE Reviews (
 
 CREATE TABLE Cart (
     uid INT NOT NULL REFERENCES Users(uid),
+    seller_id INT NOT NULL REFERENCES Sellers(seller_id),
     product_id INT NOT NULL REFERENCES Products(product_id),
     cart_quantity INT NOT NULL,
-    unit_price DECIMAL(12,2) NOT NULL,
-    PRIMARY KEY(uid, product_id)
+    PRIMARY KEY(uid, seller_id, product_id)
 );
 
 CREATE TABLE Inventories (

@@ -25,7 +25,7 @@ class Cart:
         rows = app.db.execute("""
             UPDATE Cart
             SET cart_quantity=:cart_quantity
-            WHERE uid=:uid, seller_id=:seller_id, product_id=:product_id
+            WHERE uid=:uid AND seller_id=:seller_id AND product_id=:product_id
             RETURNING *
             """,
             uid=uid,

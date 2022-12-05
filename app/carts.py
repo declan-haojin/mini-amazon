@@ -18,7 +18,7 @@ def detail():
         Cart.remove_item(request.form['delete'])
         return redirect('/cart/detail')
     else:
-        carts = Cart.get_all(uid=session['user'], quantity=0)
+        carts = Cart.get_all(uid=session['user'])
         return render_template('carts/detail.html', carts = carts)
 
 

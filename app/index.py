@@ -12,7 +12,7 @@ bp = Blueprint('index', __name__)
 
 @bp.route('/')
 def index():
-    # print(Cart.update(1, 2, 3, 4)
+    # print(Cart.create(0, 2, 3, 4))
     # get all available products for sale:
     # products = Product.get_all(True)
     # purchases = []

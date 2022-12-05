@@ -21,6 +21,19 @@ class Cart:
             cart_quantity=cart_quantity)
         return Cart(*(rows[0]))
 
+    def update(uid, seller_id, product_id, cart_quantity):
+        rows = app.db.execute("""
+            UPDATE Cart
+            SET cart_quantity=:cart_quantity
+            WHERE uid=:uid, seller_id=:seller_id, product_id=:product_id
+            RETURNING *
+            """,
+            uid=uid,
+            seller_id=seller_id,
+            product_id=product_id,
+            cart_quantity=cart_quantity)
+        return Cart(*(rows[0]))
+
     @staticmethod
     def get(uid, seller_id, product_id):
         rows = app.db.execute(

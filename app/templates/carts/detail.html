@@ -22,8 +22,8 @@
                     <td>{{ cart.unit_price }}</td>
                     <td>{{ cart.total_price }}</td>
                     <td>
-                        <form method="POST" action="">
-                            <button type="submit" name="delete" value={{ cart.product_id }} class="btn btn-danger mb-3">Delete</button>
+                        <form method="POST" action={{ url_for('carts.remove_item', uid=cart.uid, seller_id=cart.seller_id, product_id=cart.product_id) }}>
+                            <button type="submit" name="delete" class="btn btn-danger mb-3">Delete</button>
                         </form>
                     </td>
                     <td>

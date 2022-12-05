@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request, flash, redirect
+from flask import request, flash, redirect, url_for
 from .models.cart import Cart
 from .models.product import Product
 from flask import session
@@ -15,12 +15,17 @@ def order():
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
     if request.method == "POST":
-        Cart.remove_item(request.form['delete'])
+        Cart.delete(request.form['delete'])
         return redirect('/cart/detail')
     else:
         carts = Cart.get_all(uid=current_user.id)
         return render_template('carts/detail.html', carts = carts)
 
+@bp.route('/cart/remove_item', methods=['POST'])
+def remove_item():
+    Cart.delete(request.args['uid'], request.args['seller_id'], request.args['product_id'])
+    flash("The item has been deleted successfully")
+    return redirect(url_for('carts.detail'))
 
 # @bp.route('/cart/quantity', methods=['GET', 'POST'])
 # def update_quantity():

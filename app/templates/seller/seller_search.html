@@ -3,8 +3,22 @@
 {% block content %}
 <div class="d-flex justify-content-center">
 
+    <div class="container text-center" >
+        <div class="col d-flex justify-content-center">
+        <div class="card" >
+        <div class="card-header">
+          <b>{{ seller.firstname + " " + seller.lastname }}</b>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Seller ID: {{ seller.id }}</li>
+          <li class="list-group-item">Address: {{ seller.address }}</li>
+          <li class="list-group-item">Email: {{ seller.email }}</li>
+          <li class="list-group-item">Seller balance: $ {{ seller.balance }}</li>
+        </ul>
+      </div>
+
     <div class="container text-center">
-        <h1>Welcome, Seller. You may check your inventory here.</h1>
+        <h1>Welcome, {{ seller.firstname + " " + seller.lastname }}. You may check your inventory here.</h1>
         <button onclick="location.href='/seller/add'" type="button">
         Click here to update your inventory</button>
         <button onclick="location.href='/seller/fulfill'" type="button">

@@ -27,6 +27,16 @@ class Seller(UserMixin):
         return [record._mapping for record in rows][0]
 
     @staticmethod
+    def get_seller_object(sid):
+        rows = app.db.execute("""
+        SELECT *
+        FROM Sellers
+        WHERE seller_id = :sid
+        """,
+        sid=sid)
+        return Seller(*(rows[0])) if rows else None
+
+    @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
             SELECT *

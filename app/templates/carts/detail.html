@@ -10,6 +10,7 @@
             <tr>
                 <th>User ID</th>
                 <th>Product Name</th>
+                <th>Product ID</th>
                 <th>Item Quantity</th>
                 <th>Item Unit Price</th>
                 <th>Item Total Price</th>
@@ -17,11 +18,22 @@
             {% for cart in carts %}
                 <tr>
                     <td>{{ cart.uid }}</td>
+                    <td>{{ cart.name }}</td>
                     <td>{{ cart.product_id }}</td>
-                    <td><div contentEditable="true">{{ cart.cart_quantity }}</div></td>
+                    <td><div contenteditable="true">{{ cart.cart_quantity }}</div>
+                        <!-- <form method="POST" action="/cart/quantity">
+                            <div>
+                              <button type="submit" name="save" value={{ cart.cart_quantity }}>Save</button>
+                            </div>
+                        </form> -->
+                    </td>
                     <td>{{ cart.unit_price }}</td>
                     <td>{{ cart.total_price }}</td>
-                    <td><input type="button" value="Delete" onclick="deleteRow(this)"></td>
+                    <td>
+                        <form method="POST" action="">
+                            <button type="submit" name="delete" value={{ cart.product_id }}>Delete</button>
+                        </form>
+                    </td>
                     <td>
                         <form action="/review/seller">
                         <div>
@@ -44,12 +56,6 @@
     </div>
 </div>
 
-<script>
-    function deleteRow(r) {
-      var i = r.parentNode.parentNode.rowIndex;
-      document.getElementById("myTable").deleteRow(i);
-    }
-</script>
 
 <script>
     function finalTotal(carts) {

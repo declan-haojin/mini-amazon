@@ -35,3 +35,14 @@ class Seller(UserMixin):
         """,
         sid=sid)
         return Seller(*(rows[0])) if rows else None
+
+    def create(fname, lname, email, pwd):
+        app.db.execute("""
+        INSERT INTO Sellers(balance, firstname, lastname, email, password)
+        VALUES(:balance, :firstname, :lastname, :email, :password)
+        """,
+        balance = 0,
+        firstname = fname,
+        lastname = lname,
+        email = email,
+        password = pwd)

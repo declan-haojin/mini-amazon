@@ -1,4 +1,6 @@
 from flask import current_app as app
+from app.models.seller import Seller
+from app.models.product import Product
 
 
 class Cart:
@@ -7,6 +9,10 @@ class Cart:
         self.seller_id = seller_id
         self.product_id = product_id
         self.cart_quantity = cart_quantity
+        self.seller_name = Seller.get_by_sid(seller_id).firstname + " " + Seller.get_by_sid(seller_id).lastname
+        self.product_name = Product.get(product_id).name
+        self.unit_price = Product.get(product_id).price
+        self.total_price = self.unit_price * cart_quantity
 
     @staticmethod
     def create(uid, seller_id, product_id, cart_quantity):
@@ -57,7 +63,6 @@ class Cart:
             ''',
             uid=uid)
         return [Cart(*row) for row in rows]
-
 
 
     @staticmethod

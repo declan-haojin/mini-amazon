@@ -1,11 +1,6 @@
-from flask_login import UserMixin
 from flask import current_app as app
-from werkzeug.security import generate_password_hash, check_password_hash
 
-from .. import login
-
-
-class Seller(UserMixin):
+class Seller():
     def __init__(self, sid, balance, firstname, lastname, address, email, password):
         self.sid = sid
         self.id = sid
@@ -15,6 +10,16 @@ class Seller(UserMixin):
         self.email = email
         self.password = password
         self.balance = 0 if balance == None else balance
+
+    @staticmethod
+    def get(sid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Sellers
+        WHERE seller_id = :sid
+        ''',
+        sid=sid)
+        return Seller(*(rows[0])) if rows else None
 
     @staticmethod
     def get_by_sid(sid):

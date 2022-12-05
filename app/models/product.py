@@ -107,6 +107,22 @@ class Product:
         print(rows)
         return None
 
+    @staticmethod
+    def create(category, image, name, description, price, available, created_by):
+        rows = app.db.execute("""
+            INSERT INTO Products(category, image, name, description, price, available, created_by)
+            VALUES(:category, :image, :name, :description, :price, :available, :created_by)
+            RETURNING product_id
+            """,
+            category=category,
+            image=image,
+            name=name,
+            description=description,
+            price=price,
+            available=available,
+            created_by=created_by)
+        print(rows)
+        return rows[0][0]
 
 
     @staticmethod

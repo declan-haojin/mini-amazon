@@ -67,6 +67,22 @@ def edit(product_id):
         )
         return redirect('/product/' + product_id)
 
+@bp.route('/product/create', methods=['GET', 'POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('products/create.html')
+    else:
+        product_id = Product.create(
+            category=request.form['category'],
+            image=request.form['image'],
+            name=request.form['name'],
+            description=request.form['description'],
+            price=request.form['price'],
+            available=request.form['available'],
+            created_by=session['user']
+        )
+        return redirect('/product/' + str(product_id))
+
 
 @bp.route('/product/hw4', methods=['GET'])
 def search_hw4():

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+
+    <div class="container text-center">
+        <h1>Add New Product</h1>
+
+        <form class="row justify-content-center" method="POST" action="">
+
+            <p style="line-height:5cm;"></p>
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Availability:">
+                <select class="custom-select" name="available">
+                    <option value="1">Available</option>
+                    <option value="0">Not Available</option>
+                </select>
+            </div>
+
+            <p style="line-height:10cm;"></p>
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Category:">
+                <select class="custom-select" name="category">
+                    <option value="Electronics">Electronics</option>
+                    <option value="Books">Books</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Beauty Products">Beauty Products</option>
+                    <option value="Video Games">Video Games</option>
+                </select>
+            </div>
+
+            <p style="line-height:5cm;"></p>
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Name:">
+                <input type="text" name="name">
+            </div>
+
+            <p style="line-height:5cm;"></p>
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Price:">
+                <input type="text" name="price">
+            </div>
+
+            <p style="line-height:5cm;"></p>
+            <div class="col-auto">
+                <input type="text" readonly class="form-control-plaintext" value="Image link:">
+                <input type="text" name="image">
+            </div>
+
+
+            <p style="line-height:5cm;"></p>
+            <div class="form-group">
+                <label for="review_content">Description: </label>
+                <textarea class="form-control" name="description"></textarea>
+            </div>
+
+            <p style="line-height:3.5cm;"></p>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

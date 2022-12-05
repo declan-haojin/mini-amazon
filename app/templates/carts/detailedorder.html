@@ -2,11 +2,64 @@
 
 {% block content %}
 <div class="d-flex justify-content-center">
+
     <div class="container text-center">
         <h1>Detailed Order Page</h1>
+        <h3>Your order has been submitted! You can no longer modify your order.</h3>
+
+        <table id="myTable" class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>Product Name</th>
+                <th>Seller Name</th>
+                <th>Item Quantity</th>
+                <th>Item Final Price</th>
+                <th>Item Fullfillment Status</th>
+            </tr>
+            {% for cart in carts %}
+                <tr>
+                    <td><a href={{ url_for('products.index', product_id=cart.product_id) }}>{{ cart.product_name }}</td>
+                    <td><a href={{ url_for('seller.index', sid=cart.seller_id) }}>{{ cart.seller_name }}</td>
+                    <td>{{ cart.cart_quantity }}</td>
+                    <td>{{ cart.total_price }}</td>
+                    <td>{{ cart.seller_name }}</td>
+                    <td>
+                        <form action="/review/seller">
+                        <div>
+                          <button type="submit" class="btn btn-primary mb-3">Review this Seller</button>
+                        </div>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Order Fullfillment Status</h3>
+
+        <form class="row justify-content-center" action="/product/search">
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Return to Home Page</button>
+            </div>
+        </form>
+
+
     </div>
 </div>
 
-
-
 {% endblock %}
+
+<!--
+    <form method="GET" action="/cart/detail">
+    <label for="quantity"> {{ cart.cart_quantity }} </label>
+    <input type="number" name="quantity" min="1" max="50">
+    <input type="submit" value="Update">
+</form> -->
+
+<!-- <script>
+    function finalTotal(carts) {
+        var total = 0;
+        for (let cart in carts) {
+            total += carts[cart.total_price];
+        }
+        document.getElementById("demo").innerHTML = total;
+    }
+</script> -->

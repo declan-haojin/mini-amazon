@@ -10,7 +10,7 @@ bp = Blueprint('carts', __name__)
 
 @bp.route('/cart/order', methods=['GET'])
 def order():
-    return render_template('carts/order.html')
+    return render_template('carts/detailedorder.html')
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():

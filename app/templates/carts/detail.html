@@ -20,7 +20,13 @@
                     <td>{{ cart.uid }}</td>
                     <td>{{ cart.name }}</td>
                     <td>{{ cart.product_id }}</td>
-                    <td><div contentEditable="true">{{ cart.cart_quantity }}</div></td>
+                    <td><div contenteditable="true">{{ cart.cart_quantity }}</div>
+                        <!-- <form method="POST" action="/cart/quantity">
+                            <div>
+                              <button type="submit" name="save" value={{ cart.cart_quantity }}>Save</button>
+                            </div>
+                        </form> -->
+                    </td>
                     <td>{{ cart.unit_price }}</td>
                     <td>{{ cart.total_price }}</td>
                     <td>

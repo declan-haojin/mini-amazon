@@ -74,3 +74,15 @@ class Cart:
         ''', 
         product_id = product_id)
         return
+
+# #Update quantity
+#     @staticmethod 
+#     def update_quantity(cart_quantity, product_id): 
+#         app.db.execute(
+#         '''
+#         UPDATE Cart
+#         SET cart_quantity = :cart_quantity
+#         WHERE product_id = :product_id
+#         ''', 
+#         cart_quantity=cart_quantity, product_id=product_id)
+#         return

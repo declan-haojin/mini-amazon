@@ -46,11 +46,12 @@ def add():
     product_id = request.args['product_id']
 
     # If there's no this item in the cart
-    if Cart.get(user_id, seller_id, product_id) == None:
+    current_item = Cart.get(user_id, seller_id, product_id)
+    if current_item == None:
         Cart.create(user_id, seller_id, product_id, 1)
     # Else we add 1 quantity to it
     else:
-        Cart.update_quantity(user_id, seller_id, product_id, 1)
+        Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + 1)
 
     flash("The product is added to the cart!")
     return redirect('/product/' + request.args['product_id'])

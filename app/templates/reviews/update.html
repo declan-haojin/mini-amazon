@@ -11,7 +11,7 @@
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
-                <input type="text" name="rating">
+                <input type="text" name="rating" value="{{request.args.get('review_rating')}}">
             </div>
 
             <p style="line-height:10cm;"></p>
@@ -21,7 +21,7 @@
             </div>
             <p style="line-height:5cm;"></p>
             <div class="col-auto">
-                <input type="text" name="review_content">
+                <input type="text" name="review_content" value="{{request.args.get('review_content')}}">
             </div>
 
 

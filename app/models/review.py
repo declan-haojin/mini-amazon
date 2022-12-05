@@ -21,7 +21,7 @@ class Review:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-            SELECT id, uid, pid, review_time, review_content, sid, rating 
+            SELECT id, uid, pid, review_time, review_content, sid, rating
             FROM Reviews
             WHERE id = :id
             ORDER BY review_time DESC
@@ -86,9 +86,9 @@ class Review:
             ''',
             uid=uid)
         return [Review(*row) for row in rows]
- 
 
-# add reviews 
+
+# add reviews
 
     @staticmethod
     def create_product_review(uid, content, rating, time, seller_id, product_id, review_type="product"):
@@ -97,13 +97,13 @@ class Review:
                     VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
             ''',
             uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
-            
+
             # WHERE EXISTS (SELECT product_id FROM Orders WHERE Order.uid = :uid AND product_id = :product_id)
             # IF NOT EXISTS (SELECT review_id FROM Reviews WHERE uid = :uid AND product_id = :product_id)
-            # IF EXISTS (SELECT (u.uid, o.product_id) 
+            # IF EXISTS (SELECT (u.uid, o.product_id)
             # FROM (UsersOrders u JOIN OrdersProducts o ON u.order_id = u.order_id))
-        return 
-        
+        return
+
 
     @staticmethod
     def create_seller_review(uid, content, rating, time, seller_id, product_id, review_type="seller"):
@@ -112,9 +112,7 @@ class Review:
             VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
             ''',
             uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
-        return 
-
-# provide summary ratings 
+        return
 
     @staticmethod
     def sum_product_review(product_id):
@@ -134,9 +132,9 @@ class Review:
 
         if num_rating == [(0,)]:
             return 0, 0
-        
+
         else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
-   
+
     @staticmethod
     def sum_seller_review(seller_id):
         if not seller_id:
@@ -160,52 +158,52 @@ class Review:
 
         if num_rating == [(0,)]:
             return 0, 0
-        
+
         else: return '%.2f'%list(avg_rating[0])[0], list(num_rating[0])[0]
 
-# Edit/delete reviews 
+# Edit/delete reviews
 
-    @staticmethod 
-    def update_review(review_id, review_content, review_time, rating): 
+    @staticmethod
+    def update_review(review_id, review_content, review_time, rating):
         app.db.execute('''
-        UPDATE Reviews 
+        UPDATE Reviews
         SET review_content = :review_content, rating = :rating, review_time = :review_time
-        WHERE review_id = :review_id 
-        ''', 
+        WHERE review_id = :review_id
+        ''',
         review_id=review_id, review_content=review_content, review_time=review_time, rating=rating)
-        return 
+        return
 
 
-    @staticmethod 
-    def remove_review(review_id): 
-        if type(review_id) == int or review_id.isdigit(): 
+    @staticmethod
+    def remove_review(review_id):
+        if type(review_id) == int or review_id.isdigit():
             app.db.execute('''
             DELETE FROM Reviews
             WHERE review_id = :review_id
-            ''', 
+            ''',
             review_id = review_id)
         return
 
-# Get seller_id or product_id 
+# Get seller_id or product_id
 
-    @staticmethod 
-    def get_seller_id(uid, product_id): 
+    @staticmethod
+    def get_seller_id(uid, product_id):
         row = app.db.execute('''
-        SELECT seller_id 
+        SELECT seller_id
         FROM UsersOrders, OrdersSellers, OrdersProducts
         Where uid = :uid AND product_id = :product_id
-        ''', 
+        ''',
         uid=uid, product_id=product_id)
         # print(list(row[0])[0])
         return list(row[0])[0]
 
-    @staticmethod 
-    def get_product_id(uid, seller_id): 
+    @staticmethod
+    def get_product_id(uid, seller_id):
         row = app.db.execute('''
-        SELECT product_id 
+        SELECT product_id
         FROM UsersOrders, OrdersSellers, OrdersProducts
         Where uid = :uid AND seller_id = :seller_id
-        ''', 
+        ''',
         uid=uid, seller_id=seller_id)
         return list(row[0])[0]
 

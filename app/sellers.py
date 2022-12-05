@@ -21,11 +21,10 @@ def index(sid) :
         num_rating = 0
     else:
         products = Inventory.get_by_sid(sid)
-        names = Seller.get_by_sid(sid)
+        seller = Seller.get_seller_object(sid)
         reviews = Review.get_all_by_sid(sid)
         avg_rating, num_rating = Review.sum_seller_review(sid)
-
-    return render_template('seller/seller_index.html', products = products, sid = sid, names = names)
+    return render_template('seller/seller_index.html', products = products, seller = seller, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating)
 
 @bp.route('/seller/search', methods=['GET'])
 def sellers_search():

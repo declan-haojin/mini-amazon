@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container text-center">
+  <h1>Users</h1>
+  <br >
+  
+
+  <table class="table table-striped table-hover table-bordered text-center">
+      <tr>
+          <th>User ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Address</th>
+      </tr>
+      {% for u in users %}
+          <tr>
+              <td><a href="../user/{{ u.user_id }}">{{ u.user_id }}</a></td>
+              <td>{{u.firstname }}</td>
+              <td>{{ u.lastname }}</td>
+              <td>{{ u.email}}</td>
+              <td>{{ u.address}}</td>
+          </tr>
+      {% endfor %}
+  </table>
+
+
+
+{% endblock %}

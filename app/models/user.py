@@ -104,4 +104,11 @@ class User(UserMixin):
         """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
     
-        
+    
+    @staticmethod
+    def get_all():
+        rows = app.db.execute("""
+        SELECT *
+        FROM Users
+        """)
+        return User(*(rows[0])) if rows else None

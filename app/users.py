@@ -106,6 +106,12 @@ def getpurchases_hw4():
         purchases = Order.get(uid)
     return render_template('hw4_user.html',purchases = purchases)
 
+@bp.route('/user/all-profiles', methods=['GET'])
+def getall():
+    user = User.get_all()
+    return render_template('user/all-users.html', user=user)
+  
+
 # @bp.route('/user/balance', methods=['GET', 'POST'])
 # def balance_add():
 #     user = User.get(session['user'])

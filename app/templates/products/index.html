@@ -27,7 +27,15 @@
         <tr>
             <td><a href="{{ '/seller/' + seller[2] }}">{{ seller[0] }}</a></td>
             <td>{{ seller[1]}}</td>
-            <td><a href={{ url_for('carts.add', product_id=product.product_id, seller_id=seller[2]) }}>Add to cart</a></td>
+            <td>
+                <form method="POST" action="/cart/add">
+                    <input type="number" name="quantity" value="1">
+                    <input type="hidden" name="uid" value="{{ current_user.id }}">
+                    <input type="hidden" name="seller_id" value="{{ seller[2] }}">
+                    <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                    <button type="submit" class="btn btn-warning mb-3">Add to cart</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
 </table>

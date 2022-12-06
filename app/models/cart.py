@@ -39,7 +39,9 @@ class Cart:
             seller_id=seller_id,
             product_id=product_id,
             cart_quantity=cart_quantity)
-        return Cart(*(rows[0]))
+        return True
+        # print(rows)
+        # return Cart(*(rows[0]))
 
     @staticmethod
     def get(uid, seller_id, product_id):

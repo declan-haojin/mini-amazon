@@ -29,7 +29,6 @@
                     <td>{{ product[0] }}</td>
                     <td><a href={{ url_for('products.index', product_id=product[0]) }}> {{ product[1] }}</a></td>
                     <td>{{ product[2] }}</td>
-                    <td><a href={{ url_for('carts.add', product_id=product[0], seller_id=seller.id) }}>Add to cart</a></td>
                 </tr>
             {% endfor %}
         </table>

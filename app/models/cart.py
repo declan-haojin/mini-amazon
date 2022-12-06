@@ -14,6 +14,7 @@ class Cart:
         self.unit_price = Product.get(product_id).price
         self.total_price = self.unit_price * cart_quantity
 
+
     @staticmethod
     def create(uid, seller_id, product_id, cart_quantity):
         rows = app.db.execute("""
@@ -88,15 +89,3 @@ class Cart:
             image=image)
         print(rows)
         return rows[0][0]
-
-# #Update quantity
-#     @staticmethod
-#     def update_quantity(cart_quantity, product_id):
-#         app.db.execute(
-#         '''
-#         UPDATE Cart
-#         SET cart_quantity = :cart_quantity
-#         WHERE product_id = :product_id
-#         ''',
-#         cart_quantity=cart_quantity, product_id=product_id)
-#         return

@@ -18,46 +18,43 @@
                 <tr>
                     <td><a href={{ url_for('products.index', product_id=cart.product_id) }}>{{ cart.product_name }}</td>
                     <td><a href={{ url_for('seller.index', sid=cart.seller_id) }}>{{ cart.seller_name }}</td>
-                    <td>{{ cart.cart_quantity }}</td>
-                    <td>{{ cart.unit_price }}</td>
-                    <td>{{ cart.total_price }}</td>
+
+                    <td>
+                        <form method="POST" action="">
+                        <input type="number" name="cart_quantity" value="{{ cart.cart_quantity }}">
+                        <input type="hidden" name="uid" value="{{ cart.uid }}">
+                        <input type="hidden" name="seller_id" value="{{ cart.seller_id }}">
+                        <input type="hidden" name="product_id" value="{{ cart.product_id }}">
+                        <button type="submit" class="btn btn-warning mb-3">Save</button>
+                        </form>
+                    </td>
+
+                    <td>${{ cart.unit_price }}</td>
+                    <td>${{ cart.total_price }}</td>
+
                     <td>
                         <form method="POST" action={{ url_for('carts.remove_item', uid=cart.uid, seller_id=cart.seller_id, product_id=cart.product_id) }}>
                             <button type="submit" name="delete" class="btn btn-danger mb-3">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/review/seller">
-                        <div>
-                          <button type="submit" class="btn btn-primary mb-3">Review this Seller</button>
-                        </div>
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
 
+        <center><h1>Total price: ${{cart_total_price}}</h1></center>
+
+        <br>
 
         <form action="/cart/order">
             <div>
-              <button type="submit" class="btn btn-primary mb-3">Submit Cart as Order</button>
+              <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
             </div>
         </form>
-
 
     </div>
 </div>
 
 
-<script>
-    function finalTotal(carts) {
-        var total = 0;
-        for (let cart in carts) {
-            total += carts[cart.total_price];
-        }
-        document.getElementById("demo").innerHTML = total;
-    }
-</script>
 
 {% endblock %}
 

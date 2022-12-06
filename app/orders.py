@@ -1,5 +1,6 @@
 from flask import render_template, flash
 from flask import request, redirect, session
+from flask_login import current_user
 from .models.product import Product
 from .models.review import Review
 from .models.inventory import Inventory
@@ -12,4 +13,8 @@ bp = Blueprint('orders', __name__)
 
 @bp.route('/order/<order_id>', methods=['GET', 'POST'])
 def index(order_id):
-    return render_template('orders/index.html', order = Order.get(order_id))
+    order = Order.get(order_id)
+    if current_user.is_authenticated and order.uid == current_user.id:
+        return render_template('orders/index.html', order = order)
+    flash("You do not have access to this order!")
+    return redirect('/login')

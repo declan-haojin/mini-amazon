@@ -14,6 +14,7 @@ bp = Blueprint('orders', __name__)
 @bp.route('/order/<order_id>', methods=['GET', 'POST'])
 def index(order_id):
     order = Order.get(order_id)
+    print(order.uid)
     if current_user.is_authenticated and order.uid == current_user.id:
         return render_template('orders/index.html', order = order)
     flash("You do not have access to this order!")

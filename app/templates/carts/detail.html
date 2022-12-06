@@ -45,11 +45,11 @@
 
         <br>
 
-        <form action="/cart/order">
-            <div>
-              <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
-            </div>
-        </form>
+        <div>
+            <a href={{url_for('carts.submit')}}>
+            <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
+            </a>
+        </div>
 
     </div>
 </div>

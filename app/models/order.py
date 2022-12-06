@@ -13,6 +13,8 @@ class Order:
         self.status = status
         self.product = Product.get(product_id)
         self.time_purchased = Purchase.get(uid).time_purchased
+        self.product_name = self.product.name
+
         def get_seller_id():
             rows = app.db.execute("""
                 SELECT seller_id

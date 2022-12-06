@@ -1,10 +1,38 @@
 from flask import current_app as app
-
+from app.models.purchase import Purchase
+from app.models.seller import Seller
+from app.models.product import Product
 class Inventory:
     def __init__(self, sid, pid, qty):
         self.seller_id = sid
         self.product_id = pid
         self.inventory_quantity = qty
+        self.product = Product.get(pid)
+
+    @staticmethod
+    def get(seller_id, product_id):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Inventories
+        WHERE seller_id = :seller_id AND product_id = :product_id
+        ''',
+        seller_id=seller_id,
+        product_id=product_id)
+        return Inventory(*(rows[0])) if rows else None
+
+    @staticmethod
+    def update(sid, pid, qty):
+        rows = app.db.execute('''
+            UPDATE Inventories
+            SET inventory_quantity = :qty
+            WHERE seller_id = :sid AND product_id = :pid
+            RETURNING *
+            ''',
+            sid = sid,
+            pid = pid,
+            qty = qty
+        )
+        return Inventory(*(rows[0])) if rows else None
 
 
     @staticmethod

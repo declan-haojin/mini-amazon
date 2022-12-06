@@ -33,8 +33,9 @@
             {% endfor %}
         </table>
 
-        <h3>Order Fullfillment Status</h3>
-
+        <h4>
+            <td><a href={{ url_for('seller.sellers_fulfill', order_id=product_id) }}>Check Fullfillment Status</a></td>
+        </h4>
         <form class="row justify-content-center" action="/product/search">
             <div class="col-auto">
               <button type="submit" class="btn btn-primary mb-3">Return to Home Page</button>

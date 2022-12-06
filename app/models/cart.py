@@ -80,6 +80,15 @@ class Cart:
             seller_id=seller_id,
             product_id=product_id)
         return
+    @staticmethod
+    def clear_all(uid):
+        rows = app.db.execute(
+            '''
+            DELETE FROM Cart
+            WHERE uid = :uid
+            ''',
+            uid=uid)
+        return
 
     @staticmethod
     def submit():

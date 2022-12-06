@@ -67,7 +67,7 @@ class RegistrationForm(FlaskForm):
 def index():
     if current_user.is_authenticated:
         user = User.get(session['user'])
-        purchases = []
+        purchases = Purchase.get_by_uid(session['user'])
         return render_template('user/index.html', user=user, purchases=purchases)
     else:
         return redirect(url_for('users.login'))
@@ -103,8 +103,14 @@ def getpurchases_hw4():
     if uid is None:
         purchases = []
     else:
-        purchases = Order.get(uid)
+        purchases = Purchase.get(uid)
     return render_template('hw4_user.html',purchases = purchases)
+
+@bp.route('/user/all-profiles', methods=['GET'])
+def getall():
+    user = User.get_all()
+    return render_template('user/all-users.html', user=user)
+  
 
 # @bp.route('/user/balance', methods=['GET', 'POST'])
 # def balance_add():

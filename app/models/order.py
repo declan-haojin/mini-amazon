@@ -32,7 +32,9 @@ class Order:
             FROM Orders
             WHERE order_id = :order_id
         ''', order_id=order_id)
-        return Order(*(rows[0]))
+        print(Order(*(rows[0])))
+        return None
+        
 
     # @staticmethod
     # def get(uid):
@@ -44,20 +46,19 @@ class Order:
     #     return [Order(*row) for row in rows]
 
     @staticmethod
-    def create(uid, purchase_id, order_id, number_of_items, amount, status, product_id):
+    def create(uid, purchase_id, number_of_items, amount, status, product_id):
         rows = app.db.execute("""
-            INSERT INTO Orders(uid, purchase_id, order_id, number_of_items, amount, status, product_id)
-            VALUES (:uid, :purchase_id, :order_id, :number_of_items, :amount, :status, :product_id)
+            INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id)
+            VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id)
             RETURNING *
             """,
             uid=uid,
             purchase_id=purchase_id,
-            order_id=order_id,
             number_of_items=number_of_items,
             amount=amount,
             status=status,
             product_id=product_id)
-        return Order(*(rows[0]))
+        
 
     @staticmethod
     def update(uid, purchase_id, order_id, status):

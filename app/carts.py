@@ -4,10 +4,12 @@ from .models.cart import Cart
 from .models.order import Order
 from .models.product import Product
 from .models.user import User
+from .models.seller import Seller
+from .models.purchase import Purchase
 from .models.inventory import Inventory
 from flask import session
 from flask_login import current_user
-
+from datetime import datetime
 from flask import Blueprint
 bp = Blueprint('carts', __name__)
 
@@ -67,23 +69,32 @@ def submit():
 
     # Check balance
     if current_user.balance < cart_total_price:
-        flash("You don't have enough money for this purchase!")
+        diff=str(cart_total_price-current_user.balance)
+        flash("You don't have enough money for this purchase! Add $"+diff+" to complete current purchase!" )
         return redirect('/cart/detail')
     else:
-        current_user.decrement_balance(cart_total_price)
+        User.topup_balance(current_user.id,-cart_total_price)
 
     # Check inventory
     for cart in carts:
         curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
-        if curr_inventory != None and curr_inventory.inventory_quantity >= cart.cart_quantity:
-            Inventory.update(cart.seller_id, cart.product_id, curr_inventory.inventory_quantity - cart.cart_quantity)
-        else:
-            flash("There's not enough items left in the inventory!")
+        if curr_inventory == None or curr_inventory.inventory_quantity < cart.cart_quantity:
+            flash("There's not enough "+cart.product_name+" left in the inventory for this seller!")
             return redirect('/cart/detail')
-
-    # TODO: Create a new purchase here
+            
+    # Create Purchase, Update inventory   
+    index=int(str(Purchase.create_purchase(current_user.id,len(carts),cart_total_price, "done")).strip("[](),"))
+    flash(index)
+    for cart in carts:
+        curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
+        Inventory.update(cart.seller_id, cart.product_id, curr_inventory.inventory_quantity - cart.cart_quantity) 
+        Seller.topup_balance(cart.seller_id,cart.total_price)
+        Order.create(current_user.id,index,cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id)
+    
     # TODO: For every cart, create a new order, add the order to the new purchase, add money to each seller, delete the cart
     # TODO: return to the new purchase history page
+        Cart.clear_all(current_user.id)
+    return redirect('/cart/detail')
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():

@@ -103,12 +103,12 @@ class User(UserMixin):
         WHERE uid=:uid
         """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
-
-    def decrement_balance(self, amount):
+    
+    
+    @staticmethod
+    def get_all():
         rows = app.db.execute("""
-            UPDATE Users
-            SET balance=balance-:payment
-            WHERE uid=:uid
-            RETURNING balance
-        """,uid=self.uid,payment=amount)
-        return rows[0][0]
+        SELECT *
+        FROM Users
+        """)
+        return User(*(rows[0])) if rows else None

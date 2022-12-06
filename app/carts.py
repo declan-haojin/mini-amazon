@@ -2,6 +2,7 @@ from flask import render_template
 from flask import request, flash, redirect, url_for
 from .models.cart import Cart
 from .models.product import Product
+from .models.user import User
 from flask import session
 from flask_login import current_user
 
@@ -27,34 +28,11 @@ def detail():
 
     return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price)
 
-# @bp.route('/cart/update_item', methods=['POST'])
-# def update_item():
-#     Cart.update(request.args['uid'], request.args['seller_id'], request.args['product_id'], request.args['cart_quantity'])
-#     flash("The item quantity has been updated successfully")
-#     return redirect(url_for('carts.detail'))
-
 @bp.route('/cart/remove_item', methods=['POST'])
 def remove_item():
     Cart.delete(request.args['uid'], request.args['seller_id'], request.args['product_id'])
     flash("The item has been deleted successfully")
     return redirect(url_for('carts.detail'))
-
-# @bp.route('/cart/quantity', methods=['GET', 'POST'])
-# def update_quantity():
-#     if request.method == "GET":
-#         return render_template('carts/quantity.html')
-#     else:
-#         product_id = request.args.get('product_id')
-#         Cart.update_quantity(request.form['save'], product_id)
-#         return redirect('/cart/detail')
-
-
-# @bp.route('/cart/add', methods=['POST'])
-# def add():
-#     cart_quantity = request.args.get('cart_quantity')
-#     product_id = request.args.get('product_id')
-#     Cart.update_quantity(product_id, cart_quantity)
-
 
 @bp.route('/cart/add', methods=['GET', 'POST'])
 def add():
@@ -75,8 +53,12 @@ def add():
     flash("The product is added to the cart!")
     return redirect('/product/' + product_id)
 
-    # carts = Cart.get_all(uid=session['user'], quantity=0)
-    # return render_template('carts/detail.html', carts = carts)
+@bp.route('/cart/submit', methods=['POST', 'GET'])
+def submit():
+    if current_user.validate_purchase():
+        User.withdraw_balance()
+    return None
+    pass
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():

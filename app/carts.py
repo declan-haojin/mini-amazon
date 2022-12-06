@@ -82,8 +82,7 @@ def submit():
             return redirect('/cart/detail')
 
     # TODO: Create a new purchase here
-    # TODO: For every cart, create a new order, add money to each seller, decrement from seller inventory, delete the cart
-
+    # TODO: For every cart, create a new order, add the order to the new purchase, add money to each seller, delete the cart
     # TODO: return to the new purchase history page
 
 @bp.route('/cart/hw4', methods=['GET'])

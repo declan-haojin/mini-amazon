@@ -1,5 +1,5 @@
 from flask import current_app as app
-
+from flask import url_for
 
 class Product:
     def __init__(self, product_id, category, image, name, description, price, available, created_by):
@@ -11,6 +11,7 @@ class Product:
         self.price = price
         self.available = available
         self.created_by = created_by
+        self.link = url_for('products.index', product_id=product_id)
 
 
     def __repr__(self):

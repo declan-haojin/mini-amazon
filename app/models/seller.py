@@ -1,4 +1,5 @@
 from flask import current_app as app
+from flask import url_for
 
 class Seller():
     def __init__(self, sid, balance, firstname, lastname, address, email, password):
@@ -10,6 +11,8 @@ class Seller():
         self.email = email
         self.password = password
         self.balance = 0 if balance == None else balance
+        self.name = firstname + " " + lastname
+        self.link = url_for('seller.index', sid=sid)
 
     @staticmethod
     def get(sid):

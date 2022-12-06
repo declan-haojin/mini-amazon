@@ -6,6 +6,7 @@
 
 <h2>Order ID: {{ order.order_id }}</h2>
 <li>Belongs to Purchase ID: {{ order.purchase_id }}</li>
+<li>Purchased at {{ order.time_purchased }}</li>
 <li>Product: <a href={{ order.product.link }}>{{ order.product.name }} </a></li>
 <li><img src = {{order.product.image}} height="377"></li>
 <li>Seller: <a href={{ order.seller.link }}>{{ order.seller.name }}</a></li>

@@ -69,7 +69,8 @@ def submit():
 
     # Check balance
     if current_user.balance < cart_total_price:
-        flash("You don't have enough money for this purchase! Add $"+cart_total_price-current_user.balance+"to complete current purchase!" )
+        diff=str(cart_total_price-current_user.balance)
+        flash("You don't have enough money for this purchase! Add $"+diff+" to complete current purchase!" )
         return redirect('/cart/detail')
     else:
         User.topup_balance(current_user.id,-cart_total_price)

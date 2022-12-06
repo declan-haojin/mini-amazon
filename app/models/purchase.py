@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import current_app as app
 
 
@@ -31,8 +32,19 @@ class Purchase:
         return [Purchase(*row) for row in rows]
 
     # TODO: Purchase create method
-    # @staticmethod
-    # def create(uid, purchase_id, number_of_orders, total_amount, status, time_purchased):
+    @staticmethod
+    def create_purchase(uid,number_of_orders, total_amount, status):
+        size=app.db.execute('''
+        SELECT COUNT(*)
+        FROM Purchases;
+        ''')
+        app.db.execute('''
+        INSERT INTO Purchases(uid,  number_of_orders, total_amount, status, time_purchased)
+        VALUES(:uid, :number_of_orders, :total_amount, :status, :time_purchased)
+        ''',uid=uid, number_of_orders=number_of_orders, total_amount=total_amount, status=status, time_purchased=datetime.now())
+       
+        return size
+            
 
     # @staticmethod
     # def get_all_by_uid_since(uid, since):

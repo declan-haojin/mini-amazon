@@ -103,7 +103,7 @@ def getpurchases_hw4():
     if uid is None:
         purchases = []
     else:
-        purchases = Order.get(uid)
+        purchases = Purchase.get(uid)
     return render_template('hw4_user.html',purchases = purchases)
 
 @bp.route('/user/all-profiles', methods=['GET'])

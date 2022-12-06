@@ -46,7 +46,7 @@
           </tr>
           {% for purchase in purchases %}
               <tr>
-                  <td>{{ purchase.purchase_id }}</a></td>
+                  <td><a href="/purchase/{{ purchase.purchase_id }}">{{ purchase.purchase_id }}</a></td>
                   <td>{{ purchase.number_of_orders }}</td>
                   <td>{{ purchase.total_amount }}</td>
                   <td>{{ purchase.status}}</td>

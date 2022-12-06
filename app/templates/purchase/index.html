@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Purchase Detail Page</h1>
+
+
+<h2>Purchase ID: {{ purchase.purchase_id }} <span class="badge bg-primary">Status: {{ purchase.status }}</span></h2>
+<li>Purchased at {{ purchase.time_purchased }}</li>
+<li>Quantity: {{ purchase.number_of_orders}} </li>
+<li>Order total price: ${{ purchase.total_amount }}</li>
+
+<hr></hr>
+
+
+{% endblock %}

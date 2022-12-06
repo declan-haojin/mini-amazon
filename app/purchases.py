@@ -6,16 +6,17 @@ from .models.review import Review
 from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.order import Order
+from .models.purchase import Purchase
 
 
 from flask import Blueprint
-bp = Blueprint('orders', __name__)
+bp = Blueprint('purchases', __name__)
 
-@bp.route('/order/<order_id>', methods=['GET', 'POST'])
-def index(order_id):
-    order = Order.get(order_id)
-    # print(order)
-    if current_user.is_authenticated and order.uid == current_user.id:
-        return render_template('orders/index.html', order = order)
+@bp.route('/purchase/<purchase_id>', methods=['GET', 'POST'])
+def index(purchase_id):
+    purchase = Purchase.get_by_purchase_id(purchase_id)
+    print(purchase)
+    if current_user.is_authenticated and purchase.uid == current_user.id:
+        return render_template('purchase/index.html', purchase = purchase)
     flash("You do not have access to this order!")
     return redirect('/login')

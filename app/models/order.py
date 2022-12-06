@@ -32,8 +32,8 @@ class Order:
             FROM Orders
             WHERE order_id = :order_id
         ''', order_id=order_id)
-        print(Order(*(rows[0])))
-        return None
+        # print(Order(*(rows[0])))
+        return Order(*(rows[0]))
         
 
     # @staticmethod

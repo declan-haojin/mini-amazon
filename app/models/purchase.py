@@ -21,6 +21,15 @@ class Purchase:
         return Purchase(*(rows[0])) if rows else None
 
     @staticmethod
+    def get_by_purchase_id(purchase_id):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Purchases
+        WHERE purchase_id = :purchase_id
+        ''', purchase_id=purchase_id)
+        return Purchase(*(rows[0])) if rows else None
+
+    @staticmethod
     def get_by_uid(uid):
         rows = app.db.execute("""
         SELECT *

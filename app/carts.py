@@ -14,12 +14,24 @@ def order():
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
+    if request.method == 'POST':
+        # print(request.form['uid'])
+        Cart.update(request.form['uid'], request.form['seller_id'], request.form['product_id'], request.form['cart_quantity'])
+        flash("The item quantity has been updated successfully")
+        return redirect(url_for('carts.detail'))
+
     carts = Cart.get_all(uid=current_user.id)
     cart_total_price = 0
     for cart in carts:
         cart_total_price += cart.total_price
 
     return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price)
+
+# @bp.route('/cart/update_item', methods=['POST'])
+# def update_item():
+#     Cart.update(request.args['uid'], request.args['seller_id'], request.args['product_id'], request.args['cart_quantity'])
+#     flash("The item quantity has been updated successfully")
+#     return redirect(url_for('carts.detail'))
 
 @bp.route('/cart/remove_item', methods=['POST'])
 def remove_item():

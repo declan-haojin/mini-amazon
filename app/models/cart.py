@@ -13,6 +13,7 @@ class Cart:
         self.product_name = Product.get(product_id).name
         self.unit_price = Product.get(product_id).price
         self.total_price = self.unit_price * cart_quantity
+        self.seller = Seller.get_by_sid(seller_id)
 
 
     @staticmethod

@@ -6,6 +6,7 @@ from .models.product import Product
 from .models.purchase import Purchase
 from .models.cart import Cart
 from .models.order import Order
+from .models.inventory import Inventory
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -13,6 +14,8 @@ bp = Blueprint('index', __name__)
 
 @bp.route('/')
 def index():
+    # print(current_user.decrement_balance(10))
+    # print(Inventory.update(0, 3, 1000).inventory_quantity)
     # print(Order.get(0))
     # Cart.delete(0, 1, 92)
     # get all available products for sale:

@@ -104,5 +104,11 @@ class User(UserMixin):
         """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
 
-    def validate_purchase()
-
+    def decrement_balance(self, amount):
+        rows = app.db.execute("""
+            UPDATE Users
+            SET balance=balance-:payment
+            WHERE uid=:uid
+            RETURNING balance
+        """,uid=self.uid,payment=amount)
+        return rows[0][0]

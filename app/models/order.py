@@ -32,7 +32,9 @@ class Order:
             FROM Orders
             WHERE order_id = :order_id
         ''', order_id=order_id)
-        return Order(*(rows[0]))
+        print(Order(*(rows[0])))
+        return None
+        
 
     # @staticmethod
     # def get(uid):

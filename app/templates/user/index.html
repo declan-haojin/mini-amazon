@@ -39,14 +39,14 @@
       <table class="table table-striped table-hover table-bordered text-center">
           <tr>
               <th>Purchase ID</th>
-              <th>Number of Items</th>
+              <th>Number of Orders</th>
               <th>Purchase Amount</th>
-              <th>Purchase Status</th>
+              <th>Status</th>
               <th>Time Purchased</th>
           </tr>
           {% for purchase in purchases %}
               <tr>
-                  <td><a href="../product/{{ purchase.product_id }}">{{ purchase.purchase_id }}</a></td>
+                  <td>{{ purchase.purchase_id }}</a></td>
                   <td>{{ purchase.number_of_orders }}</td>
                   <td>{{ purchase.total_amount }}</td>
                   <td>{{ purchase.status}}</td>

@@ -97,7 +97,7 @@ def submit():
 
     # TODO: return to the new purchase history page
 
-    return redirect('/purchase/' + new_purchase.purchase_id)
+    return redirect(url_for('purchases.index', purchase_id=new_purchase.purchase_id))
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():

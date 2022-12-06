@@ -1,5 +1,5 @@
 from flask import current_app as app
-from app.models.purchase import Purchase
+
 from app.models.seller import Seller
 from app.models.product import Product
 
@@ -12,7 +12,8 @@ class Order:
         self.amount= amount
         self.status = status
         self.product = Product.get(product_id)
-        self.time_purchased = Purchase.get(uid).time_purchased
+        # from app.models.purchase import Purchase
+        # self.time_purchased = Purchase.get(uid).time_purchased
         self.product_name = self.product.name
 
         # def get_seller_id():

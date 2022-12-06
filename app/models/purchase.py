@@ -3,6 +3,7 @@ from flask import current_app as app
 from app.models.order import Order
 
 
+
 class Purchase:
     def __init__(self, uid, purchase_id, number_of_orders, total_amount, status, time_purchased):
         self.uid = uid
@@ -11,9 +12,7 @@ class Purchase:
         self.total_amount= total_amount
         self.status = status
         self.time_purchased = time_purchased
-        self.order = Order.get_by_purchase_id(purchase_id)
-
-
+        
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
@@ -52,6 +51,9 @@ class Purchase:
         RETURNING *
         ''',uid=uid, number_of_orders=number_of_orders, total_amount=total_amount, status=status, time_purchased=datetime.now())
         return Purchase(*(rows[0])) if rows else None
+
+    def get_orders(self):
+        return Order.get_by_purchase_id(self.purchase_id)
 
     # def add_order(self, order_id):
     #     rows = app.db.execute('''

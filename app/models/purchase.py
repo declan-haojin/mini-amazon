@@ -30,6 +30,10 @@ class Purchase:
         ,                     uid=uid)
         return [Purchase(*row) for row in rows]
 
+    # TODO: Purchase create method
+    # @staticmethod
+    # def create(uid, purchase_id, number_of_orders, total_amount, status, time_purchased):
+
     # @staticmethod
     # def get_all_by_uid_since(uid, since):
         # rows = app.db.execute('''

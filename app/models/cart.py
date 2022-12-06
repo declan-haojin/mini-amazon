@@ -13,6 +13,7 @@ class Cart:
         self.product_name = Product.get(product_id).name
         self.unit_price = Product.get(product_id).price
         self.total_price = self.unit_price * cart_quantity
+        self.seller = Seller.get_by_sid(seller_id)
 
 
     @staticmethod
@@ -81,13 +82,18 @@ class Cart:
         return
 
     @staticmethod
-    def add_item(product_id, seller_id):
-        rows = app.db.execute("""
-            INSERT INTO Cart(uid, seller_id, product_id, cart_quantity, unit_price)
-            VALUES(:uid, :seller_id, :product_id, :cart_quantity, :unit_price)
-            RETURNING *
-            """,
-            category=category,
-            image=image)
-        print(rows)
-        return rows[0][0]
+    def submit():
+        # Check if the purchased can be done
+        validate_purchase()
+
+    # @staticmethod
+    # def add_item(product_id, seller_id):
+    #     rows = app.db.execute("""
+    #         INSERT INTO Cart(uid, seller_id, product_id, cart_quantity, unit_price)
+    #         VALUES(:uid, :seller_id, :product_id, :cart_quantity, :unit_price)
+    #         RETURNING *
+    #         """,
+    #         category=category,
+    #         image=image)
+    #     print(rows)
+    #     return rows[0][0]

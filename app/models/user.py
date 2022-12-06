@@ -76,32 +76,39 @@ class User(UserMixin):
         """,
         id=id)
         return User(*(rows[0])) if rows else None
-    
+
     @staticmethod
     def withdraw_balance(uid):
         rows = app.db.execute("""
-        UPDATE Users 
+        UPDATE Users
         SET balance=0
         WHERE uid=:uid
         """,uid=uid)
         return None
-    
+
     @staticmethod
     def topup_balance(uid,payment):
         rows = app.db.execute("""
-        UPDATE Users 
+        UPDATE Users
         SET balance=balance+:payment
         WHERE uid=:uid
         """,uid=uid,payment=payment)
         return None
-   
+
     @staticmethod
     def update(uid,  firstname, lastname, address, email, password,):
         rows = app.db.execute("""
-        UPDATE Users 
+        UPDATE Users
         SET email=:email, password=:password,firstname=:firstname,lastname=:lastname, address=:address
         WHERE uid=:uid
         """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
-    
-        
+
+    def decrement_balance(self, amount):
+        rows = app.db.execute("""
+            UPDATE Users
+            SET balance=balance-:payment
+            WHERE uid=:uid
+            RETURNING balance
+        """,uid=self.uid,payment=amount)
+        return rows[0][0]

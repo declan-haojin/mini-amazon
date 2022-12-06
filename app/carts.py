@@ -56,22 +56,24 @@ def remove_item():
 #     Cart.update_quantity(product_id, cart_quantity)
 
 
-@bp.route('/cart/add', methods=['GET'])
+@bp.route('/cart/add', methods=['GET', 'POST'])
 def add():
     user_id = current_user.id
-    seller_id = request.args['seller_id']
-    product_id = request.args['product_id']
+    seller_id = request.form['seller_id']
+    product_id = request.form['product_id']
+    quantity = int(request.form['quantity'])
 
+    print(request.form)
     # If there's no this item in the cart
     current_item = Cart.get(user_id, seller_id, product_id)
     if current_item == None:
-        Cart.create(user_id, seller_id, product_id, 1)
+        Cart.create(user_id, seller_id, product_id, quantity)
     # Else we add 1 quantity to it
     else:
-        Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + 1)
+        Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + quantity)
 
     flash("The product is added to the cart!")
-    return redirect('/product/' + request.args['product_id'])
+    return redirect('/product/' + product_id)
 
     # carts = Cart.get_all(uid=session['user'], quantity=0)
     # return render_template('carts/detail.html', carts = carts)

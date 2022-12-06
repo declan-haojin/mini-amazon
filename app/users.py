@@ -67,7 +67,7 @@ class RegistrationForm(FlaskForm):
 def index():
     if current_user.is_authenticated:
         user = User.get(session['user'])
-        purchases = Order.get(user.id)
+        purchases = []
         return render_template('user/index.html', user=user, purchases=purchases)
     else:
         return redirect(url_for('users.login'))

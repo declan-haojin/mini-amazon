@@ -81,20 +81,23 @@ def submit():
         if curr_inventory == None or curr_inventory.inventory_quantity < cart.cart_quantity:
             flash("There's not enough "+cart.product_name+" left in the inventory for this seller!")
             return redirect('/cart/detail')
-            
-    # Create Purchase, Update inventory   
-    index=int(str(Purchase.create_purchase(current_user.id,len(carts),cart_total_price, "done")).strip("[](),"))
-    flash(index)
+
+    # Create Purchase, Update inventory
+    new_purchase = Purchase.create_purchase(current_user.id, len(carts), cart_total_price, "Confirmed")
     for cart in carts:
+        # Decrement seller inventory
         curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
-        Inventory.update(cart.seller_id, cart.product_id, curr_inventory.inventory_quantity - cart.cart_quantity) 
-        Seller.topup_balance(cart.seller_id,cart.total_price)
-        Order.create(current_user.id,index,cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id)
-    
-    # TODO: For every cart, create a new order, add the order to the new purchase, add money to each seller, delete the cart
+        Inventory.update(cart.seller_id, cart.product_id, curr_inventory.inventory_quantity - cart.cart_quantity)
+        # Increment seller balance
+        Seller.topup_balance(cart.seller_id, cart.total_price)
+        # Create order for this purchase
+        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id)
+        # Delete this line of cart
+        Cart.delete(cart.uid, cart.seller_id, cart.product_id)
+
     # TODO: return to the new purchase history page
-        Cart.clear_all(current_user.id)
-    return redirect('/cart/detail')
+
+    return redirect('/purchase/' + new_purchase.purchase_id)
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():

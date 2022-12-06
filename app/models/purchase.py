@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import current_app as app
+from app.models.order import Order
 
 
 class Purchase:
@@ -10,6 +11,8 @@ class Purchase:
         self.total_amount= total_amount
         self.status = status
         self.time_purchased = time_purchased
+        self.order = Order.get_by_purchase_id(purchase_id)
+
 
     @staticmethod
     def get(uid):
@@ -43,17 +46,22 @@ class Purchase:
     # TODO: Purchase create method
     @staticmethod
     def create_purchase(uid,number_of_orders, total_amount, status):
-        size=app.db.execute('''
-        SELECT COUNT(*)
-        FROM Purchases;
-        ''')
-        app.db.execute('''
+        rows = app.db.execute('''
         INSERT INTO Purchases(uid,  number_of_orders, total_amount, status, time_purchased)
         VALUES(:uid, :number_of_orders, :total_amount, :status, :time_purchased)
+        RETURNING *
         ''',uid=uid, number_of_orders=number_of_orders, total_amount=total_amount, status=status, time_purchased=datetime.now())
-       
-        return size
-            
+        return Purchase(*(rows[0])) if rows else None
+
+    # def add_order(self, order_id):
+    #     rows = app.db.execute('''
+    #     INSERT INTO PurchasesOrders(purchase_id, order_id)
+    #     VALUES(:purchase_id, :order_id)
+    #     ''',
+    #     purchase_id=self.purchase_id,
+    #     order_id=order_id)
+
+    #     return True
 
     # @staticmethod
     # def get_all_by_uid_since(uid, since):

@@ -32,15 +32,14 @@ SELECT pg_catalog.setval('public.reviews_review_id_seq',
 
 \COPY Inventories FROM 'Inventories.csv' WITH DELIMITER ',' NULL '' CSV
 
--- \COPY UsersPurchases FROM 'users_purchases.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY PurchasesOrders FROM 'purchases_orders.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY PurchasesOrders FROM 'purchases_orders.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY OrdersProducts FROM 'orders_products.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY OrdersProducts FROM 'orders_products.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY OrdersSellers FROM 'orders_sellers.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY OrdersSellers FROM 'orders_sellers.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY UsersOrders FROM 'users_orders.csv' WITH DELIMITER ',' NULL '' CSV
+-- \COPY UsersOrders FROM 'users_orders.csv' WITH DELIMITER ',' NULL '' CSV
 
 
 -- DO NOT DELETE THESE COMMENTS

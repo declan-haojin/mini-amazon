@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request, redirect
+from flask import request, redirect, flash
 from .models.review import Review
 from flask import session
 from datetime import datetime
@@ -54,11 +54,14 @@ def insert_product_review():
         return render_template('reviews/product_review_submission.html')
     else:
         review_content = request.args.get('review_content')
-        review_time = request.args.get('review_time')
+        review_time = datetime.now()
         product_id = request.args.get('product_id')
-        seller_id = Review.get_seller_id(uid, product_id)
-        if seller_id == None: 
-            return redirect('/review/search')
+        if Review.existProduct(uid): 
+            seller_id = Review.get_seller_id(uid, product_id)
+        
+        if not Review.existProduct(uid) or seller_id == 0: 
+            flash("You haven't bought this product")
+            return redirect('/review/product')
         else: 
             Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
             return redirect('/review/search')
@@ -76,9 +79,12 @@ def insert_seller_review():
         return render_template('reviews/seller_review_submission.html')
     else:
         content = request.args.get('review_content')
-        review_time = request.args.get('review_time')
+        review_time = datetime.now()
         seller_id = request.args.get('seller_id')
         product_id = Review.get_product_id(uid, seller_id)
+        if product_id == 0: 
+            flash("You haven't bought any product from this seller")
+            return redirect('/review/seller')
         review_content = request.args.get('review_content')
         Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
         return redirect('/review/search')

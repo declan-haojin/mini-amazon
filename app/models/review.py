@@ -194,6 +194,9 @@ class Review:
         Where uid = :uid AND product_id = :product_id
         ''',
         uid=uid, product_id=product_id)
+
+        if row == [(0,)]:
+            return 0
         # print(list(row[0])[0])
         return list(row[0])[0]
 
@@ -205,5 +208,20 @@ class Review:
         Where uid = :uid AND seller_id = :seller_id
         ''',
         uid=uid, seller_id=seller_id)
+
+        if row == [(0,)]:
+            return 0
         return list(row[0])[0]
+
+    @staticmethod 
+    def existProduct(uid): 
+        rows = app.db.execute("""
+        SELECT o.product_id
+        FROM UsersOrders u, OrdersProducts o
+        WHERE u.uid = :uid AND u.order_id = o.order_id
+        """
+        ,                     uid=uid)
+        if rows == [(0,)]:
+            return False
+        else: return True
 

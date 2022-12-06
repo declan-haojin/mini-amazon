@@ -90,10 +90,6 @@ class Cart:
             uid=uid)
         return
 
-    @staticmethod
-    def submit():
-        # Check if the purchased can be done
-        validate_purchase()
 
     # @staticmethod
     # def add_item(product_id, seller_id):

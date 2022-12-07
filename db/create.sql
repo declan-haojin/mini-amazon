@@ -47,7 +47,7 @@ CREATE TABLE Orders(
     status VARCHAR NOT NULL,
     product_id INT NOT NULL REFERENCES Products(product_id),
     seller_id INT NOT NULL REFERENCES Sellers(seller_id),
-    PRIMARY KEY (uid, order_id, product_id, seller_id)
+    PRIMARY KEY (uid, purchase_id, product_id, seller_id)
 );
 
 

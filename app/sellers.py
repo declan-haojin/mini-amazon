@@ -48,6 +48,10 @@ def sellers_search():
 def sellers_add():
     if not current_user.is_authenticated:
         return redirect('/login')
+    if request.form.get('pid') != None:
+        pid = request.form.get('pid')
+        Inventory.delete(pid)
+        return redirect('/seller/add')
     sid = session['user']
     pid = request.args.get('pid')
     qty = request.args.get('qty')

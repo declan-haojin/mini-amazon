@@ -9,6 +9,7 @@ class Inventory:
         self.inventory_quantity = qty
         self.product = Product.get(pid)
 
+
     @staticmethod
     def get(seller_id, product_id):
         rows = app.db.execute('''
@@ -19,6 +20,17 @@ class Inventory:
         seller_id=seller_id,
         product_id=product_id)
         return Inventory(*(rows[0])) if rows else None
+
+
+    @staticmethod
+    def delete(product_id):
+        app.db.execute('''
+        DELETE FROM Inventories
+        WHERE product_id = :product_id
+        ''',
+        product_id=product_id)
+        return
+
 
     @staticmethod
     def update(sid, pid, qty):
@@ -105,13 +117,11 @@ class Inventory:
     @staticmethod
     def get_order(sid):
         rows = app.db.execute('''
-        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, UsersOrders.uid, Orders.order_id, Users.address, Orders.status
-        FROM Orders, OrdersSellers, UsersOrders, Purchases, Users
-        WHERE OrdersSellers.seller_id = :sid
-        AND OrdersSellers.order_id = Orders.order_id
-        AND UsersOrders.order_id = Orders.order_id
+        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, Orders.uid, Orders.order_id, Users.address, Orders.status
+        FROM Orders, Purchases, Users
+        WHERE Orders.seller_id = :sid
         AND Purchases.purchase_id = Orders.purchase_id
-        AND UsersOrders.uid = Users.uid
+        AND Orders.uid = Users.uid
         ORDER BY Purchases.time_purchased DESC
         ''',
         sid=sid)

@@ -178,8 +178,15 @@ def update_profile():
         return redirect(url_for('users.login'))
     return render_template('user/details.html', title='My Account', form=form, user=user)
 
-@bp.route('/user/public/<uid>', methods=['GET'])
-def publicprofile():
-    user = User.public_profile(session['user'])
-    seller=Seller.public_profile(session['user'])
+@bp.route('/user/public/<uid>', methods=['GET', 'POST'])
+def profile(uid):
+    user = User.public_profile(session['user'])[0]
+    seller=Seller.public_profile(session['user'])[0]
     return render_template('user/public.html', user=user, seller=seller)
+# def index():
+#         if current_user.is_authenticated:
+#             user = User.get(session['user'])
+#             purchases = Purchase.get_by_uid(session['user'])
+#             return render_template('user/index.html', user=user, purchases=purchases)
+#         else:
+#             return redirect(url_for('users.login'))

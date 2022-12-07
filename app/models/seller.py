@@ -105,7 +105,7 @@ class Seller():
     def public_profile(seller_id):
         rows=app.db.execute("""
         SELECT * 
-        FROM Users
+        FROM Sellers
         WHERE seller_id=:seller_id
         """,seller_id=seller_id)
         return [Seller(*row) for row in rows]

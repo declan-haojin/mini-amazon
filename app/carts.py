@@ -83,7 +83,7 @@ def submit():
             return redirect('/cart/detail')
             
     # Create Purchase, Update inventory   
-    index=int(str(Purchase.create_purchase(current_user.id,len(carts),cart_total_price, "done")).strip("[](),"))
+    index=int(str(Purchase.create_purchase(current_user.id,len(carts),cart_total_price, "Confirmed")).strip("[](),"))
     flash(index)
     for cart in carts:
         curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
@@ -91,8 +91,8 @@ def submit():
         Seller.topup_balance(cart.seller_id,cart.total_price)
         Order.create(current_user.id,index,cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id)
     
-    # TODO: For every cart, create a new order, add the order to the new purchase, add money to each seller, delete the cart
-    # TODO: return to the new purchase history page
+    # For every cart, create a new order, add the order to the new purchase, add money to each seller, delete the cart
+    # return to the new purchase history page
         Cart.clear_all(current_user.id)
     return redirect('/cart/detail')
 

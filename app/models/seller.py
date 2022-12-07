@@ -100,3 +100,14 @@ class Seller():
         WHERE seller_id = :seller_id
         """,seller_id = seller_id, payment = payment)
         return None
+    
+    @staticmethod
+    def public_profile(seller_id):
+        rows=app.db.execute("""
+        SELECT * 
+        FROM Sellers
+        WHERE seller_id=:seller_id
+        """,seller_id=seller_id)
+        return [Seller(*row) for row in rows]
+
+    

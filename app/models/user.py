@@ -15,6 +15,7 @@ class User(UserMixin):
         self.email = email
         self.password = password
         self.balance = 0 if balance == None else balance
+        self.name = firstname + " " + lastname
 
     @staticmethod
     def get_by_auth(email, password):
@@ -103,12 +104,22 @@ class User(UserMixin):
         WHERE uid=:uid
         """,uid=uid,email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
         return None
-    
-    
+
+
     @staticmethod
     def get_all():
         rows = app.db.execute("""
         SELECT *
         FROM Users
         """)
-        return User(*(rows[0])) if rows else None
+        return [User(*row) for row in rows]
+
+    @staticmethod
+    def public_profile(uid):
+        rows=app.db.execute("""
+        SELECT *
+        FROM Users
+        WHERE uid=:uid
+        """,uid=uid)
+        return [User(*row) for row in rows]
+

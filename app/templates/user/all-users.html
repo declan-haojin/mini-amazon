@@ -3,7 +3,8 @@
 {% block content %}
 
 <div class="container text-center">
-  <h1>Users</h1>
+  <h1>Public User Page</h1>
+  Identifying information hidden for preserving privacy
   <br >
   
 
@@ -15,13 +16,13 @@
           <th>Email</th>
           <th>Address</th>
       </tr>
-      {% for u in users %}
+      {% for u in user %}
           <tr>
-              <td><a href="../user/{{ u.user_id }}">{{ u.user_id }}</a></td>
+              <td><a href="../user/public/{{ u.uid }}">{{ u.uid }}</a></td>
               <td>{{u.firstname }}</td>
-              <td>{{ u.lastname }}</td>
-              <td>{{ u.email}}</td>
-              <td>{{ u.address}}</td>
+              <td>{{ u.lastname[0] }}</td>
+              <td>{{ u.email[0] }}*****{{ u.email[7:]}}</td>
+              <td> ********{{ u.address[-8:] }}</td>
           </tr>
       {% endfor %}
   </table>

@@ -91,28 +91,42 @@ class Review:
 # add reviews
 
     @staticmethod
-    def create_product_review(uid, content, rating, time, seller_id, product_id, review_type="product"):
-        app.db.execute('''
-                    INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type)
-                    VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
-            ''',
-            uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
+    def create_product_review(uid, content, rating, time, seller_id, product_id, review_type="product", vote=0):
+        check = app.db.execute("""
+        SELECT review_id
+        FROM Reviews
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        """
+        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
 
-            # WHERE EXISTS (SELECT product_id FROM Orders WHERE Order.uid = :uid AND product_id = :product_id)
-            # IF NOT EXISTS (SELECT review_id FROM Reviews WHERE uid = :uid AND product_id = :product_id)
-            # IF EXISTS (SELECT (u.uid, o.product_id)
-            # FROM (UsersOrders u JOIN OrdersProducts o ON u.order_id = u.order_id))
-        return
+        if check == [(0,)]:
+            app.db.execute('''
+                        INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
+                        VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)
+                ''',
+                uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type, vote=vote)
+            return False
+        else: return True
 
 
     @staticmethod
-    def create_seller_review(uid, content, rating, time, seller_id, product_id, review_type="seller"):
-        app.db.execute('''
-            INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type)
-            VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type)
-            ''',
-            uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type)
-        return
+    def create_seller_review(uid, content, rating, time, seller_id, product_id, review_type="seller", vote=0):
+        check = app.db.execute("""
+        SELECT review_id
+        FROM Reviews
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        """
+        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
+        
+        if check == [(0,)]:
+            app.db.execute('''
+                INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
+                VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)
+                ''',
+                uid=uid, content=content, rating=rating, time=time, seller_id=seller_id, product_id=product_id, review_type=review_type, vote=vote)
+            return False
+
+        else: return True
 
     @staticmethod
     def sum_product_review(product_id):
@@ -224,4 +238,6 @@ class Review:
         if rows == [(0,)]:
             return False
         else: return True
+
+    
 

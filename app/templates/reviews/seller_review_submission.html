@@ -5,6 +5,7 @@
 
     <div class="container text-center">
         <h1>Seller Review Submission</h1>
+        <h3>Submit a review for {{ request.args.get('seller_name') }}</h3>
 
         <form class="row justify-content-center" methods="GET" action="/review/seller">
 
@@ -13,13 +14,9 @@
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter rating:">
             </div>
-            <p style="line-height:5cm;"></p>
+            <p style="line-height:3cm;"></p>
             <div class="col-auto">
                 <input type="text" name="rating">
-            </div>
-
-            <div class="col-auto">
-                <input type="hidden" name="seller_id", value={{request.args.get('seller_id')}}>
             </div>
 
             <p style="line-height:10cm;"></p>
@@ -27,9 +24,13 @@
             <div class="col-auto">
                 <input type="text" readonly class="form-control-plaintext" value="Enter review:">
             </div>
-            <p style="line-height:5cm;"></p>
+            <p style="line-height:3cm;"></p>
             <div class="col-auto">
                 <input type="text" name="review_content">
+            </div>
+
+            <div class="col-auto">
+                <input type="hidden" name="seller_id", value={{request.args.get('seller_id')}}>
             </div>
 
             <p style="line-height:3.5cm;"></p>

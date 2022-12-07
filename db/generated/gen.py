@@ -8,11 +8,8 @@ import image
 from IPython import embed
 
 num_users = 100
-num_products = 100
-num_reviews = 100
+num_products = 1000
 num_sellers = 100
-num_orders = 200
-num_history = num_users
 
 Faker.seed(0)
 fake = Faker()
@@ -66,7 +63,7 @@ def gen_products(num_products):
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=4)[:-1]
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            available = fake.random_element(elements=('true', 'false'))
+            available = 'true'
             category = fake.random_elements(elements=OrderedDict([
                 ("Electronics", 0.2),
                 ("Beauty Products", 0.2),

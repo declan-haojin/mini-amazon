@@ -53,8 +53,12 @@ class Purchase:
 
     def get_orders(self):
         orders = Order.get_by_purchase_id(self.purchase_id)
-
         # Check if all orders of the purchase is fulfilled, the status of the purchase should also be fulfilled
+        self.update_status()
+        return orders
+
+    def update_status(self):
+        orders = Order.get_by_purchase_id(self.purchase_id)
         all_fulfilled = True
         for order in orders:
             if order.status != "Fulfilled":
@@ -63,7 +67,7 @@ class Purchase:
         if all_fulfilled:
             self.status = "Fulfilled"
             self.update(status="Fulfilled")
-        return orders
+        return self.status
 
     @staticmethod
     def search_by_conditions(uid,start, end, status,minamt,maxamt,seller_id):

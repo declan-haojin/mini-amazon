@@ -13,14 +13,14 @@ SELECT pg_catalog.setval('public.products_product_id_seq',
                          (SELECT MAX(product_id)+1 FROM Products),
                          false);
 
-\COPY Orders FROM 'Orders.csv' WITH DELIMITER ',' NULL '' CSV
-SELECT pg_catalog.setval('public.orders_order_id_seq',
-                         (SELECT MAX(order_id)+1 FROM Orders),
-                         false);
-
 \COPY Sellers FROM 'Sellers.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.sellers_seller_id_seq',
                          (SELECT MAX(seller_id)+1 FROM Sellers),
+                         false);
+
+\COPY Orders FROM 'Orders.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.orders_order_id_seq',
+                         (SELECT MAX(order_id)+1 FROM Orders),
                          false);
 
 \COPY Reviews FROM 'Reviews.csv' WITH DELIMITER ',' NULL '' CSV

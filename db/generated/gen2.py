@@ -103,16 +103,16 @@ for uid in range(num_users):
     else: 
         purchase_id2status[purchase_id] = "Not Confirmed"
 
-# embed()
 
-def gen_purchases(total_order): 
+
+def gen_purchases(num_users): 
     with open('../data/Purchases.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Purchases...', end=' ', flush=True)
-        for oid in oid_ele: 
-            uid = oid2uid[oid]
+        for uid in range(num_users): 
             purchase_id = purchase_ls[uid]
-            num_orders = len(oid_big_ls[uid])
+            oid_ls = oid_big_ls[uid]
+            num_orders = len(oid_ls)
             total_amount = uid2tot_amt[uid]
             status = purchase_id2status[purchase_id]
             time_purchased = fake.date_time()
@@ -120,16 +120,21 @@ def gen_purchases(total_order):
     return
 
 
-num_reviews = 300
-review_sp_pair_sample_idx = random.sample(oid_ele, num_reviews)
+num_pairs = 300
+review_sp_pair_sample_idx = random.sample(oid_ele, num_pairs)
 review_sp_pair_sample = []
 
-rid2usp = {}
+rid2usp_dup = {}
 for rid, oid in enumerate(review_sp_pair_sample_idx): 
     review_sp_pair_sample.append(oid2sp_pair[oid])
     uid = oid2uid[oid]
-    rid2usp[rid] = [uid, int(review_sp_pair_sample[0][0]), int(review_sp_pair_sample[0][1])]
+    rid2usp_dup[rid] = (uid, int(review_sp_pair_sample[0][0]), int(review_sp_pair_sample[0][1]))
     
+rid2usp_set = set(list(rid2usp_dup.values()))
+num_reviews = len(rid2usp_set)
+
+rid2usp = dict(zip(range(num_reviews), rid2usp_set))
+
 # embed()
 
 
@@ -146,7 +151,8 @@ def gen_reviews(num_reviews):
             review_type = fake.random_element(elements=('seller', 'product'))
             review_time = fake.date_time()
             rating = fake.random_digit()
-            writer.writerow([uid, rid, content, rating, review_time, sid, pid, review_type])
+            vote = fake.random_digit()
+            writer.writerow([uid, rid, content, rating, review_time, sid, pid, review_type, vote])
     return 
 
 
@@ -180,6 +186,6 @@ def gen_cart(num_users):
     return
 
 gen_orders(total_order)
-gen_purchases(total_order)
+gen_purchases(num_users)
 gen_reviews(num_reviews)
 gen_cart(num_users)

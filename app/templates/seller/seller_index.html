@@ -48,6 +48,7 @@
         <th>Review Time</th>
         <th>Review Seller ID</th>
         <th>Review Product ID</th>
+        <th>Review Vote</th>
     </tr>
     {% for review in reviews %}
         <tr>
@@ -58,6 +59,12 @@
             <td>{{ review.review_time }}</td>
             <td>{{ review.sid }}</td>
             <td>{{ review.pid }}</td>
+            <td>{{ review.vote }}</td>
+            <td>
+                <a href={{url_for('reviews.vote', review_id=review.id, sid=review.sid)}}>
+                    <button type="submit">Vote</button>
+                </a>
+            </td>
         </tr>
     {% endfor %}
 </table>

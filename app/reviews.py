@@ -1,7 +1,7 @@
 from flask import render_template
 from flask import request, redirect, flash
 from .models.review import Review
-from flask import session
+from flask import session, url_for
 from datetime import datetime
 
 from flask import Blueprint
@@ -72,7 +72,7 @@ def insert_product_review():
 @bp.route('/review/product/submit_link/', methods=['GET'])
 def submit_link():
     print("Thank you for your review!")
-    return "Click."
+    return "Click." 
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
@@ -106,3 +106,9 @@ def update_review_page():
 
         return redirect('/review/search')
         
+@bp.route('/review/vote', methods=['GET', 'POST'])
+def vote():
+    review_id = request.args['review_id']
+    Review.update_vote(review_id)
+    sid = request.args['sid']
+    return redirect(url_for('seller.index', sid=sid))

@@ -7,7 +7,7 @@ class Review:
     This is just a TEMPLATE for Review, you should change this by adding or
         replacing new columns, etc. for your design.
     """
-    def __init__(self, uid, id, review_content,rating, review_time, sid, pid, review_type):
+    def __init__(self, uid, id, review_content,rating, review_time, sid, pid, review_type, vote=0):
         self.id = id
         self.uid = uid
         self.pid = pid
@@ -18,7 +18,7 @@ class Review:
         self.review_type = review_type
         self.user_name = User.get(uid).name
         self.seller_name = Seller.get(sid).name
-
+        self.vote = vote
 
 # get reviews
 
@@ -71,10 +71,10 @@ class Review:
     @staticmethod
     def get_all_by_sid(seller_id):
         rows = app.db.execute('''
-            SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type
+            SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type, vote
             FROM Reviews
             WHERE seller_id = :seller_id
-            ORDER BY review_time DESC
+            ORDER BY vote DESC
             ''',
             seller_id=seller_id)
         return [Review(*row) for row in rows]
@@ -233,4 +233,13 @@ class Review:
         else: return list(row[0])[0]
 
 
-
+# update vote 
+    @staticmethod
+    def update_vote(review_id):
+        app.db.execute('''
+        UPDATE Reviews
+        SET vote = vote + 1
+        WHERE review_id = :review_id
+        ''',
+        review_id=review_id)
+        return

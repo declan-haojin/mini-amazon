@@ -68,6 +68,9 @@ def index():
     if current_user.is_authenticated:
         user = User.get(session['user'])
         purchases = Purchase.get_by_uid(session['user'])
+        # Update Purchase status based on their order
+        for purchase in purchases:
+            purchase.update_status()
         return render_template('user/index.html', user=user, purchases=purchases)
     else:
         return redirect(url_for('users.login'))
@@ -110,7 +113,7 @@ def getpurchases_hw4():
 def getall():
     user = User.get_all()
     return render_template('user/all-users.html', user=user)
-  
+
 
 # @bp.route('/user/balance', methods=['GET', 'POST'])
 # def balance_add():

@@ -21,6 +21,8 @@
           {% if session['role'] == "buyer" %}
             <li><a href="/cart/detail" class="nav-link px-2 text-white">My Cart</a></li>
             <li><a href="/purchase/search" class="nav-link px-2 text-white">My Purchases</a></li>
+          {% else %}
+            <li><a href="/product/create" class="nav-link px-2 text-white">Create Product</a></li>
           {% endif %}
         {% endif %}
       </ul>

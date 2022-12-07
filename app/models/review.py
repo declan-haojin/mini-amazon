@@ -1,6 +1,7 @@
 from flask import current_app as app
 from app.models.seller import Seller
 from app.models.user import User
+from app.models.product import Product
 
 class Review:
     """
@@ -19,6 +20,7 @@ class Review:
         self.user_name = User.get(uid).name
         self.seller_name = Seller.get(sid).name
         self.vote = vote
+        self.product_name = Product.get(pid).name
 
 # get reviews
 
@@ -215,7 +217,7 @@ class Review:
 
         if not row:
             return 0
-            
+
         else: return list(row[0])[0]
 
     @staticmethod
@@ -233,7 +235,7 @@ class Review:
         else: return list(row[0])[0]
 
 
-# update vote 
+# update vote
     @staticmethod
     def update_vote(review_id):
         app.db.execute('''

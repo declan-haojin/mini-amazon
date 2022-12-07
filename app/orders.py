@@ -15,7 +15,7 @@ bp = Blueprint('orders', __name__)
 def index(order_id):
     order = Order.get(order_id)
     # print(order)
-    if current_user.is_authenticated and order.uid == current_user.id:
+    if current_user.is_authenticated and (order.uid == current_user.id or order.seller_id == current_user.id):
         return render_template('orders/index.html', order = order)
     flash("You do not have access to this order!")
     return redirect('/login')

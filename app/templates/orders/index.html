@@ -17,7 +17,7 @@
 {% if order.status == "Fulfilled" %}
     <h2>Your order has been fulfilled. Please submit a review to the seller and the product!</h2>
     <a href={{ url_for('reviews.insert_seller_review', seller_id=order.seller_id, seller_name=order.seller_name) }}><button type="button" class="btn btn-primary btn-lg">Submit a seller review</button></a>
-    <a href={{ url_for('reviews.insert_product_review', seller_id=order.seller_id, seller_name=order.seller_name) }}><button type="button" class="btn btn-primary btn-lg">Submit a product review</button></a>
+    <a href={{ url_for('reviews.insert_product_review', product_id=order.product_id) }}><button type="button" class="btn btn-primary btn-lg">Submit a product review</button></a>
 {% endif %}
 
 {% endblock %}

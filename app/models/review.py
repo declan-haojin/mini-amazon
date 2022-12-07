@@ -103,7 +103,7 @@ class Review:
         """
         ,                     uid=uid, seller_id=seller_id, product_id = product_id)
 
-        if check == [(0,)]:
+        if not check:
             app.db.execute('''
                         INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
                         VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)
@@ -122,7 +122,7 @@ class Review:
         """
         ,                     uid=uid, seller_id=seller_id, product_id = product_id)
 
-        if check == [(0,)]:
+        if not check:
             app.db.execute('''
                 INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
                 VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)

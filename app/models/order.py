@@ -1,5 +1,5 @@
 from flask import current_app as app
-from app.models.purchase import Purchase
+
 from app.models.seller import Seller
 from app.models.product import Product
 
@@ -12,18 +12,19 @@ class Order:
         self.amount= amount
         self.status = status
         self.product = Product.get(product_id)
-        self.time_purchased = Purchase.get(uid).time_purchased
+        # from app.models.purchase import Purchase
+        # self.time_purchased = Purchase.get(uid).time_purchased
         self.product_name = self.product.name
 
-        def get_seller_id():
-            rows = app.db.execute("""
-                SELECT seller_id
-                FROM OrdersSellers os
-                WHERE order_id = :order_id
-                """,
-                order_id=self.order_id)
-            return rows[0][0] # thsi
-        self.seller = Seller.get(get_seller_id())
+        # def get_seller_id():
+        #     rows = app.db.execute("""
+        #         SELECT seller_id
+        #         FROM OrdersSellers os
+        #         WHERE order_id = :order_id
+        #         """,
+        #         order_id=self.order_id)
+        #     return rows[0][0] # thsi
+        # self.seller = Seller.get(get_seller_id())
 
     @staticmethod
     def get(order_id):
@@ -34,7 +35,7 @@ class Order:
         ''', order_id=order_id)
         # print(Order(*(rows[0])))
         return Order(*(rows[0]))
-        
+
 
     # @staticmethod
     # def get(uid):
@@ -58,7 +59,8 @@ class Order:
             amount=amount,
             status=status,
             product_id=product_id)
-        
+        return Order(*(rows[0]))
+
 
     @staticmethod
     def update(uid, purchase_id, order_id, status):
@@ -74,7 +76,14 @@ class Order:
             status=status)
         return Order(*(rows[0]))
 
-
+    @staticmethod
+    def get_by_purchase_id(purchase_id):
+        rows = app.db.execute('''
+            SELECT *
+            FROM Orders
+            WHERE purchase_id = :purchase_id
+        ''', purchase_id=purchase_id)
+        return [Order(*row) for row in rows]
 
     # @staticmethod
     # def get_by_uid(uid):

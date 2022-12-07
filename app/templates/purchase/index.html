@@ -6,10 +6,32 @@
 
 <h2>Purchase ID: {{ purchase.purchase_id }} <span class="badge bg-primary">Status: {{ purchase.status }}</span></h2>
 <li>Purchased at {{ purchase.time_purchased }}</li>
-<li>Quantity: {{ purchase.number_of_orders}} </li>
-<li>Order total price: ${{ purchase.total_amount }}</li>
+<li>Number of orders: {{ purchase.number_of_orders}} </li>
+<li>Purchase total price: ${{ purchase.total_amount }}</li>
 
 <hr></hr>
+
+<h1>Orders</h1>
+<table class="table table-striped table-hover table-bordered text-center">
+    <tr>
+        <th>Order ID</th>
+        <th>Product Name</th>
+        <th>Seller</th>
+        <th>Item Quantity</th>
+        <th>Item Total Price</th>
+        <th>Order Status</th>
+    </tr>
+    {% for order in orders %}
+        <tr>
+            <td><a href={{url_for('orders.index', order_id=order.order_id)}}>{{ order.order_id }}</a></td>
+            <td>{{ order.product_name }}</td>
+            <td>ERROR</td>
+            <td>{{ order.number_of_items }}</td>
+            <td>{{ order.amount }}</td>
+            <td>{{ order.status }}</td>
+        </tr>
+    {% endfor %}
+</table>
 
 
 {% endblock %}

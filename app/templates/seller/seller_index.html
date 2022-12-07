@@ -62,6 +62,6 @@
     {% endfor %}
 </table>
 
-<a href={{ url_for('reviews.insert_seller_review', seller_id=sid) }}><button type="button" class="btn btn-primary btn-lg">Submit a review</button></a>
+<a href={{ url_for('reviews.insert_seller_review', seller_id=seller.id, seller_name=seller.firstname + " " + seller.lastname) }}><button type="button" class="btn btn-primary btn-lg">Submit a review</button></a>
 
 {% endblock %}

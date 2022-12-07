@@ -63,7 +63,8 @@ def insert_product_review():
             flash("You haven't bought this product")
             return redirect('/review/product')
         else: 
-            Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            exist = Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            if exist: flash("You can only submit one review for each product you bought from this seller")
             return redirect('/review/search')
 
 @bp.route('/review/product/submit_link/', methods=['GET'])
@@ -86,7 +87,8 @@ def insert_seller_review():
             flash("You haven't bought any product from this seller")
             return redirect('/review/seller')
         review_content = request.args.get('review_content')
-        Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
+        exist = Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
+        if exist: flash("You can only submit one review for each product you bought from this seller")
         return redirect('/review/search')
 
 @bp.route('/review/update', methods=['GET', 'POST'])

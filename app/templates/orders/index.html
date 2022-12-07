@@ -14,5 +14,7 @@
 
 <hr></hr>
 
+<a href={{ url_for('reviews.insert_seller_review', seller_id=order.seller_id, seller_name=order.seller_name) }}><button type="button" class="btn btn-primary btn-lg">Submit a review</button></a>
+
 
 {% endblock %}

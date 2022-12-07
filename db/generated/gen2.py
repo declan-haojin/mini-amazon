@@ -101,7 +101,7 @@ for uid in range(num_users):
     if len(set(all_status)) == 1 and set(all_status) == "Confirmed": 
         purchase_id2status[purchase_id] = "Confirmed"
     else: 
-        purchase_id2status[purchase_id] = "Not Confirmed"
+        purchase_id2status[purchase_id] = "Processing"
 
 
 

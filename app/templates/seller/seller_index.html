@@ -69,6 +69,7 @@
     {% endfor %}
 </table>
 
+{% if current_user.is_authenticated and session['role'] == 'buyer' %}
 <a href={{ url_for('reviews.insert_seller_review', seller_id=seller.id, seller_name=seller.firstname + " " + seller.lastname) }}><button type="button" class="btn btn-primary btn-lg">Submit a review</button></a>
-
+{% endif %}
 {% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<center><h1>Browse and search purchase history</h1></center>
+
+<form class="row justify-content-center" method="GET" action="/purchase/search">
+    <div class="col-auto">
+        <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08"  name="Start date">
+    </div>
+    <div class="col-auto">
+        <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08" name="End date">
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="status">
+        <input type="text" name="status">
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="MinAmount:">
+        <input type="text" name="keywords">
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="MaxAmount">
+        <input type="text" name="keywords">
+    </div>
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" value="">
+        <input type="text" name="keywords">
+    </div>
+
+    <div class="col-auto">
+        <br>
+        <button type="submit" class="btn btn-primary mb-3">Search</button>
+    </div>
+</form>
+
+<br>
+<div class="container text-center">
+    <h1>My purchase history</h1>
+    <br >
+    
+
+    <table class="table table-striped table-hover table-bordered text-center">
+        <tr>
+            <th>Purchase ID</th>
+            <th>Number of Orders</th>
+            <th>Purchase Amount</th>
+            <th>Status</th>
+            <th>Time Purchased</th>
+        </tr>
+        {% for purchase in purchases %}
+            <tr>
+                <td><a href="/purchase/{{ purchase.purchase_id }}">{{ purchase.purchase_id }}</a></td>
+                <td>{{ purchase.number_of_orders }}</td>
+                <td>{{ purchase.total_amount }}</td>
+                <td>{{ purchase.status}}</td>
+                <td>{{ purchase.time_purchased}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

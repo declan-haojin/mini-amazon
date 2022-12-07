@@ -54,6 +54,17 @@ class Purchase:
 
     def get_orders(self):
         return Order.get_by_purchase_id(self.purchase_id)
+    
+    @staticmethod
+    def search_by_conditions(uid,start, end, keywords):
+        rows = app.db.execute('''
+            SELECT *
+            FROM Purchases
+            WHERE uid = :uid
+            AND time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+            ORDER BY time_purchased DESC;
+        ''', uid=uid, start=start,end=end)
+        return [Purchase(*row) for row in rows]
 
     # def add_order(self, order_id):
     #     rows = app.db.execute('''
@@ -77,3 +88,4 @@ class Purchase:
         #                       uid=uid,
         #                       since=since)
         # return [Purchase(*row) for row in rows]
+

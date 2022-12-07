@@ -41,6 +41,11 @@
                     <td>{{ product[0] }}</td>
                     <td>{{ product[1] }}</td>
                     <td>{{ product[2] }}</td>
+                    <td>
+                        <form method = "POST">
+                            <button type="submit" name="pid" value = {{ product[0] }}>Delete</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

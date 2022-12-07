@@ -10,7 +10,6 @@ from .models.user import User
 from .models.purchase import Purchase
 from .models.order import Order
 from .models.seller import Seller
-import matplotlib.pyplot as plt
 import json
 
 from flask import Blueprint

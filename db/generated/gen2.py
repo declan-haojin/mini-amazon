@@ -44,11 +44,8 @@ for uid in range(num_users):
         oid_ls.append(oid)
         oid2uid[oid] = uid
         status = fake.random_elements(elements=OrderedDict([
-        ("Confirmed", 0.3),
-        ("Processing", 0.2),
-        ("Out for Delivery", 0.2),
-        ("Delivered", 0.3),
-        ]), unique=False)[0]
+        ("Fulfilled", 0.5),
+        ("Processing", 0.5)]), unique=False)[0]
         amount = fake.random_int(max=10000)
         oid2status[oid] = status
         oid2amt[oid] = amount
@@ -72,6 +69,7 @@ def gen_orders(total_order):
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
         for oid in oid_ele: 
+            update_at = fake.date_time()
             uid = oid2uid[oid]
             purchase_id = purchase_ls[uid]
             num_items = fake.random_int(max=10)
@@ -79,7 +77,7 @@ def gen_orders(total_order):
             status = oid2status[oid]
             seller_id = int(oid2sp_pair[oid][0])
             product_id = int(oid2sp_pair[oid][1])
-            writer.writerow([uid, purchase_id, oid, num_items, amount, status, product_id, seller_id])
+            writer.writerow([uid, purchase_id, oid, num_items, amount, status, product_id, seller_id, update_at])
     return
 
 uid2tot_amt = {}
@@ -98,8 +96,8 @@ purchase_id2status = {}
 for uid in range(num_users): 
     purchase_id = purchase_ls[uid]
     all_status = uid2all_status[uid]
-    if len(set(all_status)) == 1 and set(all_status) == "Confirmed": 
-        purchase_id2status[purchase_id] = "Confirmed"
+    if len(set(all_status)) == 1 and set(all_status) == "Fulfilled": 
+        purchase_id2status[purchase_id] = "Fulfilled"
     else: 
         purchase_id2status[purchase_id] = "Processing"
 

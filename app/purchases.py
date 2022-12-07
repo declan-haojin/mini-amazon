@@ -17,9 +17,9 @@ def index(purchase_id):
     purchase = Purchase.get_by_purchase_id(purchase_id)
     orders = purchase.get_orders()
 
-    if current_user.is_authenticated and purchase.uid == current_user.id:
+    if current_user.is_authenticated and purchase.uid == current_user.id and session['role'] == 'buyer':
         return render_template('purchase/index.html', purchase=purchase, orders=orders)
-    flash("You do not have access to this order!")
+    flash("You do not have access to this purchase!")
     return redirect('/login')
 
 

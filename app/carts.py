@@ -40,6 +40,8 @@ def remove_item():
 
 @bp.route('/cart/add', methods=['GET', 'POST'])
 def add():
+    if not (current_user.is_authenticated and session['role'] == 'buyer'):
+        return redirect('/login')
     user_id = current_user.id
     seller_id = request.form['seller_id']
     product_id = request.form['product_id']

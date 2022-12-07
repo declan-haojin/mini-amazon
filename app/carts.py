@@ -46,17 +46,18 @@ def add():
     seller_id = request.form['seller_id']
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
-    # print('***************************************')
-    # print(user_id, seller_id, product_id)
-    # print('***************************************')
-    # If there's no this item in the cart
+    print("user_id seller_id product_id", user_id, seller_id, product_id)
     current_item = Cart.get(user_id, seller_id, product_id)
+    # print("user_Id", user_id)
     # print(current_item.product_name, current_item.seller_name)
     if current_item == None:
-        # print('***************************************')
         Cart.create(user_id, seller_id, product_id, quantity)
     # Else we add 1 quantity to it
     else:
+        # print('Quantity', quantity)
+        # print('current_item.cart_quantity', current_item.cart_quantity)
+        # print('sum', current_item.cart_quantity + quantity)
+        # print("####", user_id, seller_id, product_id, current_item.cart_quantity + quantity)
         Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + quantity)
 
     flash("The product is added to the cart!")
@@ -102,7 +103,6 @@ def submit():
         # Delete this line of cart
         Cart.delete(cart.uid, cart.seller_id, cart.product_id)
 
-    # TODO: return to the new purchase history page
 
     return redirect(url_for('purchases.index', purchase_id=new_purchase.purchase_id))
 

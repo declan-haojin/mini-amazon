@@ -34,15 +34,13 @@ class Cart:
             UPDATE Cart
             SET cart_quantity=:cart_quantity
             WHERE uid=:uid AND seller_id=:seller_id AND product_id=:product_id
-            RETURNING *
             """,
             uid=uid,
             seller_id=seller_id,
             product_id=product_id,
             cart_quantity=cart_quantity)
-        return True
         # print(rows)
-        # return Cart(*(rows[0]))
+        return True
 
     @staticmethod
     def get(uid, seller_id, product_id):
@@ -50,11 +48,12 @@ class Cart:
             '''
             SELECT *
             FROM Cart
-            WHERE uid = :uid AND seller_id = :seller_id AND product_id = product_id
+            WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
             ''',
             uid=uid,
             seller_id=seller_id,
             product_id=product_id)
+        print(rows)
         return Cart(*(rows[0])) if rows else None
 
     @staticmethod

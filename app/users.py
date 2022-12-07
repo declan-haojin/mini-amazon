@@ -177,3 +177,9 @@ def update_profile():
     else:
         return redirect(url_for('users.login'))
     return render_template('user/details.html', title='My Account', form=form, user=user)
+
+@bp.route('/user/public/<uid>', methods=['GET'])
+def publicprofile():
+    user = User.public_profile(session['user'])
+    seller=Seller.public_profile(session['user'])
+    return render_template('user/public.html', user=user, seller=seller)

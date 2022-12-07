@@ -6,27 +6,35 @@
 
 <form class="row justify-content-center" method="GET" action="/purchase/search">
     <div class="col-auto">
-        <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08"  name="Start date">
+        <input type="text" readonly class="form-control-plaintext" value="Start Date">
+        <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08" value="1999-01-01" >
     </div>
     <div class="col-auto">
-        <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08" name="End date">
+        <input type="text" readonly class="form-control-plaintext" value="End Date">
+        <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08" value="2022-12-08">
         </select>
     </div>
     <div class="col-auto">
-        <input type="text" readonly class="form-control-plaintext" value="status">
-        <input type="text" name="status">
+        <input type="text" readonly class="form-control-plaintext" value="All">
+        <select name="status" id="status">
+            <option value="All">All</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Processing">Processing</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+        </select>
     </div>
     <div class="col-auto">
-        <input type="text" readonly class="form-control-plaintext" value="MinAmount:">
-        <input type="text" name="keywords">
+        <input type="text" readonly class="form-control-plaintext" value="Min Amount">
+        <input type="number" name="minamt" value=0>
     </div>
     <div class="col-auto">
-        <input type="text" readonly class="form-control-plaintext" value="MaxAmount">
-        <input type="text" name="keywords">
+        <input type="text" readonly class="form-control-plaintext" value="Max Amount">
+        <input type="number" name="maxamt" value="99999999">
     </div>
     <div class="col-auto">
-        <input type="text" readonly class="form-control-plaintext" value="">
-        <input type="text" name="keywords">
+        <input type="text" readonly class="form-control-plaintext" value="Seller ID">
+        <input type="number" name="seller_id">
     </div>
 
     <div class="col-auto">
@@ -62,3 +70,7 @@
 </div>
 
 {% endblock %}
+<script>
+
+
+</script>

@@ -111,4 +111,15 @@ class User(UserMixin):
         SELECT *
         FROM Users
         """)
-        return User(*(rows[0])) if rows else None
+        return [User(*row) for row in rows]
+    
+    @staticmethod
+    def public_profile(uid):
+        rows=app.db.execute("""
+        SELECT * 
+        FROM Users
+        WHERE uid=:uid
+        """,uid=uid)
+        return [User(*row) for row in rows]
+
+       

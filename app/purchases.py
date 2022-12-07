@@ -30,7 +30,10 @@ def search():
     else:
         start = request.args.get('start')
         end = request.args.get('end')
-        keywords = request.args.get('keywords')
-        purchases = Purchase.search_by_conditions(session['user'],start, end, keywords)
+        status = request.args.get('status')
+        minamt = request.args.get('minamt')
+        maxamt = request.args.get('maxamt')
+        seller_id= request.args.get('seller_id')
+        purchases = Purchase.search_by_conditions(session['user'],start, end, status,minamt,maxamt,seller_id)
 
     return render_template('purchase/search.html', purchases = purchases)

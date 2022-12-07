@@ -56,17 +56,65 @@ class Purchase:
         return Order.get_by_purchase_id(self.purchase_id)
     
     @staticmethod
-    def search_by_conditions(uid,start, end, keywords):
-        rows = app.db.execute('''
-            SELECT *
-            FROM Purchases
-            WHERE uid = :uid
-            AND time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
-            ORDER BY time_purchased DESC;
-        ''', uid=uid, start=start,end=end)
-        return [Purchase(*row) for row in rows]
+    def search_by_conditions(uid,start, end, status,minamt,maxamt,seller_id):
 
-    # def add_order(self, order_id):
+        #status and seller ID specified 
+        # only seller ID 
+        # only status 
+        # neither 
+
+        if (seller_id==""):
+            if (status=="All"):
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Purchases
+                    WHERE uid = :uid
+                    AND time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+                    AND total_amount BETWEEN CAST (:minamt AS INTEGER) AND CAST (:maxamt AS INTEGER)
+                    ORDER BY time_purchased DESC;
+                ''', uid=uid, start=start,end=end, minamt=minamt,maxamt=maxamt)
+                return [Purchase(*row) for row in rows]
+            else:
+                rows = app.db.execute('''
+                    SELECT *
+                    FROM Purchases
+                    WHERE uid = :uid
+                    AND time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+                    AND total_amount BETWEEN CAST (:minamt AS INTEGER) AND CAST (:maxamt AS INTEGER)
+                    AND status = CAST (:status AS VARCHAR)
+                    ORDER BY time_purchased DESC;
+                ''', uid=uid, start=start,end=end,minamt=minamt,maxamt=maxamt,status=status)
+                return [Purchase(*row) for row in rows]
+        else:
+            if (status=="All"):
+                rows = app.db.execute('''
+                        SELECT Purchases.uid,Purchases.purchase_id,Purchases.number_of_orders,Purchases.total_amount,Purchases.status,Purchases.time_purchased
+                        FROM Orders, Purchases
+                        WHERE Orders.purchase_id=Purchases.purchase_id
+                        AND Orders.uid = Purchases.uid
+                        AND Orders.uid = :uid
+                        AND Purchases.time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+                        AND Purchases.total_amount BETWEEN CAST (:minamt AS INTEGER) AND CAST (:maxamt AS INTEGER)
+                        AND Orders.seller_id=:seller_id
+                        ORDER BY time_purchased DESC;
+                    ''', uid=uid, start=start,end=end,minamt=minamt,maxamt=maxamt,seller_id=seller_id)
+                return [Purchase(*row) for row in rows]
+            else :
+                rows = app.db.execute('''
+                        SELECT Purchases.uid,Purchases.purchase_id,Purchases.number_of_orders,Purchases.total_amount,Purchases.status,Purchases.time_purchased
+                        FROM Orders, Purchases
+                        WHERE Orders.purchase_id=Purchases.purchase_id
+                        AND Orders.uid = Purchases.uid
+                        AND Orders.uid = :uid
+                        AND Purchases.time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+                        AND Purchases.total_amount BETWEEN CAST (:minamt AS INTEGER) AND CAST (:maxamt AS INTEGER)
+                        AND Purchases.status=:status
+                        AND Orders.seller_id=:seller_id
+                        ORDER BY time_purchased DESC;
+                    ''', uid=uid, start=start,end=end,minamt=minamt,maxamt=maxamt,seller_id=seller_id,status=status)
+                return [Purchase(*row) for row in rows]
+
+        # def add_order(self, order_id):
     #     rows = app.db.execute('''
     #     INSERT INTO PurchasesOrders(purchase_id, order_id)
     #     VALUES(:purchase_id, :order_id)

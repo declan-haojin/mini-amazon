@@ -161,3 +161,35 @@ class Inventory:
         status=status,
         order_id=order_id)
         return
+
+
+    @staticmethod
+    def get_analytics_category(seller_id):
+        rows = app.db.execute('''
+        SELECT Products.category, COUNT(*), SUM(Inventories.inventory_quantity)
+        FROM Inventories, Products
+        WHERE Inventories.seller_id = :seller_id
+        AND Inventories.product_id = Products.product_id
+        GROUP BY Products.category
+        ''',
+        seller_id=seller_id)
+        return rows
+
+
+    @staticmethod
+    def get_analytics_order(seller_id, start, end):
+        rows = app.db.execute('''
+        SELECT Orders.product_id, Products.name, SUM(Orders.number_of_items)
+        FROM Orders, Products, Purchases
+        WHERE Orders.seller_id = :seller_id
+        AND Orders.product_id = Products.product_id
+        AND Purchases.purchase_id = Orders.purchase_id
+        AND Purchases.time_purchased BETWEEN CAST (:start AS DATE) AND CAST (:end AS DATE)
+        GROUP BY Orders.product_id, Products.name
+        ORDER BY SUM(Orders.number_of_items) DESC
+        ''',
+        seller_id = seller_id,
+        start = start,
+        end = end)
+        print("##############################################################")
+        return rows

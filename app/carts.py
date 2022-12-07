@@ -85,7 +85,7 @@ def submit():
             return redirect('/cart/detail')
 
     # Create Purchase, Update inventory
-    new_purchase = Purchase.create_purchase(current_user.id, len(carts), cart_total_price, "Confirmed")
+    new_purchase = Purchase.create_purchase(current_user.id, len(carts), cart_total_price, "Processing")
     for cart in carts:
         # Decrement seller inventory
         curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
@@ -93,7 +93,7 @@ def submit():
         # Increment seller balance
         Seller.topup_balance(cart.seller_id, cart.total_price)
         # Create order for this purchase
-        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id, cart.seller_id)
+        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Processing",cart.product_id, cart.seller_id)
         # Delete this line of cart
         Cart.delete(cart.uid, cart.seller_id, cart.product_id)
 

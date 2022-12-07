@@ -12,7 +12,7 @@ class Purchase:
         self.total_amount= total_amount
         self.status = status
         self.time_purchased = time_purchased
-        
+
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
@@ -53,15 +53,26 @@ class Purchase:
         return Purchase(*(rows[0])) if rows else None
 
     def get_orders(self):
-        return Order.get_by_purchase_id(self.purchase_id)
-    
+        orders = Order.get_by_purchase_id(self.purchase_id)
+
+        # Check if all orders of the purchase is fulfilled, the status of the purchase should also be fulfilled
+        all_fulfilled = True
+        for order in orders:
+            if order.status != "Fulfilled":
+                all_fulfilled = False
+                break
+        if all_fulfilled:
+            self.status = "Fulfilled"
+
+        return orders
+
     @staticmethod
     def search_by_conditions(uid,start, end, status,minamt,maxamt,seller_id):
 
-        #status and seller ID specified 
-        # only seller ID 
-        # only status 
-        # neither 
+        #status and seller ID specified
+        # only seller ID
+        # only status
+        # neither
 
         if (seller_id==""):
             if (status=="All"):

@@ -6,6 +6,7 @@
 
 <h2>Order ID: {{ order.order_id }} <span class="badge bg-primary">Status: {{ order.status }}</span></h2>
 <li>Belongs to Purchase ID: <a href={{ url_for('purchases.index', purchase_id=order.purchase_id) }}>{{ order.purchase_id }}</a></li>
+<li>Updated at: {{ order.updated_at }}</li>
 <li>Product: <a href={{ order.product.link }}>{{ order.product.name }} </a></li>
 <li><img src = {{order.product.image}} height="377"></li>
 <li>Seller: <a href={{ url_for('seller.index', sid=order.seller_id) }}> {{ order.seller_name }}</a></li>

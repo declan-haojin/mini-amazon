@@ -65,6 +65,11 @@ def add():
 @bp.route('/cart/submit', methods=['POST', 'GET'])
 def submit():
     carts = Cart.get_all(uid=current_user.id)
+
+    if carts == []:
+        flash("You don't have anything in the cart!")
+        return redirect('/cart/detail')
+
     cart_total_price = 0
     for cart in carts:
         cart_total_price += cart.total_price

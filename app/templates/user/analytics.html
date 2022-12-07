@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table class="table table-striped table-hover table-bordered text-center">
+  <tr>
+      <th>Category</th>
+      <th>Amount Spent</th>
+     
+  </tr>
+  {% for row in rows %}
+      <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+         </tr>
+  {% endfor %}
+</table>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<body>
+  
+<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+<script>
+  var xValues = ('{{keys}}').split(",");
+  var yValues = ('{{values}}').split(",");
+  var barColors = ["red", "green","blue","orange","brown","pink"];
+  
+  new Chart("myChart", {
+    type: "pie",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      legend: {display: true},
+      title: {
+        display: true,
+        text: "My purchases by category"
+      }
+    }
+  });
+  </script>
+  
+{% endblock %}
+

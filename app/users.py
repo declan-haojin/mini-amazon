@@ -180,9 +180,8 @@ def update_profile():
 
 @bp.route('/user/public/<uid>', methods=['GET', 'POST'])
 def profile(uid):
-    user = User.public_profile(session['user'])[0]
-    seller=Seller.public_profile(session['user'])[0]
-    return render_template('user/public.html', user=user, seller=seller)
+    user = User.public_profile(uid)[0]
+    return render_template('user/public.html', user=user)
 # def index():
 #         if current_user.is_authenticated:
 #             user = User.get(session['user'])

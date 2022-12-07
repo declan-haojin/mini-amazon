@@ -8,26 +8,11 @@
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item">User ID: {{ user.id }}</li>
-    <li class="list-group-item">User Reviews: {{ user.id }}</li>
-    <li class="list-group-item">User ID: {{ user.id }}</li>
+    <li class="list-group-item">User Email: {{ user.email[0] }}*****{{ user.email[4:] }}</li>
+    <li class="list-group-item">User Address: ********{{ user.address[-8:] }}</li>
   </ul>
 </div>
 
-
-<br >
-<br >
-<div class="container text-center" >
-  <div class="col d-flex justify-content-center">
-  <div class="card" >
-  <div class="card-header">
-    <b>{{ seller.firstname + " " + seller.lastname[0] }}</b>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Seller ID: {{ user.id }}</li>
-    <li class="list-group-item">Seller Email: {{ seller.email}}</li>
-    <li class="list-group-item">Seller Address: {{ seller.address }}</li>
-  </ul>
-</div>
 
 
 {% endblock %}

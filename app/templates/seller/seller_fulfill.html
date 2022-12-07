@@ -22,7 +22,7 @@
                     <td>{{ arg[1] }}</td>
                     <td>{{ arg[2] }}</td>
                     <td>{{ arg[3] }}</td>
-                    <td>{{ arg[4] }}</td>
+                    <td><a href={{ url_for('orders.index', order_id=arg[4]) }}>{{ arg[4] }}</a></td>
                     <td>{{ arg[5] }}</td>
                     <td>{{ arg[6] }}</td>
                     <td>
@@ -31,6 +31,7 @@
                         </form>
                     </td>
                 </tr>
+
             {% endfor %}
         </table>
     </div>

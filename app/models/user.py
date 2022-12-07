@@ -123,3 +123,15 @@ class User(UserMixin):
         """,uid=uid)
         return [User(*row) for row in rows]
 
+    @staticmethod
+    def get_analytics(uid):
+        rows=app.db.execute("""
+        SELECT category, SUM(Orders.amount)
+        FROM Users, Orders, Products
+        WHERE Users.uid=0
+        AND Orders.uid=Users.uid
+        AND Orders.product_id=Products.product_id
+        GROUP BY category
+        """,uid=uid)
+        return rows
+

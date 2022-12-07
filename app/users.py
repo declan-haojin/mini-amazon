@@ -10,6 +10,8 @@ from .models.user import User
 from .models.purchase import Purchase
 from .models.order import Order
 from .models.seller import Seller
+import matplotlib.pyplot as plt
+import json
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -189,3 +191,18 @@ def profile(uid):
 #             return render_template('user/index.html', user=user, purchases=purchases)
 #         else:
 #             return redirect(url_for('users.login'))
+
+@bp.route('/user/analytics', methods=['GET'])
+def getanalytics():
+    rows = User.get_analytics(session['user'])
+    keys=""
+    values=""
+    for row in rows:
+        keys+=(row[0]+",")
+        values+=(str(row[1])+",")
+    # plt.bar(range(len(keys)), values, tick_label=keys)
+    # plt.savefig('img.jpeg')
+    # with open("img.jpeg", "rb") as img_file:
+    #     my_string = base64.b64encode(img_file.read())
+    return render_template('user/analytics.html', rows=rows, keys=keys[:-1],values=values[:-1])
+

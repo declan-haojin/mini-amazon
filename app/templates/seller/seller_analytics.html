@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+
+    <div class="container text-center">
+        <h1>Here is a list for how many products you sell for each category</h1>
+
+        <table class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>Category</th>
+                <th>Number of products</th>
+                <th>Sum of quantity for this category</th>
+            </tr>
+            {% for arg in count%}
+                <tr>
+                    <td>{{ arg[0] }}</td>
+                    <td>{{ arg[1] }}</td>
+                    <td>{{ arg[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="container text-center">
+        <h1>Here is the ranking of your products based on their total quantities ordered</h1>
+        <form>
+            <div class="col-auto">
+                Start Date <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08" value="1999-01-01" >
+            </div>
+            <div class="col-auto">
+                End Date <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08" value="2022-12-08">
+            </div>
+            <div class="col-auto">
+                <br>
+                <button type="submit" class="btn btn-primary mb-3">Set between the dates</button>
+            </div>
+        </form>
+        <table class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>Product id</th>
+                <th>Product name</th>
+                <th>Total quantity ordered</th>
+            </tr>
+            {% for arg in pop%}
+                <tr>
+                    <td>{{ arg[0] }}</td>
+                    <td>{{ arg[1] }}</td>
+                    <td>{{ arg[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}

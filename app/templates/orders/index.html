@@ -6,6 +6,7 @@
 
 <h2>Order ID: {{ order.order_id }} <span class="badge bg-primary">Status: {{ order.status }}</span></h2>
 <li>Belongs to Purchase ID: <a href={{ url_for('purchases.index', purchase_id=order.purchase_id) }}>{{ order.purchase_id }}</a></li>
+<li>Updated at: {{ order.updated_at }}</li>
 <li>Product: <a href={{ order.product.link }}>{{ order.product.name }} </a></li>
 <li><img src = {{order.product.image}} height="377"></li>
 <li>Seller: <a href={{ url_for('seller.index', sid=order.seller_id) }}> {{ order.seller_name }}</a></li>
@@ -14,7 +15,10 @@
 
 <hr></hr>
 
-<a href={{ url_for('reviews.insert_seller_review', seller_id=order.seller_id, seller_name=order.seller_name) }}><button type="button" class="btn btn-primary btn-lg">Submit a review</button></a>
-
+{% if order.status == "Fulfilled" %}
+    <h2>Your order has been fulfilled. Please submit a review to the seller and the product!</h2>
+    <a href={{ url_for('reviews.insert_seller_review', seller_id=order.seller_id, seller_name=order.seller_name) }}><button type="button" class="btn btn-primary btn-lg">Submit a seller review</button></a>
+    <a href={{ url_for('reviews.insert_product_review', product_id=order.product_id) }}><button type="button" class="btn btn-primary btn-lg">Submit a product review</button></a>
+{% endif %}
 
 {% endblock %}

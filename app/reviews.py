@@ -1,7 +1,7 @@
 from flask import render_template
 from flask import request, redirect, flash
 from .models.review import Review
-from flask import session
+from flask import session, url_for
 from datetime import datetime
 
 from flask import Blueprint
@@ -59,18 +59,20 @@ def insert_product_review():
         if Review.existProduct(uid): 
             seller_id = Review.get_seller_id(uid, product_id)
         
-        if not Review.existProduct(uid) or seller_id == 0: 
+        # if a user hasn't bought this product
+        if seller_id == 0: 
             flash("You haven't bought this product")
             return redirect('/review/product')
         else: 
             exist = Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            # if a review already exists for a product
             if exist: flash("You can only submit one review for each product you bought from this seller")
             return redirect('/review/search')
 
 @bp.route('/review/product/submit_link/', methods=['GET'])
 def submit_link():
     print("Thank you for your review!")
-    return "Click."
+    return "Click." 
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
@@ -104,3 +106,9 @@ def update_review_page():
 
         return redirect('/review/search')
         
+@bp.route('/review/vote', methods=['GET', 'POST'])
+def vote():
+    review_id = request.args['review_id']
+    Review.update_vote(review_id)
+    sid = request.args['sid']
+    return redirect(url_for('seller.index', sid=sid))

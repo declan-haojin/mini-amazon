@@ -14,6 +14,7 @@ bp = Blueprint('index', __name__)
 
 @bp.route('/')
 def index():
+    # print(Cart.get(0, 0, 1).product_id)
     # print(Order.get_by_purchase_id(72))
     # print(Order.create(1, 72, 1, 10, "Confirmed", 0).order_id)
     # Purchase.get_by_purchase_id(40).add_order(100)

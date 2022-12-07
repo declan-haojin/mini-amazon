@@ -47,6 +47,7 @@ CREATE TABLE Orders(
     status VARCHAR NOT NULL,
     product_id INT NOT NULL REFERENCES Products(product_id),
     seller_id INT NOT NULL REFERENCES Sellers(seller_id),
+    updated_at timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     PRIMARY KEY (uid, purchase_id, product_id, seller_id)
 );
 

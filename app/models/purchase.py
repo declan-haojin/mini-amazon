@@ -12,7 +12,7 @@ class Purchase:
         self.total_amount= total_amount
         self.status = status
         self.time_purchased = time_purchased
-        
+
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
@@ -42,7 +42,6 @@ class Purchase:
         ,                     uid=uid)
         return [Purchase(*row) for row in rows]
 
-    # TODO: Purchase create method
     @staticmethod
     def create_purchase(uid,number_of_orders, total_amount, status):
         rows = app.db.execute('''
@@ -53,15 +52,30 @@ class Purchase:
         return Purchase(*(rows[0])) if rows else None
 
     def get_orders(self):
-        return Order.get_by_purchase_id(self.purchase_id)
-    
+        orders = Order.get_by_purchase_id(self.purchase_id)
+        # Check if all orders of the purchase is fulfilled, the status of the purchase should also be fulfilled
+        self.update_status()
+        return orders
+
+    def update_status(self):
+        orders = Order.get_by_purchase_id(self.purchase_id)
+        all_fulfilled = True
+        for order in orders:
+            if order.status != "Fulfilled":
+                all_fulfilled = False
+                break
+        if all_fulfilled:
+            self.status = "Fulfilled"
+            self.update(status="Fulfilled")
+        return self.status
+
     @staticmethod
     def search_by_conditions(uid,start, end, status,minamt,maxamt,seller_id):
 
-        #status and seller ID specified 
-        # only seller ID 
-        # only status 
-        # neither 
+        #status and seller ID specified
+        # only seller ID
+        # only status
+        # neither
 
         if (seller_id==""):
             if (status=="All"):
@@ -114,15 +128,16 @@ class Purchase:
                     ''', uid=uid, start=start,end=end,minamt=minamt,maxamt=maxamt,seller_id=seller_id,status=status)
                 return [Purchase(*row) for row in rows]
 
-        # def add_order(self, order_id):
-    #     rows = app.db.execute('''
-    #     INSERT INTO PurchasesOrders(purchase_id, order_id)
-    #     VALUES(:purchase_id, :order_id)
-    #     ''',
-    #     purchase_id=self.purchase_id,
-    #     order_id=order_id)
-
-    #     return True
+    def update(self, status):
+        rows = app.db.execute("""
+            UPDATE Purchases
+            SET status=:status
+            WHERE purchase_id=:purchase_id
+            RETURNING *
+            """,
+            status=status,
+            purchase_id=self.purchase_id)
+        return True
 
     # @staticmethod
     # def get_all_by_uid_since(uid, since):

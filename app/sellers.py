@@ -1,5 +1,5 @@
 from flask import render_template
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, flash
 from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.product import Product
@@ -11,6 +11,8 @@ from flask import session
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,NumberRange
+
+import datetime
 
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
@@ -30,10 +32,14 @@ def index(sid):
         avg_rating, num_rating = Review.sum_seller_review(sid)
     return render_template('seller/seller_index.html', products = products, seller = seller, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating)
 
-@bp.route('/seller/search', methods=['GET'])
+@bp.route('/seller/search', methods=['GET', 'POST'])
 def sellers_search():
     if not current_user.is_authenticated:
         return redirect('/login')
+    if request.form.get('pid') != None:
+        pid = request.form.get('pid')
+        Inventory.delete(pid)
+        return redirect(url_for('seller.sellers_search'))
     sid = session['user']
     seller = Seller.get_seller_object(sid)
     if sid is None:
@@ -48,10 +54,6 @@ def sellers_search():
 def sellers_add():
     if not current_user.is_authenticated:
         return redirect('/login')
-    if request.form.get('pid') != None:
-        pid = request.form.get('pid')
-        Inventory.delete(pid)
-        return redirect('/seller/add')
     sid = session['user']
     pid = request.args.get('pid')
     qty = request.args.get('qty')
@@ -69,9 +71,9 @@ def sellers_fulfill():
     if request.form.get('order_id') != None:
         oid = request.form.get('order_id')
         status = Inventory.get_status(oid)
-        if status[0][0]!= "Processing": print("NOT VALID")
+        if status[0][0]!= "Processing": flash("This order is already fulfilled")
         else:
-            status = "Confirmed"
+            status = "Fulfilled"
             Inventory.change_order_status_spc(oid,status)
         return redirect('/seller/fulfill/')
     else:
@@ -85,13 +87,22 @@ def sellers_fulfill():
             newarg.append(arg[3])
             newarg.append(arg[4])
             newarg.append(arg[5])
-            if "Delivered" in arg[6] : newarg.append("Delivered")
-            elif "Out for Delivery" in arg[6] : newarg.append("Out for Delivery")
-            elif "Confirmed" in arg[6] : newarg.append("Confirmed")
+            if "Fulfilled" in arg[6] : newarg.append("Fulfilled")
             elif "Processing" in arg[6] : newarg.append("Processing")
             retlist.append(newarg)
             Inventory.change_order_status_spc(newarg[4], newarg[6])
         return render_template('seller/seller_fulfill.html', args = retlist)
+
+@bp.route('/seller/analytics', methods = ['GET'])
+def analytics():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    sid = session['user']
+    start = request.args.get('start')
+    end = request.args.get('end')
+    count = Inventory.get_analytics_category(sid)
+    pop = Inventory.get_analytics_order(sid, start, end)
+    return render_template('seller/seller_analytics.html', count = count, pop = pop)
 
 class UserForm(FlaskForm):
     firstname = StringField("First Name", validators=[DataRequired()])
@@ -116,6 +127,7 @@ def update_profile():
     else:
         return redirect(url_for('users.login'))
     return render_template('seller/seller_detail.html', title='My Account', form=form, user=seller)
+
 
 class CashForm(FlaskForm):
     amount = DecimalField('Deposit/ Withdraw Money', validators=[DataRequired(), NumberRange(min=0)])

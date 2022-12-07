@@ -46,17 +46,18 @@ def add():
     seller_id = request.form['seller_id']
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
-    # print('***************************************')
-    # print(user_id, seller_id, product_id)
-    # print('***************************************')
-    # If there's no this item in the cart
+    print("user_id seller_id product_id", user_id, seller_id, product_id)
     current_item = Cart.get(user_id, seller_id, product_id)
+    # print("user_Id", user_id)
     # print(current_item.product_name, current_item.seller_name)
     if current_item == None:
-        # print('***************************************')
         Cart.create(user_id, seller_id, product_id, quantity)
     # Else we add 1 quantity to it
     else:
+        # print('Quantity', quantity)
+        # print('current_item.cart_quantity', current_item.cart_quantity)
+        # print('sum', current_item.cart_quantity + quantity)
+        # print("####", user_id, seller_id, product_id, current_item.cart_quantity + quantity)
         Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + quantity)
 
     flash("The product is added to the cart!")
@@ -65,6 +66,11 @@ def add():
 @bp.route('/cart/submit', methods=['POST', 'GET'])
 def submit():
     carts = Cart.get_all(uid=current_user.id)
+
+    if carts == []:
+        flash("You don't have anything in the cart!")
+        return redirect('/cart/detail')
+
     cart_total_price = 0
     for cart in carts:
         cart_total_price += cart.total_price
@@ -85,7 +91,7 @@ def submit():
             return redirect('/cart/detail')
 
     # Create Purchase, Update inventory
-    new_purchase = Purchase.create_purchase(current_user.id, len(carts), cart_total_price, "Confirmed")
+    new_purchase = Purchase.create_purchase(current_user.id, len(carts), cart_total_price, "Processing")
     for cart in carts:
         # Decrement seller inventory
         curr_inventory = Inventory.get(seller_id=cart.seller_id, product_id=cart.product_id)
@@ -93,11 +99,10 @@ def submit():
         # Increment seller balance
         Seller.topup_balance(cart.seller_id, cart.total_price)
         # Create order for this purchase
-        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id, cart.seller_id)
+        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Processing",cart.product_id, cart.seller_id)
         # Delete this line of cart
         Cart.delete(cart.uid, cart.seller_id, cart.product_id)
 
-    # TODO: return to the new purchase history page
 
     return redirect(url_for('purchases.index', purchase_id=new_purchase.purchase_id))
 

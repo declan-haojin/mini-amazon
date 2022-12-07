@@ -15,8 +15,10 @@ bp = Blueprint('purchases', __name__)
 @bp.route('/purchase/<purchase_id>', methods=['GET', 'POST'])
 def index(purchase_id):
     purchase = Purchase.get_by_purchase_id(purchase_id)
+    orders = purchase.get_orders()
+
     if current_user.is_authenticated and purchase.uid == current_user.id:
-        return render_template('purchase/index.html', purchase=purchase, orders=purchase.get_orders())
+        return render_template('purchase/index.html', purchase=purchase, orders=orders)
     flash("You do not have access to this order!")
     return redirect('/login')
 
@@ -36,4 +38,7 @@ def search():
         seller_id= request.args.get('seller_id')
         purchases = Purchase.search_by_conditions(session['user'],start, end, status,minamt,maxamt,seller_id)
 
+    # Update Purchase status based on their order
+    for purchase in purchases:
+        purchase.update_status()
     return render_template('purchase/search.html', purchases = purchases)

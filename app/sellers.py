@@ -12,6 +12,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,NumberRange
 
+import datetime
+
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
 
@@ -90,7 +92,18 @@ def sellers_fulfill():
             retlist.append(newarg)
             Inventory.change_order_status_spc(newarg[4], newarg[6])
         return render_template('seller/seller_fulfill.html', args = retlist)
-        
+
+@bp.route('/seller/analytics', methods = ['GET'])
+def analytics():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    sid = session['user']
+    start = request.args.get('start')
+    end = request.args.get('end')
+    count = Inventory.get_analytics_category(sid)
+    pop = Inventory.get_analytics_order(sid, start, end)
+    return render_template('seller/seller_analytics.html', count = count, pop = pop)
+
 class UserForm(FlaskForm):
     firstname = StringField("First Name", validators=[DataRequired()])
     lastname = StringField("Last Name", validators=[DataRequired()])
@@ -114,6 +127,7 @@ def update_profile():
     else:
         return redirect(url_for('users.login'))
     return render_template('seller/seller_detail.html', title='My Account', form=form, user=seller)
+
 
 class CashForm(FlaskForm):
     amount = DecimalField('Deposit/ Withdraw Money', validators=[DataRequired(), NumberRange(min=0)])

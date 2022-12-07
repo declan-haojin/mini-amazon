@@ -94,7 +94,7 @@ class Seller():
 
     @staticmethod
     def topup_balance(seller_id,payment):
-        rows = app.db.execute("""
+        app.db.execute("""
         UPDATE Sellers 
         SET balance=balance+:payment
         WHERE seller_id = :seller_id

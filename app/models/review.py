@@ -1,5 +1,6 @@
 from flask import current_app as app
-
+from app.models.seller import Seller
+from app.models.user import User
 
 class Review:
     """
@@ -15,6 +16,9 @@ class Review:
         self.sid = sid
         self.rating = rating
         self.review_type = review_type
+        self.user_name = User.get(uid).name
+        self.seller_name = Seller.get(sid).name
+
 
 # get reviews
 
@@ -117,7 +121,7 @@ class Review:
         WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
         """
         ,                     uid=uid, seller_id=seller_id, product_id = product_id)
-        
+
         if check == [(0,)]:
             app.db.execute('''
                 INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
@@ -227,8 +231,8 @@ class Review:
             return 0
         return list(row[0])[0]
 
-    @staticmethod 
-    def existProduct(uid): 
+    @staticmethod
+    def existProduct(uid):
         rows = app.db.execute("""
         SELECT product_id
         FROM Orders
@@ -239,5 +243,5 @@ class Review:
             return False
         else: return True
 
-    
+
 

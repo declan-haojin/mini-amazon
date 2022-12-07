@@ -41,24 +41,22 @@
 
 <table class="table table-striped table-hover table-bordered text-center">
     <tr>
-        <th>Review User ID</th>
+        <th>Review User</th>
         <th>Review ID</th>
         <th>Review Content</th>
         <th>Review Rating</th>
         <th>Review Time</th>
-        <th>Review Seller ID</th>
-        <th>Review Product ID</th>
+        <th>Review Product</th>
         <th>Review Vote</th>
     </tr>
     {% for review in reviews %}
         <tr>
-            <td>{{ review.uid }}</td>
+            <td><a href={{ url_for('users.profile', uid=review.uid) }}>{{ review.user_name }}</a></td>
             <td>{{ review.id }}</td>
             <td>{{ review.review_content }}</td>
             <td>{{ review.rating }}</td>
             <td>{{ review.review_time }}</td>
-            <td>{{ review.sid }}</td>
-            <td>{{ review.pid }}</td>
+            <td><a href={{ url_for('products.index', product_id=review.pid) }}>{{ review.product_name }}</a></td>
             <td>{{ review.vote }}</td>
             <td>
                 <a href={{url_for('reviews.vote', review_id=review.id, sid=review.sid)}}>

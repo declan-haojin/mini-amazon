@@ -25,9 +25,9 @@
         <tr>
             <td><a href={{url_for('orders.index', order_id=order.order_id)}}>{{ order.order_id }}</a></td>
             <td>{{ order.product_name }}</td>
-            <td>ERROR</td>
+            <td>{{ order.seller_name }}</td>
             <td>{{ order.number_of_items }}</td>
-            <td>{{ order.amount }}</td>
+            <td>${{ order.amount }}</td>
             <td>{{ order.status }}</td>
         </tr>
     {% endfor %}

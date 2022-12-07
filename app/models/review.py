@@ -190,7 +190,7 @@ class Review:
     def get_seller_id(uid, product_id):
         row = app.db.execute('''
         SELECT seller_id
-        FROM UsersOrders, OrdersSellers, OrdersProducts
+        FROM Orders
         Where uid = :uid AND product_id = :product_id
         ''',
         uid=uid, product_id=product_id)
@@ -204,7 +204,7 @@ class Review:
     def get_product_id(uid, seller_id):
         row = app.db.execute('''
         SELECT product_id
-        FROM UsersOrders, OrdersSellers, OrdersProducts
+        FROM Orders
         Where uid = :uid AND seller_id = :seller_id
         ''',
         uid=uid, seller_id=seller_id)
@@ -216,9 +216,9 @@ class Review:
     @staticmethod 
     def existProduct(uid): 
         rows = app.db.execute("""
-        SELECT o.product_id
-        FROM UsersOrders u, OrdersProducts o
-        WHERE u.uid = :uid AND u.order_id = o.order_id
+        SELECT product_id
+        FROM Orders
+        WHERE uid = :uid
         """
         ,                     uid=uid)
         if rows == [(0,)]:

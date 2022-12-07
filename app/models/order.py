@@ -1,20 +1,22 @@
 from flask import current_app as app
-
+from datetime import datetime
 from app.models.seller import Seller
 from app.models.product import Product
 
 class Order:
-    def __init__(self, uid, purchase_id, order_id, number_of_items, amount, status, product_id, seller_id):
+    def __init__(self, uid, purchase_id, order_id, number_of_items, amount, status, product_id, seller_id, updated_at):
         self.uid = uid
         self.purchase_id = purchase_id
         self.order_id = order_id
         self.number_of_items = number_of_items
         self.amount= amount
         self.status = status
+        self.product_id = product_id
         self.product = Product.get(product_id)
         self.product_name = self.product.name
         self.seller_id = seller_id
         self.seller_name = Seller.get(seller_id).name
+        self.updated_at = updated_at
 
     @staticmethod
     def get(order_id):
@@ -39,8 +41,8 @@ class Order:
     @staticmethod
     def create(uid, purchase_id, number_of_items, amount, status, product_id, seller_id):
         rows = app.db.execute("""
-            INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id, seller_id)
-            VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id, :seller_id)
+            INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id, seller_id, updated_at)
+            VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id, :seller_id, :updated_at)
             RETURNING *
             """,
             uid=uid,
@@ -49,7 +51,8 @@ class Order:
             amount=amount,
             status=status,
             product_id=product_id,
-            seller_id=seller_id)
+            seller_id=seller_id,
+            updated_at=datetime.now())
         return Order(*(rows[0]))
 
     def update(self, status):

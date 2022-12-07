@@ -103,7 +103,7 @@ class Review:
         """
         ,                     uid=uid, seller_id=seller_id, product_id = product_id)
 
-        if check == [(0,)]:
+        if not check:
             app.db.execute('''
                         INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
                         VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)
@@ -122,7 +122,7 @@ class Review:
         """
         ,                     uid=uid, seller_id=seller_id, product_id = product_id)
 
-        if check == [(0,)]:
+        if not check:
             app.db.execute('''
                 INSERT INTO Reviews(uid, review_content, rating, review_time, seller_id, product_id, review_type, vote)
                 VALUES(:uid, :content, :rating, :time, :seller_id, :product_id, :review_type, :vote)
@@ -213,10 +213,10 @@ class Review:
         ''',
         uid=uid, product_id=product_id)
 
-        if row == [(0,)]:
+        if not row:
             return 0
-        # print(list(row[0])[0])
-        return list(row[0])[0]
+            
+        else: return list(row[0])[0]
 
     @staticmethod
     def get_product_id(uid, seller_id):
@@ -227,21 +227,10 @@ class Review:
         ''',
         uid=uid, seller_id=seller_id)
 
-        if row == [(0,)]:
+        if not row :
             return 0
-        return list(row[0])[0]
 
-    @staticmethod
-    def existProduct(uid):
-        rows = app.db.execute("""
-        SELECT product_id
-        FROM Orders
-        WHERE uid = :uid
-        """
-        ,                     uid=uid)
-        if rows == [(0,)]:
-            return False
-        else: return True
+        else: return list(row[0])[0]
 
 
 

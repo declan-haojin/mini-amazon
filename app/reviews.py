@@ -59,11 +59,13 @@ def insert_product_review():
         if Review.existProduct(uid): 
             seller_id = Review.get_seller_id(uid, product_id)
         
-        if not Review.existProduct(uid) or seller_id == 0: 
+        # if a user hasn't bought this product
+        if seller_id == 0: 
             flash("You haven't bought this product")
             return redirect('/review/product')
         else: 
             exist = Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
+            # if a review already exists for a product
             if exist: flash("You can only submit one review for each product you bought from this seller")
             return redirect('/review/search')
 

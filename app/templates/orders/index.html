@@ -8,7 +8,7 @@
 <li>Belongs to Purchase ID: <a href={{ url_for('purchases.index', purchase_id=order.purchase_id) }}>{{ order.purchase_id }}</a></li>
 <li>Product: <a href={{ order.product.link }}>{{ order.product.name }} </a></li>
 <li><img src = {{order.product.image}} height="377"></li>
-<li>Seller: <a href="">ERROR</a></li>
+<li>Seller: <a href={{ url_for('seller.index', sid=order.seller_id) }}> {{ order.seller_name }}</a></li>
 <li>Quantity: {{ order.number_of_items}} </li>
 <li>Order total price: ${{ order.amount }}</li>
 

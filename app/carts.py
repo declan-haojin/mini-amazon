@@ -91,7 +91,7 @@ def submit():
         # Increment seller balance
         Seller.topup_balance(cart.seller_id, cart.total_price)
         # Create order for this purchase
-        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id)
+        Order.create(current_user.id, new_purchase.purchase_id, cart.cart_quantity,cart.total_price,"Confirmed",cart.product_id, cart.seller_id)
         # Delete this line of cart
         Cart.delete(cart.uid, cart.seller_id, cart.product_id)
 

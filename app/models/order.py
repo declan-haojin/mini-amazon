@@ -4,7 +4,7 @@ from app.models.seller import Seller
 from app.models.product import Product
 
 class Order:
-    def __init__(self, uid, purchase_id, order_id, number_of_items, amount, status, product_id):
+    def __init__(self, uid, purchase_id, order_id, number_of_items, amount, status, product_id, seller_id):
         self.uid = uid
         self.purchase_id = purchase_id
         self.order_id = order_id
@@ -12,19 +12,9 @@ class Order:
         self.amount= amount
         self.status = status
         self.product = Product.get(product_id)
-        # from app.models.purchase import Purchase
-        # self.time_purchased = Purchase.get(uid).time_purchased
         self.product_name = self.product.name
-
-        # def get_seller_id():
-        #     rows = app.db.execute("""
-        #         SELECT seller_id
-        #         FROM OrdersSellers os
-        #         WHERE order_id = :order_id
-        #         """,
-        #         order_id=self.order_id)
-        #     return rows[0][0] # thsi
-        # self.seller = Seller.get(get_seller_id())
+        self.seller_id = seller_id
+        self.seller_name = Seller.get(seller_id).name
 
     @staticmethod
     def get(order_id):
@@ -47,10 +37,10 @@ class Order:
     #     return [Order(*row) for row in rows]
 
     @staticmethod
-    def create(uid, purchase_id, number_of_items, amount, status, product_id):
+    def create(uid, purchase_id, number_of_items, amount, status, product_id, seller_id):
         rows = app.db.execute("""
-            INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id)
-            VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id)
+            INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id, seller_id)
+            VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id, :seller_id)
             RETURNING *
             """,
             uid=uid,
@@ -58,21 +48,18 @@ class Order:
             number_of_items=number_of_items,
             amount=amount,
             status=status,
-            product_id=product_id)
+            product_id=product_id,
+            seller_id=seller_id)
         return Order(*(rows[0]))
 
-
-    @staticmethod
-    def update(uid, purchase_id, order_id, status):
+    def update(self, status):
         rows = app.db.execute("""
             UPDATE Orders
             SET status=:status
-            WHERE uid=:uid AND purchase_id=:purchase_id AND order_id=:order_id
+            WHERE order_id=:order_id
             RETURNING *
             """,
-            uid=uid,
-            purchase_id=purchase_id,
-            order_id=order_id,
+            order_id=self.order_id,
             status=status)
         return Order(*(rows[0]))
 

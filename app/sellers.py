@@ -12,7 +12,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,NumberRange
 
-import datetime
 
 from flask import Blueprint
 bp = Blueprint('seller', __name__)

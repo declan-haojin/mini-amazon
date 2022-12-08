@@ -151,16 +151,18 @@ class Review:
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
-            WHERE product_id = :product_id
+            WHERE product_id = :product_id AND review_type = :review_type
             ''',
-            product_id=product_id)
+            product_id=product_id,
+            review_type="product")
 
         num_rating = app.db.execute('''
             SELECT COUNT(rating)
             FROM Reviews
-            WHERE product_id = :product_id
+            WHERE product_id = :product_id AND review_type = :review_type
             ''',
-            product_id=product_id)
+            product_id=product_id,
+            review_type="product")
 
         if num_rating == [(0,)]:
             return 0, 0

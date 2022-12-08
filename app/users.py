@@ -197,7 +197,7 @@ def profile(uid):
 @bp.route('/user/analytics', methods=['GET'])
 def getanalytics():
     if current_user.is_authenticated:
-        rows = User.get_analytics(session['user'])
+        rows = User.get_analytics(current_user.id)
         keys=""
         values=""
         for row in rows:
@@ -210,4 +210,3 @@ def getanalytics():
         return render_template('user/analytics.html', rows=rows, keys=keys[:-1],values=values[:-1])
     else:
         return redirect(url_for('users.login'))
-    

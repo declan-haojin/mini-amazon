@@ -40,7 +40,7 @@
             {% for product in products %}
                 <tr>
                     <td>{{ product[0] }}</td>
-                    <td>{{ product[1] }}</td>
+                    <td><a href={{ url_for('products.index', product_id=product[0]) }}>{{ product[1] }}</td>
                     <td>{{ product[2] }}</td>
                     <td>
                         <form method = "POST">

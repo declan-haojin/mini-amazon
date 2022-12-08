@@ -128,7 +128,7 @@ class User(UserMixin):
         rows=app.db.execute("""
         SELECT category, SUM(Orders.amount)
         FROM Users, Orders, Products
-        WHERE Users.uid=0
+        WHERE Users.uid=:uid
         AND Orders.uid=Users.uid
         AND Orders.product_id=Products.product_id
         GROUP BY category

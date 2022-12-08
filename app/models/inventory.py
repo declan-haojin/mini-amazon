@@ -191,5 +191,17 @@ class Inventory:
         seller_id = seller_id,
         start = start,
         end = end)
-        print("##############################################################")
+        return rows
+
+    
+    @staticmethod
+    def get_analytics_user(seller_id):
+        rows = app.db.execute('''
+        SELECT uid, COUNT(*), CAST(AVG(Reviews.rating) as DECIMAL(10,2))
+        FROM Reviews
+        WHERE Reviews.seller_id = :seller_id
+        GROUP BY uid
+        ORDER BY COUNT(*) DESC
+        ''',
+        seller_id = seller_id,)
         return rows

@@ -52,8 +52,8 @@ class User(UserMixin):
     def register(email, password, firstname, lastname):
         try:
             rows = app.db.execute("""
-            INSERT INTO Users(email, password, firstname, lastname)
-            VALUES(:email, :password, :firstname, :lastname)
+            INSERT INTO Users(email, password, firstname, lastname, balance)
+            VALUES(:email, :password, :firstname, :lastname,0)
             RETURNING uid
             """,
             email=email,

@@ -58,18 +58,18 @@ def add():
     seller_id = request.form['seller_id']
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
-    print("user_id seller_id product_id", user_id, seller_id, product_id)
+
+    # Check if there are enough inventories for this user to add
+    if Inventory.get(seller_id, product_id).inventory_quantity < quantity:
+        flash("There are not enough inventory of the seller for you to add!")
+        return redirect(url_for('products.index', product_id=product_id))
+
+
     current_item = Cart.get(user_id, seller_id, product_id)
-    # print("user_Id", user_id)
-    # print(current_item.product_name, current_item.seller_name)
     if current_item == None:
         Cart.create(user_id, seller_id, product_id, quantity)
     # Else we add 1 quantity to it
     else:
-        # print('Quantity', quantity)
-        # print('current_item.cart_quantity', current_item.cart_quantity)
-        # print('sum', current_item.cart_quantity + quantity)
-        # print("####", user_id, seller_id, product_id, current_item.cart_quantity + quantity)
         Cart.update(user_id, seller_id, product_id, current_item.cart_quantity + quantity)
 
     flash("The product is added to the cart!")

@@ -87,10 +87,10 @@ class Review:
         rows = app.db.execute('''
             SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type, vote
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ORDER BY vote DESC
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
         return [Review(*row) for row in rows]
 
     @staticmethod
@@ -177,16 +177,16 @@ class Review:
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
 
         num_rating = app.db.execute('''
             SELECT COUNT(rating)
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
 
         # print(num_rating)
 

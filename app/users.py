@@ -133,7 +133,7 @@ def getall():
 
 
 class CashForm(FlaskForm):
-    amount = DecimalField('Deposit/ Withdraw Money', validators=[DataRequired(), NumberRange(min=0)])
+    amount = DecimalField('Deposit/ Withdraw Money', validators=[DataRequired(), NumberRange(min=0, max=999999999)])
     deposit = SubmitField('Add Money')
     withdraw = SubmitField('Withdraw Money')
     complete_withdraw = SubmitField('Withdraw Entire Amount')

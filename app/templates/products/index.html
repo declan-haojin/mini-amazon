@@ -7,9 +7,14 @@
 <!-- <a href={{ url_for('products.delete', product_id=product.product_id) }}><button type="button" class="btn btn-danger btn-lg">Delete</button></a> -->
 {% endif %}
 </h1>
-
-
 <h2>Product Name: {{ product.name }} </h2>
+
+{% if not product.available %}
+<div class="alert alert-danger" role="alert">
+    The product is unavailable for now.
+</div>
+{% endif %}
+
 <li>Product ID: {{ product.product_id }} </li>
 <li>Category: {{ product.category }} </li>
 <li>Description: {{ product.description }} </li>

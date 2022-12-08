@@ -8,7 +8,7 @@ from IPython import embed
 
 num_users = 500
 num_products = 1000
-num_sellers = 1000
+num_sellers = 500
 
 Faker.seed(0)
 fake = Faker()
@@ -41,7 +41,7 @@ unique_random_oid = np.arange(total_order).tolist()
 random.shuffle(unique_random_oid)
 # embed()
 
-idx = 0 
+idx = 0
 for uid in range(num_users):
     oid_ls = []
     for j in range(num_orders[uid]):

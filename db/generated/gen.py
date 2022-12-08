@@ -7,9 +7,9 @@ import numpy as np
 import image
 from IPython import embed
 
-num_users = 100
+num_users = 500
 num_products = 1000
-num_sellers = 100
+num_sellers = 500
 
 Faker.seed(0)
 fake = Faker()

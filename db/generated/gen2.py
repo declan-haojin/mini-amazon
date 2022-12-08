@@ -6,9 +6,9 @@ import random
 import numpy as np
 from IPython import embed
 
-num_users = 100
+num_users = 500
 num_products = 1000
-num_sellers = 100
+num_sellers = 1000
 
 Faker.seed(0)
 fake = Faker()
@@ -37,10 +37,16 @@ oid2uid = {}
 oid2status = {}
 oid2amt = {}
 
+unique_random_oid = np.arange(total_order).tolist()
+random.shuffle(unique_random_oid)
+# embed()
+
+idx = 0 
 for uid in range(num_users):
     oid_ls = []
     for j in range(num_orders[uid]):
-        oid = fake_oid.unique.random_int(min=0, max=total_order-1)
+        # oid = fake_oid.unique.random_int(min=0, max=total_order-1)
+        oid = unique_random_oid[idx]
         oid_ls.append(oid)
         oid2uid[oid] = uid
         status = fake.random_elements(elements=OrderedDict([
@@ -49,6 +55,7 @@ for uid in range(num_users):
         amount = fake.random_int(max=10000)
         oid2status[oid] = status
         oid2amt[oid] = amount
+        idx += 1
     oid_big_ls.append(oid_ls)
 
 

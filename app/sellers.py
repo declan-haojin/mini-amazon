@@ -12,6 +12,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,NumberRange
 
+from datetime import date
 
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
@@ -20,7 +21,6 @@ bp = Blueprint('seller', __name__)
 def index(sid):
     if sid is None:
         products = []
-        names = []
         reviews = []
         avg_rating = 0
         num_rating = 0
@@ -33,9 +33,9 @@ def index(sid):
 
 @bp.route('/seller/search', methods=['GET', 'POST'])
 def sellers_search():
-    if not current_user.is_authenticated:
+    if not current_user.is_authenticated: #every time, check autentication
         return redirect('/login')
-    if request.form.get('pid') != None:
+    if request.form.get('pid') != None: #delete button is clicked
         pid = request.form.get('pid')
         Inventory.delete(pid)
         return redirect(url_for('seller.sellers_search'))
@@ -57,9 +57,9 @@ def sellers_add():
     pid = request.args.get('pid')
     qty = request.args.get('qty')
     if request.args == {}:
-        args = "No Status"
+        args = "No Status" #args as a string
     else:
-        args = Inventory.add_item_to_inventory(sid, pid, qty)
+        args = Inventory.add_item_to_inventory(sid, pid, qty) #return a string
     return render_template('seller/seller_add.html', args = args)
 
 @bp.route('/seller/fulfill/', methods = ['GET', 'POST'])
@@ -67,7 +67,7 @@ def sellers_fulfill():
     if not current_user.is_authenticated:
         return redirect('/login')
     sid = session['user']
-    if request.form.get('order_id') != None:
+    if request.form.get('order_id') != None: #fulfill button is clicked
         oid = request.form.get('order_id')
         status = Inventory.get_status(oid)
         if status[0][0]!= "Processing": flash("This order is already fulfilled")
@@ -79,14 +79,14 @@ def sellers_fulfill():
         args = Inventory.get_order(sid)
         retlist = []
         for arg in args:
-            newarg = []
+            newarg = [] #manually add elements in the list from legacyrow object
             newarg.append(arg[0])
             newarg.append(arg[1])
             newarg.append(arg[2])
             newarg.append(arg[3])
             newarg.append(arg[4])
             newarg.append(arg[5])
-            if "Fulfilled" in arg[6] : newarg.append("Fulfilled")
+            if "Fulfilled" in arg[6] : newarg.append("Fulfilled") #make sure status only exists as string and is updated
             elif "Processing" in arg[6] : newarg.append("Processing")
             retlist.append(newarg)
             Inventory.change_order_status_spc(newarg[4], newarg[6])
@@ -99,9 +99,14 @@ def analytics():
     sid = session['user']
     start = request.args.get('start')
     end = request.args.get('end')
+    if start == '':
+        start = "1999-01-01"
+    if end == '':
+        end = date.today() #check if inputs are empty strings
     count = Inventory.get_analytics_category(sid)
     pop = Inventory.get_analytics_order(sid, start, end)
-    return render_template('seller/seller_analytics.html', count = count, pop = pop)
+    users= Inventory.get_analytics_user(sid)
+    return render_template('seller/seller_analytics.html', count = count, pop = pop, users = users)
 
 class UserForm(FlaskForm):
     firstname = StringField("First Name", validators=[DataRequired()])

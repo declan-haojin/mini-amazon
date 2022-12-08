@@ -26,10 +26,10 @@
         <h1>Here is the ranking of your products based on their total quantities ordered</h1>
         <form>
             <div class="col-auto">
-                Start Date <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08" value="1999-01-01" >
+                Start Date <input type="date" id="start" name="start"  min="1999-01-01" max="2022-12-08">
             </div>
             <div class="col-auto">
-                End Date <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08" value="2022-12-08">
+                End Date <input type="date" id="end" name="end"  min="1999-01-01" max="2022-12-08">
             </div>
             <div class="col-auto">
                 <br>
@@ -43,6 +43,24 @@
                 <th>Total quantity ordered</th>
             </tr>
             {% for arg in pop%}
+                <tr>
+                    <td>{{ arg[0] }}</td>
+                    <td>{{ arg[1] }}</td>
+                    <td>{{ arg[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="container text-center">
+        <h1>Here is a list for users who reviewed you or your products</h1>
+        <table class="table table-striped table-hover table-bordered text-center">
+            <tr>
+                <th>User id</th>
+                <th>Number of reviews</th>
+                <th>Average rating</th>
+            </tr>
+            {% for arg in users%}
                 <tr>
                     <td>{{ arg[0] }}</td>
                     <td>{{ arg[1] }}</td>

@@ -65,6 +65,10 @@ def add():
         flash("The quantity is invalid!")
         return redirect(url_for('products.index', product_id=product_id))
 
+    if not Product.get(product_id).available:
+        flash("The product is not availabe to purchase for now!")
+        return redirect(url_for('products.index', product_id=product_id))
+
     # Check if there are enough inventories for this user to add
     if Inventory.get(seller_id, product_id).inventory_quantity < quantity:
         flash("There are not enough inventory of the seller for you to add!")

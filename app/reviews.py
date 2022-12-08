@@ -56,11 +56,10 @@ def insert_product_review():
         review_content = request.args.get('review_content')
         review_time = datetime.now()
         product_id = request.args.get('product_id')
-
         seller_id = Review.get_seller_id(uid, product_id)
 
         # if a user hasn't bought this product
-        if seller_id == 0:
+        if seller_id == None:
             flash("You haven't bought this product")
             return redirect('/review/product')
         else:
@@ -85,7 +84,7 @@ def insert_seller_review():
         review_time = datetime.now()
         seller_id = request.args.get('seller_id')
         product_id = Review.get_product_id(uid, seller_id)
-        if product_id == 0:
+        if product_id == None:
             flash("You haven't bought any product from this seller")
             return redirect('/review/seller')
         review_content = request.args.get('review_content')

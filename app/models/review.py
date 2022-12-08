@@ -216,7 +216,7 @@ class Review:
         uid=uid, product_id=product_id)
 
         if not row:
-            return 0
+            return None
 
         else: return list(row[0])[0]
 
@@ -225,12 +225,12 @@ class Review:
         row = app.db.execute('''
         SELECT product_id
         FROM Orders
-        Where uid = :uid AND seller_id = :seller_id
+        WHERE uid = :uid AND seller_id = :seller_id
         ''',
         uid=uid, seller_id=seller_id)
 
         if not row :
-            return 0
+            return None
 
         else: return list(row[0])[0]
 

@@ -205,3 +205,28 @@ class Inventory:
         ''',
         seller_id = seller_id,)
         return rows
+
+    @staticmethod
+    def recommend(uid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Products
+        WHERE Products.category IN (
+            SELECT Products.category
+            FROM Orders, Products
+            WHERE uid = :uid
+            AND Orders.product_id = Products.product_id
+            GROUP BY Products.category
+            ORDER BY COUNT(*) DESC
+            LIMIT 3)
+        AND Products.product_id IN (
+            SELECT product_id
+            FROM Orders
+            GROUP BY product_id
+            ORDER BY COUNT(*) DESC
+            LIMIT 50
+        )
+        LIMIT 5
+        ''',
+        uid = uid)
+        return [Product(*row) for row in rows]

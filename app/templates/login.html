@@ -4,12 +4,15 @@
 
 <center><h1>Login</h1>
 
+<br >
+
 <form action="" method="post" novalidate>
+  <h5>Account Type: 
   <select class="custom-select" name="role">
     <option value="buyer">Buyer</option>
     <option value="seller">Seller</option>
   </select>
-
+  </h5>
   {{ form.hidden_tag() }}
   <p>
     {{ form.email.label }}<br/>

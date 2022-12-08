@@ -69,6 +69,12 @@ def edit(product_id):
 
 @bp.route('/product/create', methods=['GET', 'POST'])
 def create():
+    # Check if any input is empty
+    for arg in request.form:
+        if len(request.form[arg]) == 0:
+            flash("Your input is invalid")
+            return redirect('/product/create')
+
     if request.method == 'GET':
         return render_template('products/create.html')
     else:

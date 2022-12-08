@@ -101,9 +101,9 @@ class Review:
         check = app.db.execute("""
         SELECT review_id
         FROM Reviews
-        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id AND review_type = :review_type
         """
-        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
+        ,uid=uid, seller_id=seller_id, product_id = product_id, review_type = review_type)
 
         if not check:
             app.db.execute('''
@@ -120,9 +120,9 @@ class Review:
         check = app.db.execute("""
         SELECT review_id
         FROM Reviews
-        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id AND review_type = :review_type
         """
-        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
+        ,uid=uid, seller_id=seller_id, product_id = product_id, review_type = review_type)
 
         if not check:
             app.db.execute('''

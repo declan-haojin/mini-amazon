@@ -62,7 +62,7 @@ CREATE TABLE Reviews (
     product_id INT NOT NULL REFERENCES Products(product_id),
     review_type VARCHAR NOT NULL,
     vote INT NOT NULL,
-    PRIMARY KEY (uid, product_id, seller_id)
+    PRIMARY KEY (uid, product_id, seller_id, review_type)
 );
 
 -- CREATE TABLE SellerReviews (

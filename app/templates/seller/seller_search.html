@@ -20,16 +20,17 @@
     <div class="container text-center">
         <h1>Welcome, {{ seller.firstname + " " + seller.lastname }}. You may check your inventory here.</h1>
         <center>
-            <button onclick="location.href='/seller/add'" type="button" class="row">
+            <button onclick="location.href='/seller/add'" type="button" class="btn btn-primary mb-3">
                 Click here to update your inventory</button>
-            <button onclick="location.href='/seller/fulfill'" type="button" class="row">
-                Click here to check order fulfillment status</button>
-            <button onclick="location.href='/seller/analytics'" type="button" class="row">
+            <button onclick="location.href='/seller/analytics'" type="button" class="btn btn-primary mb-3">
                 Click here to see your inventory analysis</button>
-            <button onclick="location.href='/seller/update'" type="button" class="row">
+            <br />
+            <button onclick="location.href='/seller/fulfill'" type="button" class="btn btn-primary mb-3">
+                    Click here to check order fulfillment status</button>
+            <button onclick="location.href='/seller/update'" type="button" class="btn btn-primary mb-3">
                 Click here to update your personal information</button>
         </center>
-        
+
         <table class="table table-striped table-hover table-bordered text-center">
             <tr>
                 <th>Product ID</th>

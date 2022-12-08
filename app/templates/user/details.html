@@ -6,7 +6,7 @@
 </div>
 
 <div class="d-flex justify-content-center">
-  
+
 
 <br>
 <br>
@@ -41,33 +41,26 @@
     {% endfor %}
   </p>
   <p>
-    {{ form.password.label }}<br/>
+    {{ form.password.label }} / Password<br/>
     {{ form.password(size=32) }}<br/>
     {% for error in form.password.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
-    {{ form.password2.label }}<br/>
+    {{ form.password2.label }} / Confirm Password<br/>
     {{ form.password2(size=32) }}<br/>
     {% for error in form.password2.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  
-<button class="button-6" role="button"">{{ form.submit(class_="btn btn-black") }}</button>
+
+<button class="button-6" role="button">{{ form.submit(class_="btn btn-black") }}</button>
 
 
 </form>
 </div>
 
-
-<br>
-
-<div class="d-flex justify-content-center"><h3><a href="/user/balance">Update my account balance</a></h3>  </div>
-
-
-<br>
 
 
 {% endblock %}

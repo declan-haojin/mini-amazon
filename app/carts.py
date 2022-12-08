@@ -19,7 +19,7 @@ def order():
         return render_template('carts/detailedorder.html')
     else:
         return redirect(url_for('users.login'))
-    
+
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
@@ -80,7 +80,7 @@ def submit():
     if not (current_user.is_authenticated and session['role'] == 'buyer'):
         return redirect('/login')
     carts = Cart.get_all(uid=current_user.id)
-    coupon=request.args['coupon']
+
     if carts == []:
         flash("You don't have anything in the cart!")
         return redirect('/cart/detail')
@@ -88,8 +88,9 @@ def submit():
     cart_total_price = 0
     for cart in carts:
         cart_total_price += cart.total_price
-    
-    if (coupon=="CHECKOUT10"):
+
+    # If the user enter the correct coupon code
+    if request.form.get('coupon') == 'CHECKOUT10':
         cart_total_price=0.9*int(cart_total_price)
 
     # Check balance
@@ -120,7 +121,8 @@ def submit():
         # Delete this line of cart
         Cart.delete(cart.uid, cart.seller_id, cart.product_id)
 
-
+    if request.form.get('coupon') == 'CHECKOUT10':
+        flash("Coupon is valid and used!")
     return redirect(url_for('purchases.index', purchase_id=new_purchase.purchase_id))
 
 @bp.route('/cart/hw4', methods=['GET'])

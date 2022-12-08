@@ -40,21 +40,21 @@
                 </tr>
             {% endfor %}
         </table>
-        <form method="POST" action={{ url_for('carts.submit', coupon = "") }}>
-            <button type="submit" class="btn btn-warning mb-3">Apply Coupon</button>
-            <input type="text" id="discount" name="discount">
-        </form>
 
         <center><h1>Total price: ${{cart_total_price}}</h1></center>
 
         <br>
 
         <div>
-            <a href={{url_for('carts.submit')}}>
-            <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
-            </a>
+            <form method="POST" action="/cart/submit">
+                <h3>
+                    <span class="badge bg-warning">Enter the coupon code if applicable:</span>
+                    <input type="text" name="coupon"></input>
+                </h3>
+                <br >
+                <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
+            </form>
         </div>
-
     </div>
 </div>
 

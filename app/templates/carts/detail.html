@@ -57,6 +57,28 @@
                 <button type="submit" class="btn btn-primary mb-3">Submit Cart</button>
             </form>
         </div>
+
+        <div>
+            <h1>You may also like:</h1>
+            <table class="table table-striped table-hover table-bordered text-center">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                </tr>
+                {% for product in productlist %}
+                    <tr>
+                        <td><a href="/product/{{product.product_id}}">{{ product.name }}</a></td>
+                        <td><a href="/product/search?category={{ product.category }}&sort=ASC&keywords=">{{ product.category }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.price }}</td>
+                        <td><img src={{ product.image }} height="100"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 

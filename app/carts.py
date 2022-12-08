@@ -15,10 +15,15 @@ bp = Blueprint('carts', __name__)
 
 @bp.route('/cart/order', methods=['GET'])
 def order():
-    return render_template('carts/detailedorder.html')
+    if current_user.is_authenticated:
+        return render_template('carts/detailedorder.html')
+    else:
+        return redirect(url_for('users.login'))
+    
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
+ if current_user.is_authenticated:
     if request.method == 'POST':
         # print(request.form['uid'])
         Cart.update(request.form['uid'], request.form['seller_id'], request.form['product_id'], request.form['cart_quantity'])
@@ -31,12 +36,16 @@ def detail():
         cart_total_price += cart.total_price
 
     return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price)
-
+ else:
+        return redirect(url_for('users.login'))
 @bp.route('/cart/remove_item', methods=['POST'])
 def remove_item():
-    Cart.delete(request.args['uid'], request.args['seller_id'], request.args['product_id'])
-    flash("The item has been deleted successfully")
-    return redirect(url_for('carts.detail'))
+    if current_user.is_authenticated:
+        Cart.delete(request.args['uid'], request.args['seller_id'], request.args['product_id'])
+        flash("The item has been deleted successfully")
+        return redirect(url_for('carts.detail'))
+    else:
+        return redirect(url_for('users.login'))
 
 @bp.route('/cart/add', methods=['GET', 'POST'])
 def add():
@@ -68,8 +77,10 @@ def add():
 
 @bp.route('/cart/submit', methods=['POST', 'GET'])
 def submit():
+    if not (current_user.is_authenticated and session['role'] == 'buyer'):
+        return redirect('/login')
     carts = Cart.get_all(uid=current_user.id)
-
+    coupon=request.args['coupon']
     if carts == []:
         flash("You don't have anything in the cart!")
         return redirect('/cart/detail')
@@ -77,6 +88,9 @@ def submit():
     cart_total_price = 0
     for cart in carts:
         cart_total_price += cart.total_price
+    
+    if (coupon=="CHECKOUT10"):
+        cart_total_price=0.9*int(cart_total_price)
 
     # Check balance
     if current_user.balance < cart_total_price:
@@ -111,6 +125,8 @@ def submit():
 
 @bp.route('/cart/hw4', methods=['GET'])
 def search():
+    if not (current_user.is_authenticated and session['role'] == 'buyer'):
+        return redirect('/login')
     uid = request.args.get('uid')
     if uid is None:
         carts = []

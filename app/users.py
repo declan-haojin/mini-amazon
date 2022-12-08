@@ -196,15 +196,18 @@ def profile(uid):
 
 @bp.route('/user/analytics', methods=['GET'])
 def getanalytics():
-    rows = User.get_analytics(session['user'])
-    keys=""
-    values=""
-    for row in rows:
-        keys+=(row[0]+",")
-        values+=(str(row[1])+",")
-    # plt.bar(range(len(keys)), values, tick_label=keys)
-    # plt.savefig('img.jpeg')
-    # with open("img.jpeg", "rb") as img_file:
-    #     my_string = base64.b64encode(img_file.read())
-    return render_template('user/analytics.html', rows=rows, keys=keys[:-1],values=values[:-1])
-
+    if current_user.is_authenticated:
+        rows = User.get_analytics(session['user'])
+        keys=""
+        values=""
+        for row in rows:
+            keys+=(row[0]+",")
+            values+=(str(row[1])+",")
+        # plt.bar(range(len(keys)), values, tick_label=keys)
+        # plt.savefig('img.jpeg')
+        # with open("img.jpeg", "rb") as img_file:
+        #     my_string = base64.b64encode(img_file.read())
+        return render_template('user/analytics.html', rows=rows, keys=keys[:-1],values=values[:-1])
+    else:
+        return redirect(url_for('users.login'))
+    

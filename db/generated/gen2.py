@@ -126,7 +126,7 @@ rid2usp_dup = {}
 for rid, oid in enumerate(review_sp_pair_sample_idx):
     review_sp_pair_sample.append(oid2sp_pair[oid])
     uid = oid2uid[oid]
-    rid2usp_dup[rid] = (uid, int(review_sp_pair_sample[0][0]), int(review_sp_pair_sample[0][1]))
+    rid2usp_dup[rid] = (uid, int(review_sp_pair_sample[rid][0]), int(review_sp_pair_sample[rid][1]))
 
 rid2usp_set = set(list(rid2usp_dup.values()))
 num_reviews = len(rid2usp_set)

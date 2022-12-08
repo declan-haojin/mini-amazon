@@ -68,6 +68,9 @@ def edit(product_id):
 
 @bp.route('/product/create', methods=['GET', 'POST'])
 def create():
+    if not current_user.is_authenticated:
+        flash("You do not have access!")
+        return redirect('/login')
     # Check if any input is empty
     for arg in request.form:
         if len(request.form[arg]) == 0:

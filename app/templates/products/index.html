@@ -16,10 +16,11 @@
 {% endif %}
 
 <li>Product ID: {{ product.product_id }} </li>
-<li>Category: {{ product.category }} </li>
+<li>Category: <a href="/product/search?category={{ product.category }}&sort=ASC&keywords=">{{ product.category }} </a></li>
 <li>Description: {{ product.description }} </li>
-<li>Price: {{ product.price }}</li>
+<li>Price: ${{ product.price }}</li>
 <li>Availability: {{ "Available" if product.available else "Not available" }}</li>
+<li>Created by:<a href={{ url_for('seller.index', sid=product.created_by) }}> {{ product.creator }}</a></li>
 <li><img src = {{product.image}} height="377"></li>
 
 <hr></hr>

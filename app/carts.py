@@ -25,7 +25,9 @@ def order():
 def detail():
  if current_user.is_authenticated:
     if request.method == 'POST':
-        # print(request.form['uid'])
+        if int(request.form['cart_quantity']) <= 0:
+            flash("The quantity is invalid!")
+            return redirect(url_for('carts.detail'))
         Cart.update(request.form['uid'], request.form['seller_id'], request.form['product_id'], request.form['cart_quantity'])
         flash("The item quantity has been updated successfully")
         return redirect(url_for('carts.detail'))
@@ -58,6 +60,10 @@ def add():
     seller_id = request.form['seller_id']
     product_id = request.form['product_id']
     quantity = int(request.form['quantity'])
+
+    if quantity <= 0:
+        flash("The quantity is invalid!")
+        return redirect(url_for('products.index', product_id=product_id))
 
     # Check if there are enough inventories for this user to add
     if Inventory.get(seller_id, product_id).inventory_quantity < quantity:

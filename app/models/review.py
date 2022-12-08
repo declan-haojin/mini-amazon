@@ -71,6 +71,18 @@ class Review:
         return [Review(*row) for row in rows]
 
     @staticmethod
+    def get_all_product_review_by_pid(product_id):
+        rows = app.db.execute('''
+            SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type
+            FROM Reviews
+            WHERE product_id = :product_id AND review_type = :review_type
+            ORDER BY review_time DESC
+            ''',
+            product_id=product_id,
+            review_type="product")
+        return [Review(*row) for row in rows]
+
+    @staticmethod
     def get_all_by_sid(seller_id):
         rows = app.db.execute('''
             SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type, vote

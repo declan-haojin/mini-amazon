@@ -35,7 +35,7 @@ def index(product_id):
         num_rating = 0
     else:
         product = Product.get(product_id)
-        reviews = Review.get_all_by_pid(product_id)
+        reviews = Review.get_all_product_review_by_pid(product_id)
         sellerid_quantity = Inventory.get_by_pid(product_id)
         sellers = []
 

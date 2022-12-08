@@ -56,14 +56,14 @@ def insert_product_review():
         review_content = request.args.get('review_content')
         review_time = datetime.now()
         product_id = request.args.get('product_id')
-        if Review.existProduct(uid): 
-            seller_id = Review.get_seller_id(uid, product_id)
-        
+
+        seller_id = Review.get_seller_id(uid, product_id)
+
         # if a user hasn't bought this product
-        if seller_id == 0: 
+        if seller_id == 0:
             flash("You haven't bought this product")
             return redirect('/review/product')
-        else: 
+        else:
             exist = Review.create_product_review(uid, review_content, rating, review_time, seller_id, product_id)
             # if a review already exists for a product
             if exist: flash("You can only submit one review for each product you bought from this seller")
@@ -72,7 +72,7 @@ def insert_product_review():
 @bp.route('/review/product/submit_link/', methods=['GET'])
 def submit_link():
     print("Thank you for your review!")
-    return "Click." 
+    return "Click."
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
@@ -85,7 +85,7 @@ def insert_seller_review():
         review_time = datetime.now()
         seller_id = request.args.get('seller_id')
         product_id = Review.get_product_id(uid, seller_id)
-        if product_id == 0: 
+        if product_id == 0:
             flash("You haven't bought any product from this seller")
             return redirect('/review/seller')
         review_content = request.args.get('review_content')
@@ -94,10 +94,10 @@ def insert_seller_review():
         return redirect('/review/search')
 
 @bp.route('/review/update', methods=['GET', 'POST'])
-def update_review_page(): 
+def update_review_page():
     if request.method == "GET":
         return render_template('reviews/update.html')
-    else: 
+    else:
         review_id = request.args.get('review_id')
         rating = request.form['rating']
         review_content = request.form['review_content']
@@ -105,7 +105,7 @@ def update_review_page():
         Review.update_review(review_id, review_content, review_time, rating)
 
         return redirect('/review/search')
-        
+
 @bp.route('/review/vote', methods=['GET', 'POST'])
 def vote():
     review_id = request.args['review_id']

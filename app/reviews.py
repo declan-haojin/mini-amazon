@@ -3,7 +3,7 @@ from flask import request, redirect, flash
 from .models.review import Review
 from flask import session, url_for
 from datetime import datetime
-
+from flask_login import current_user
 from flask import Blueprint
 bp = Blueprint('reviews', __name__)
 
@@ -48,6 +48,8 @@ def search_hw4():
 
 @bp.route('/review/product', methods=['GET'])
 def insert_product_review():
+    if not current_user.is_authenticated:
+        return redirect('/login')
     uid = session["user"]
     rating = request.args.get('rating')
     if not rating:
@@ -75,6 +77,8 @@ def submit_link():
 
 @bp.route('/review/seller', methods=['GET'])
 def insert_seller_review():
+    if not current_user.is_authenticated:
+        return redirect('/login')
     uid = session["user"]
     rating = request.args.get('rating')
     if not rating:

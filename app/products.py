@@ -4,7 +4,7 @@ from .models.product import Product
 from .models.review import Review
 from .models.inventory import Inventory
 from .models.seller import Seller
-
+from flask_login import current_user
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)

@@ -93,7 +93,7 @@ def insert_seller_review():
             return redirect('/review/seller')
         review_content = request.args.get('review_content')
         exist = Review.create_seller_review(uid, review_content, rating, review_time, seller_id, product_id)
-        if exist: flash("You can only submit one review for each product you bought from this seller")
+        if exist: flash("You can only submit one review for a seller")
         return redirect('/review/search')
 
 @bp.route('/review/update', methods=['GET', 'POST'])

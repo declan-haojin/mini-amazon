@@ -71,14 +71,26 @@ class Review:
         return [Review(*row) for row in rows]
 
     @staticmethod
+    def get_all_product_review_by_pid(product_id):
+        rows = app.db.execute('''
+            SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type
+            FROM Reviews
+            WHERE product_id = :product_id AND review_type = :review_type
+            ORDER BY review_time DESC
+            ''',
+            product_id=product_id,
+            review_type="product")
+        return [Review(*row) for row in rows]
+
+    @staticmethod
     def get_all_by_sid(seller_id):
         rows = app.db.execute('''
             SELECT uid, review_id, review_content,rating, review_time, seller_id, product_id, review_type, vote
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ORDER BY vote DESC
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
         return [Review(*row) for row in rows]
 
     @staticmethod
@@ -101,9 +113,9 @@ class Review:
         check = app.db.execute("""
         SELECT review_id
         FROM Reviews
-        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id AND review_type = :review_type
         """
-        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
+        ,uid=uid, seller_id=seller_id, product_id = product_id, review_type = review_type)
 
         if not check:
             app.db.execute('''
@@ -120,9 +132,9 @@ class Review:
         check = app.db.execute("""
         SELECT review_id
         FROM Reviews
-        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id AND review_type = :review_type
         """
-        ,                     uid=uid, seller_id=seller_id, product_id = product_id)
+        ,uid=uid, seller_id=seller_id, product_id = product_id, review_type = review_type)
 
         if not check:
             app.db.execute('''
@@ -139,16 +151,18 @@ class Review:
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
-            WHERE product_id = :product_id
+            WHERE product_id = :product_id AND review_type = :review_type
             ''',
-            product_id=product_id)
+            product_id=product_id,
+            review_type="product")
 
         num_rating = app.db.execute('''
             SELECT COUNT(rating)
             FROM Reviews
-            WHERE product_id = :product_id
+            WHERE product_id = :product_id AND review_type = :review_type
             ''',
-            product_id=product_id)
+            product_id=product_id,
+            review_type="product")
 
         if num_rating == [(0,)]:
             return 0, 0
@@ -163,16 +177,16 @@ class Review:
         avg_rating = app.db.execute('''
             SELECT AVG(rating)
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
 
         num_rating = app.db.execute('''
             SELECT COUNT(rating)
             FROM Reviews
-            WHERE seller_id = :seller_id
+            WHERE seller_id = :seller_id AND review_type = :review_type
             ''',
-            seller_id=seller_id)
+            seller_id=seller_id, review_type="seller")
 
         # print(num_rating)
 

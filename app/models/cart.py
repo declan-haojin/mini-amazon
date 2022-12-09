@@ -5,7 +5,7 @@ from app.models.product import Product
 
 class Cart:
     """
-    A cart stores information like user, seller, product, quantity and price. 
+    A cart stores information like user, seller, product, quantity and price.
     """
     def __init__(self, uid, seller_id, product_id, cart_quantity):
         """
@@ -20,9 +20,9 @@ class Cart:
         self.unit_price = Product.get(product_id).price
         self.total_price = self.unit_price * cart_quantity
         self.seller = Seller.get_by_sid(seller_id)
-    
-    
-   
+
+
+
     @staticmethod
     def create(uid, seller_id, product_id, cart_quantity):
         """
@@ -74,7 +74,7 @@ class Cart:
     @staticmethod
     def get_all(uid):
         """
-        Retrieves all products from the cart for the user that is logged in. 
+        Retrieves all products from the cart for the user that is logged in.
         """
         rows = app.db.execute(
             '''
@@ -89,14 +89,14 @@ class Cart:
     @staticmethod
     def delete(uid, seller_id, product_id):
         """
-        Removes a product from the cart for the user, takes in user information, seller information, 
-        and product_id to ensure only intended product is deleted. i.e product from specific seller 
+        Removes a product from the cart for the user, takes in user information, seller information,
+        and product_id to ensure only intended product is deleted. i.e product from specific seller
         that user might intend to delete.
         """
         app.db.execute(
         '''
         DELETE FROM Cart
-        WHERE uid = :uid AND seller_id = :seller_id AND product_id = product_id
+        WHERE uid = :uid AND seller_id = :seller_id AND product_id = :product_id
             ''',
             uid=uid,
             seller_id=seller_id,

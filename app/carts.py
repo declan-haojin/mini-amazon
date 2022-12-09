@@ -23,26 +23,27 @@ def order():
 
 @bp.route('/cart/detail', methods=['GET', 'POST'])
 def detail():
- if current_user.is_authenticated:
-    if request.method == 'POST':
-        if int(request.form['cart_quantity']) <= 0:
-            flash("The quantity is invalid!")
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            if int(request.form['cart_quantity']) <= 0:
+                flash("The quantity is invalid!")
+                return redirect(url_for('carts.detail'))
+            Cart.update(request.form['uid'], request.form['seller_id'], request.form['product_id'], request.form['cart_quantity'])
+            flash("The item quantity has been updated successfully")
             return redirect(url_for('carts.detail'))
-        Cart.update(request.form['uid'], request.form['seller_id'], request.form['product_id'], request.form['cart_quantity'])
-        flash("The item quantity has been updated successfully")
-        return redirect(url_for('carts.detail'))
 
-    carts = Cart.get_all(uid=current_user.id)
-    cart_total_price = 0
-    for cart in carts:
-        cart_total_price += cart.total_price
-    products = Product.recommend(current_user.id) #recommendation based on: 1. the users top 3 purchasing categories, 2. the product must be top 50 popular
-    return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price, productlist = products)
- else:
+        carts = Cart.get_all(uid=current_user.id)
+        cart_total_price = 0
+        for cart in carts:
+            cart_total_price += cart.total_price
+        products = Product.recommend(current_user.id) #recommendation based on: 1. the users top 3 purchasing categories, 2. the product must be top 50 popular
+        return render_template('carts/detail.html', carts = carts, cart_total_price = cart_total_price, productlist = products)
+    else:
         return redirect(url_for('users.login'))
 @bp.route('/cart/remove_item', methods=['POST'])
 def remove_item():
     if current_user.is_authenticated:
+        print(request.args['uid'], request.args['seller_id'], request.args['product_id'])
         Cart.delete(request.args['uid'], request.args['seller_id'], request.args['product_id'])
         flash("The item has been deleted successfully")
         return redirect(url_for('carts.detail'))

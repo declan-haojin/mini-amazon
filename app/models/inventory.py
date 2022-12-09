@@ -1,9 +1,13 @@
 from flask import current_app as app
-from app.models.purchase import Purchase
-from app.models.seller import Seller
 from app.models.product import Product
 class Inventory:
+    """
+    An inventory is defined as the number of products of each type that a seller holds. It holds information on Product ID, Seller ID and quantity and 
+    """
     def __init__(self, sid, pid, qty):
+        """
+        initialize an inventory object.
+        """
         self.seller_id = sid
         self.product_id = pid
         self.inventory_quantity = qty
@@ -12,6 +16,9 @@ class Inventory:
 
     @staticmethod
     def get(seller_id, product_id):
+        """
+        Retrieve inventory for a specific seller for a given product. 
+        """
         rows = app.db.execute('''
         SELECT *
         FROM Inventories
@@ -24,6 +31,9 @@ class Inventory:
 
     @staticmethod
     def delete(product_id):
+        """
+        Allows to delete inventory for a specific product(if a product is to be removed from directory for malfunction.)
+        """
         app.db.execute('''
         DELETE FROM Inventories
         WHERE product_id = :product_id
@@ -34,6 +44,9 @@ class Inventory:
 
     @staticmethod
     def update(sid, pid, qty):
+        """
+        Update seller(sid) inventory for a specific product(pid) by specifying quantity
+        """
         rows = app.db.execute('''
             UPDATE Inventories
             SET inventory_quantity = :qty
@@ -49,6 +62,9 @@ class Inventory:
 
     @staticmethod
     def get_by_sid(sid):
+        """
+        Retrieve entire inventory for the seller for all products. Used in seller information tables. 
+        """
         rows = app.db.execute('''
         SELECT Products.product_id, Products.name, Inventories.inventory_quantity
         FROM Inventories, Products
@@ -62,14 +78,21 @@ class Inventory:
 
     @staticmethod
     def add_item_to_inventory(sid, pid, qty):
+        """
+        Allows to add a single product to inventory provided product exists in Products
+        (otherwise new product must first be created). Seller can specify product(pid) and the quantity(qty) to add.
+        """
+        # check for valud pid
         if not (pid.isdigit()):
             return "Invalid product id, please enter an integer."
+        # check for valud qty
         if not (qty.isdigit()):
             return "Invalid quantity, please enter an integer."
         if (int(sid) > 2147483647) :
             return "seller id out of range."
         if (int(pid) > 2147483647) :
             return "product id out of range."
+        #get count of products that match product id
         i = app.db.execute('''
         SELECT COUNT(*)
         FROM Products
@@ -77,8 +100,10 @@ class Inventory:
         ''',
         pid = pid
         )
+        #return if no product with the correct ID exists
         if (i[0][0]==0):
             return "No such product, please create the new product."
+        # check matching inventories for seller, for given product
         row = app.db.execute('''
         SELECT Inventories.seller_id, Inventories.product_id, Inventories.inventory_quantity
         FROM Inventories
@@ -91,6 +116,7 @@ class Inventory:
 
         if row == []:
             qty = int(qty)
+            # add to inventory a new 
             app.db.execute('''
             INSERT INTO Inventories VALUES (:sid, :pid, :qty)
             ''',
@@ -101,6 +127,7 @@ class Inventory:
             retstr = "Seller " + str(sid) + ": You have successfully added " + str(qty) + " units of item " + str(pid) + " to your inventory."
             return retstr
         else:
+            # add to inventory
             app.db.execute('''
             UPDATE Inventories
             SET inventory_quantity = :qty
@@ -114,22 +141,14 @@ class Inventory:
             return retstr
 
 
-    @staticmethod
-    def get_order(sid):
-        rows = app.db.execute('''
-        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, Orders.uid, Orders.order_id, Users.address, Orders.status
-        FROM Orders, Purchases, Users
-        WHERE Orders.seller_id = :sid
-        AND Purchases.purchase_id = Orders.purchase_id
-        AND Orders.uid = Users.uid
-        ORDER BY Purchases.time_purchased DESC
-        ''',
-        sid=sid)
-        return rows
+  
 
 
     @staticmethod
     def get_by_pid(pid):
+        """
+        Get inventory for pid
+        """
         rows = app.db.execute('''
         SELECT seller_id, inventory_quantity
         FROM Inventories
@@ -142,6 +161,9 @@ class Inventory:
 
     @staticmethod
     def get_status(order_id):
+        """
+        Get order status
+        """
         str = app.db.execute('''
         SELECT status
         FROM Orders
@@ -153,6 +175,9 @@ class Inventory:
 
     @staticmethod
     def change_order_status_spc(order_id, status):
+        """
+        change order status
+        """
         app.db.execute('''
         UPDATE Orders
         SET status = :status
@@ -165,6 +190,9 @@ class Inventory:
 
     @staticmethod
     def get_analytics_category(seller_id):
+        """
+        Get analytics on category of sales, including count of products sold by category for a given seller.
+        """
         rows = app.db.execute('''
         SELECT Products.category, COUNT(*), SUM(Inventories.inventory_quantity)
         FROM Inventories, Products
@@ -178,6 +206,9 @@ class Inventory:
 
     @staticmethod
     def get_analytics_order(seller_id, start, end):
+        """
+        Get analytics on category on orders, including count of products sold by category for a given seller.
+        """
         rows = app.db.execute('''
         SELECT Orders.product_id, Products.name, SUM(Orders.number_of_items)
         FROM Orders, Products, Purchases
@@ -194,39 +225,6 @@ class Inventory:
         return rows
 
     
-    @staticmethod
-    def get_analytics_user(seller_id):
-        rows = app.db.execute('''
-        SELECT uid, COUNT(*), CAST(AVG(Reviews.rating) as DECIMAL(10,2))
-        FROM Reviews
-        WHERE Reviews.seller_id = :seller_id
-        GROUP BY uid
-        ORDER BY COUNT(*) DESC
-        ''',
-        seller_id = seller_id,)
-        return rows
+    
 
-    @staticmethod
-    def recommend(uid):
-        rows = app.db.execute('''
-        SELECT *
-        FROM Products
-        WHERE Products.category IN (
-            SELECT Products.category
-            FROM Orders, Products
-            WHERE uid = :uid
-            AND Orders.product_id = Products.product_id
-            GROUP BY Products.category
-            ORDER BY COUNT(*) DESC
-            LIMIT 3)
-        AND Products.product_id IN (
-            SELECT product_id
-            FROM Orders
-            GROUP BY product_id
-            ORDER BY COUNT(*) DESC
-            LIMIT 50
-        )
-        LIMIT 5
-        ''',
-        uid = uid)
-        return [Product(*row) for row in rows]
+    

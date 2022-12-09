@@ -4,7 +4,16 @@ from app.models.seller import Seller
 from app.models.product import Product
 
 class Order:
+    """
+    An order is defined is buying any quantity of a single type of product. Each order has a unique order id.
+    Each purchase is constituted on multiple orders where an order is satisfied by a given specific seller, but purchase may 
+    include many products by many sellers
+
+    """
     def __init__(self, uid, purchase_id, order_id, number_of_items, amount, status, product_id, seller_id, updated_at):
+        """
+        initialize an order object
+        """
         self.uid = uid
         self.purchase_id = purchase_id
         self.order_id = order_id
@@ -20,26 +29,38 @@ class Order:
 
     @staticmethod
     def get(order_id):
+        """
+        Get order that matches order id
+        """
         rows = app.db.execute('''
             SELECT *
             FROM Orders
             WHERE order_id = :order_id
         ''', order_id=order_id)
-        # print(Order(*(rows[0])))
         return Order(*(rows[0]))
 
+    @staticmethod
+    def get_by_seller_id(sid):
+        """
+        Get all orders by a seller ordered by time purchased in descending order
+        """
+        rows = app.db.execute('''
+        SELECT Purchases.time_purchased, Orders.product_id, Orders.number_of_items, Orders.uid, Orders.order_id, Users.address, Orders.status
+        FROM Orders, Purchases, Users
+        WHERE Orders.seller_id = :sid
+        AND Purchases.purchase_id = Orders.purchase_id
+        AND Orders.uid = Users.uid
+        ORDER BY Purchases.time_purchased DESC
+        ''',
+        sid=sid)
+        return rows
 
-    # @staticmethod
-    # def get(uid):
-    #     rows = app.db.execute('''
-    #     SELECT *
-    #     FROM Orders
-    #     WHERE uid = :uid
-    #     ''', uid=uid)
-    #     return [Order(*row) for row in rows]
 
     @staticmethod
     def create(uid, purchase_id, number_of_items, amount, status, product_id, seller_id):
+        """
+        Create a new order and add amount, status, product_id etc.
+        """
         rows = app.db.execute("""
             INSERT INTO Orders(uid, purchase_id, number_of_items, amount, status, product_id, seller_id, updated_at)
             VALUES (:uid, :purchase_id, :number_of_items, :amount, :status, :product_id, :seller_id, :updated_at)
@@ -56,6 +77,9 @@ class Order:
         return Order(*(rows[0]))
 
     def update(self, status):
+        """
+        Update an order status based on seller fulfillment 
+        """
         rows = app.db.execute("""
             UPDATE Orders
             SET status=:status
@@ -68,20 +92,12 @@ class Order:
 
     @staticmethod
     def get_by_purchase_id(purchase_id):
+        """
+        Get orders by purchase id. Each purchase can have multiple orders. 
+        """
         rows = app.db.execute('''
             SELECT *
             FROM Orders
             WHERE purchase_id = :purchase_id
         ''', purchase_id=purchase_id)
         return [Order(*row) for row in rows]
-
-    # @staticmethod
-    # def get_by_uid(uid):
-    #     rows = app.db.execute("""
-    #     SELECT *
-    #     FROM Purchases
-    #     WHERE Purchases.uid = :uid
-    #     ORDER BY time_purchased DESC
-    #     """
-    #     ,                     uid=uid)
-    #     return [Orders(*row) for row in rows]

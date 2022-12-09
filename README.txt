@@ -24,7 +24,7 @@ https://gitlab.oit.duke.edu/th311/mini-amazon/-/tree/main/db
     Additional seller features
 - Tingnan Hu:
     All basic features of social guru
-    Databse design revisions
+    Database design revisions
 - Julie Ou:
     All basic features of cart guru
     Final report.pdf
@@ -38,3 +38,8 @@ A sample database can be created and populated by db/generated/gen.py file and d
 
 ## Link to Milestone3 Video 
 https://duke.app.box.com/s/mwvfguu7x5dt2bw7wjg97mb4w921gz5b
+
+## Run instructions 
+- ./install.sh
+- db/setup.sh
+- flask run

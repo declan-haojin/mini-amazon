@@ -106,3 +106,29 @@ def search_hw4():
     else:
         products = Product.get_k_most_expensive(k)
     return render_template('hw4_product.html', products = products)
+
+@bp.route('/market/analytics', methods=['GET'])
+def getanalytics():
+    
+    count = Product.get_count_by_categories()
+    value = Product.get_value_by_categories()
+    average= Product.get_avgprice_by_categories()
+    c1=""
+    c2=""
+    for cnt in count:
+        c1+=(cnt[0]+",")
+        c2+=(str(cnt[1])+",")
+
+    v1=""
+    v2=""
+    for val in value:
+        v1+=(val[0]+",")
+        v2+=(str(val[1])+",")
+
+    a1=""
+    a2=""
+    for av in average:
+        a1+=(av[0]+",")
+        a2+=(str(av[1])+",")
+    return render_template('products/analytics.html', a1=a1[:-1],a2=a2[:-1],c1=c1[:-1],c2=c2[:-1],v1=v1[:-1],v2=v2[:-1] )
+    

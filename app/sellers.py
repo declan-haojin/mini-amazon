@@ -1,5 +1,7 @@
 from flask import render_template
 from flask import request, redirect, url_for, flash
+
+from app.models.order import Order
 from .models.inventory import Inventory
 from .models.seller import Seller
 from .models.product import Product
@@ -26,7 +28,7 @@ def index(sid):
         num_rating = 0
     else:
         products = Inventory.get_by_sid(sid)
-        seller = Seller.get_seller_object(sid)
+        seller = Seller.get(sid)
         reviews = Review.get_all_by_sid(sid)
         avg_rating, num_rating = Review.sum_seller_review(sid)
     return render_template('seller/seller_index.html', products = products, seller = seller, reviews = reviews, avg_rating = avg_rating, num_rating = num_rating)
@@ -40,7 +42,7 @@ def sellers_search():
         Inventory.delete(pid)
         return redirect(url_for('seller.sellers_search'))
     sid = session['user']
-    seller = Seller.get_seller_object(sid)
+    seller = Seller.get(sid)
     if sid is None:
         products = []
     else:
@@ -76,7 +78,7 @@ def sellers_fulfill():
             Inventory.change_order_status_spc(oid,status)
         return redirect('/seller/fulfill/')
     else:
-        args = Inventory.get_order(sid)
+        args = Order.get_by_seller_id(sid)
         retlist = []
         for arg in args:
             newarg = [] #manually add elements in the list from legacyrow object
@@ -105,7 +107,7 @@ def analytics():
         end = date.today() #check if inputs are empty strings
     count = Inventory.get_analytics_category(sid)
     pop = Inventory.get_analytics_order(sid, start, end)
-    users= Inventory.get_analytics_user(sid)
+    users= Review.get_analytics_user(sid)
     return render_template('seller/seller_analytics.html', count = count, pop = pop, users = users)
 
 class UserForm(FlaskForm):

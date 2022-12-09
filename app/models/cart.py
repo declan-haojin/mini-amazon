@@ -4,7 +4,13 @@ from app.models.product import Product
 
 
 class Cart:
+    """
+    A cart stores information like user, seller, product, quantity and price. 
+    """
     def __init__(self, uid, seller_id, product_id, cart_quantity):
+        """
+        initialize a cart object.
+        """
         self.uid = uid
         self.seller_id = seller_id
         self.product_id = product_id
@@ -14,10 +20,14 @@ class Cart:
         self.unit_price = Product.get(product_id).price
         self.total_price = self.unit_price * cart_quantity
         self.seller = Seller.get_by_sid(seller_id)
-
-
+    
+    
+   
     @staticmethod
     def create(uid, seller_id, product_id, cart_quantity):
+        """
+        Function to add products to cart, record user,seller and product information as well as quantity
+        """
         rows = app.db.execute("""
             INSERT INTO Cart(uid, seller_id, product_id, cart_quantity)
             VALUES(:uid, :seller_id, :product_id, :cart_quantity)
@@ -30,6 +40,9 @@ class Cart:
         return Cart(*(rows[0]))
 
     def update(uid, seller_id, product_id, cart_quantity):
+        """
+        Updates changes to quantity of product in cart.
+        """
         rows = app.db.execute("""
             UPDATE Cart
             SET cart_quantity=:cart_quantity
@@ -39,11 +52,13 @@ class Cart:
             seller_id=seller_id,
             product_id=product_id,
             cart_quantity=cart_quantity)
-        # print(rows)
         return True
 
     @staticmethod
     def get(uid, seller_id, product_id):
+        """
+        Retrieves a specific product from the cart by taking in seller, user and product information.
+        """
         rows = app.db.execute(
             '''
             SELECT *
@@ -58,6 +73,9 @@ class Cart:
 
     @staticmethod
     def get_all(uid):
+        """
+        Retrieves all products from the cart for the user that is logged in. 
+        """
         rows = app.db.execute(
             '''
                 SELECT *
@@ -70,6 +88,11 @@ class Cart:
 
     @staticmethod
     def delete(uid, seller_id, product_id):
+        """
+        Removes a product from the cart for the user, takes in user information, seller information, 
+        and product_id to ensure only intended product is deleted. i.e product from specific seller 
+        that user might intend to delete.
+        """
         app.db.execute(
         '''
         DELETE FROM Cart
@@ -81,6 +104,9 @@ class Cart:
         return
     @staticmethod
     def clear_all(uid):
+        """
+        Clears entire cart. Used on checkout.
+        """
         rows = app.db.execute(
             '''
             DELETE FROM Cart

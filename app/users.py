@@ -167,6 +167,9 @@ class UserForm(FlaskForm):
         'Repeat New Password', validators=[DataRequired(),
                                        EqualTo('password')])
     submit = SubmitField('Update my information')
+    def validate_email(self, email):
+        if User.confict_email_exists(email.data, session['user']):
+            raise ValidationError('Already a user with this email.')
 
 
 @bp.route('/user/update', methods=['GET', 'POST'])

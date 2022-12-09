@@ -114,11 +114,6 @@ class UserForm(FlaskForm):
     firstname = StringField("First Name", validators=[DataRequired()])
     lastname = StringField("Last Name", validators=[DataRequired()])
     address = StringField("Address", validators=[DataRequired()])
-    email = StringField("Email", validators=[Email()])
-    password = PasswordField('New Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat New Password', validators=[DataRequired(),
-                                       EqualTo('password')])
     submit = SubmitField('Update my information')
 
 @bp.route('/seller/update', methods=['GET', 'POST'])
@@ -128,7 +123,7 @@ def update_profile():
         form = UserForm()
         if form.validate_on_submit():
             if (seller.email_exists):
-                seller.update(seller.id,form.firstname.data,form.lastname.data,form.address.data,form.email.data,form.password.data)
+                seller.update(seller.id,form.firstname.data,form.lastname.data,form.address.data)
             return redirect(url_for('seller.sellers_search'))
     else:
         return redirect(url_for('users.login'))

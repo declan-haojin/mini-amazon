@@ -27,9 +27,10 @@ class Seller():
         get all seller information by seller id 
         """
         rows = app.db.execute('''
-        SELECT *
-        FROM Sellers
+        SELECT Sellers.seller_id, Sellers.balance, Sellers.firstname, Sellers.lastname, Sellers.address, Users.email, Sellers.password
+        FROM Sellers, Users
         WHERE seller_id = :sid
+        AND seller_id = uid
         ''',
         sid=sid)
         return Seller(*(rows[0])) if rows else None
@@ -78,22 +79,16 @@ class Seller():
         return len(rows) > 0
 
     @staticmethod
-    def update(seller_id, firstname, lastname, address, email, password,):
+    def update(seller_id, firstname, lastname, address):
         """
         update seller information.
         """
         app.db.execute("""
         UPDATE Sellers 
-        SET email=:email, password=:password,firstname=:firstname,lastname=:lastname, address=:address
+        SET firstname=:firstname,lastname=:lastname, address=:address
         WHERE seller_id = :seller_id
         """,
-        seller_id=seller_id, email=email, password=generate_password_hash(password), firstname=firstname,lastname=lastname, address=address)
-        app.db.execute("""
-        UPDATE Users 
-        SET email=:email, password=:password
-        WHERE uid = :seller_id
-        """,
-        seller_id=seller_id, email=email, password=generate_password_hash(password))
+        seller_id=seller_id, firstname=firstname,lastname=lastname, address=address)
         return None
 
     @staticmethod

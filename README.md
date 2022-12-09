@@ -85,10 +85,29 @@ We have also implemented a basic recommendation system that takes a users prefer
 
 <h3>Data generation</h3>
 
-We generate data using python libraries that allow us to create fake data. We also ensure all our data is connected based on our database schema and ensure that we generate 1000 users, reviews, products etc. to emulate a real online comerce platform
+We generate data using python libraries that allow us to create fake data. We also ensure all our data is connected based on our database schema and ensure that we generate 1000 users, reviews, products etc. to emulate a real online comerce platform. Our data generation process allows us to generate very large datasets. 
 
 
 ## Codebase
+
+Our codebase is organized as follows :
+
+app\
+|   models\
+|   static\                 
+|   templates\
+
+db\                         
+|   data\
+|   generated\
+
+
+Our `app` directory contains the `models` directory that use SQL commands to draw data from the backend database. Each file in the `models` draws data from the SQL backend for a section of the implementation such as `product.py` for product related implementation, `seller.py` for seller related implementation, and similarly `user.py`, `review.py` etc for eponymous implementations. The frontend routing is done on the main directory in app where we have all our <b>api</b> endpoints setup using FLASK. 
+
+All our data is generated in the `db` directory. Under `generated` we have `gen.py` and `gen2.py` that generate the data.
+
+
+
 ## Acknowledgements 
 
 We acknowledge our TA Danny Luo for his time and feedback that helped us to improve our work. We also acknowledge the vast resources of the internet for teaching us web development to make this project come to life. We acknowledge the course instructors Dr. Sudeepa Roy and Alex Chao. Finally. we acknoweldge the original creators of the project [Rickard Stureborg](http://www.rickard.stureborg.com) and [Yihao Hu](https://www.linkedin.com/in/yihaoh/).

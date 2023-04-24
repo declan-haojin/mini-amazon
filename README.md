@@ -1,16 +1,6 @@
-## Team Name: Mini Taobao
+# Mini Taobao
 
-## Team Member
-- Tingnan Hu (Social Guru)
-- Haojin Li (Product Guru)
-- Julie Ou (Cart/order Guru)
-- Gaurav Parikh (User Guru)
-- Zirui Yin (Seller Guru)
-
-## Link to Gitlab
-https://gitlab.oit.duke.edu/th311/mini-amazon/-/tree/main/db
-
-CompSci 316 undergraduate course project: This is our implementation of the standard option for the project. We have implemented Mini TaoBao which is based on Taobao- a major E-commerce platform from China. 
+A flask implementation that incorporates most of the features and functions found in Amazon's business model.
 
 ## Running/Stopping the Website
 
@@ -107,34 +97,8 @@ Our `app` directory contains the `models` directory that use SQL commands to dra
 All our data is generated in the `db` directory. Under `generated` we have `gen.py` and `gen2.py` that generate the data.
 
 
-
-## Acknowledgements 
-
-We acknowledge our TA Danny Luo for his time and feedback that helped us to improve our work. We also acknowledge the vast resources of the internet for teaching us web development to make this project come to life. We acknowledge the course instructors Dr. Sudeepa Roy and Alex Chao. Finally. we acknoweldge the original creators of the project [Rickard Stureborg](http://www.rickard.stureborg.com) and [Yihao Hu](https://www.linkedin.com/in/yihaoh/).
-
-
-## Work summary
-
-- Haojin Li: 
-    All basic features of product guru
-    Additional product, order, and integration features
-- Zirui Yin:
-    All basic features of seller guru
-    Additional seller features
-- Tingnan Hu:
-    All basic features of social guru
-    Database design revisions
-- Julie Ou:
-    All basic features of cart guru
-    Final report.pdf
-- Gaurav Parikh:
-    All basic features of user guru
-    Additional user features
-
 ## Sample database
 A sample database can be created and populated by db/generated/gen.py file and db/generated/./setup.sh. 
 
 
-## Link to Milestone3 Video 
-https://duke.app.box.com/s/mwvfguu7x5dt2bw7wjg97mb4w921gz5b
 
